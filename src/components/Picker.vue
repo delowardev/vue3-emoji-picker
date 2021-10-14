@@ -1,0 +1,56 @@
+<template>
+  <div class="v3-emoji-picker">
+    <div class="v3-header">
+      <div class="v3-groups">
+        <button class="v3-group" v-for="group in groups">
+<!--          <span :title="group.title" class="v3-icon">{{ String.fromCodePoint(parseInt(group.u, 16)) }}</span>-->
+          <span :title="group.title" class="v3-icon">
+            <img :src="icons[group.key]" alt="">
+          </span>
+        </button>
+      </div>
+      <div class="v3-search">
+        <input type="text" placeholder="Search emoji">
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script lang="ts">
+import { ref, defineComponent } from 'vue'
+import state from "../store"
+import { GroupKeys } from "../types";
+
+import smileys_people from "../svgs/groups/smileys_people.svg";
+import animals_nature from "../svgs/groups/animals_nature.svg";
+import food_drink from "../svgs/groups/food_drink.svg";
+import activities from "../svgs/groups/activities.svg";
+import travel_places from "../svgs/groups/travel_places.svg";
+import objects from "../svgs/groups/objects.svg";
+import symbols from "../svgs/groups/symbols.svg";
+import flags from "../svgs/groups/flags.svg";
+
+
+export default defineComponent({
+  name: "Picker",
+  setup() {
+
+    return {
+      groups: state.groups,
+      icons: {
+        smileys_people,
+        animals_nature,
+        food_drink,
+        activities,
+        travel_places,
+        objects,
+        symbols,
+        flags
+      } as Record<GroupKeys, any>
+    }
+
+  }
+})
+
+</script>
