@@ -13,15 +13,33 @@
         <input type="text" placeholder="Search emoji">
       </div>
     </div>
+
+    <PickerBody />
+
+    <div class="v3-footer">
+      <div class="v3-foot-left">
+        <span class="v3-icon">😀</span>
+        <span class="v3-text">:wink:</span>
+      </div>
+      <button class="v3-tone">
+        <span class="v3-text">Skin Tone</span>
+        <span class="v3-icon">👍</span>
+      </button>
+    </div>
+
   </div>
 </template>
 
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
+import PickerBody from "./PickerBody.vue"
 import state from "../store"
 import { GroupKeys } from "../types";
 
+/**
+ * Group/Category Images
+ */
 import smileys_people from "../svgs/groups/smileys_people.svg";
 import animals_nature from "../svgs/groups/animals_nature.svg";
 import food_drink from "../svgs/groups/food_drink.svg";
@@ -34,8 +52,10 @@ import flags from "../svgs/groups/flags.svg";
 
 export default defineComponent({
   name: "Picker",
+  components: {
+    PickerBody
+  },
   setup() {
-
     return {
       groups: state.groups,
       icons: {
@@ -47,7 +67,7 @@ export default defineComponent({
         objects,
         symbols,
         flags
-      } as Record<GroupKeys, any>
+      } as Record<GroupKeys, string>
     }
 
   }
