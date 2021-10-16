@@ -4,7 +4,7 @@
       <div class="v3-group" v-for="(group, key) in emojis" :id="key">
         <h5>{{ key }}</h5>
         <div class="v3-emojis">
-          <span v-for="emoji in group">
+          <button @click="handleClick(emoji.u)" v-for="emoji in group">
 <!--            &nbsp;{{-->
 <!--              emoji.u-->
 <!--                  .split("-")-->
@@ -13,9 +13,9 @@
 <!--                  .join('')-->
 <!--            }}-->
 
-            <img :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`" :alt="emoji.n">
+            <img @error="handleError($event, emoji.u)" :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`" :alt="emoji.n">
 
-          </span>
+          </button>
         </div>
       </div>
     </div>
@@ -33,9 +33,21 @@ import { EMOJI_REMOTE_SRC } from "../constant";
 export default defineComponent({
   name: "PickerBody",
   setup() {
+
+    function handleClick(unicode) {
+      console.log(unicode)
+    }
+
+    // @todo: handle error
+    function handleError(event, unicode) {
+      console.log(unicode)
+    }
+
     return {
       emojis: state.emojis as EmojiRecord,
-      EMOJI_REMOTE_SRC
+      EMOJI_REMOTE_SRC,
+      handleClick,
+      handleError
     }
 
   }

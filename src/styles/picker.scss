@@ -93,7 +93,11 @@
           display: flex;
           font-size: 18px;
           flex-wrap: wrap;
-          span {
+          button {
+            cursor: pointer;
+            border: none;
+            background: none;
+            margin: 0;
             text-align: center;
             display: flex;
             align-items: center;
