@@ -13,7 +13,7 @@
 <!--                  .join('')-->
 <!--            }}-->
 
-            <img @error="handleError($event, emoji.u)" :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`" :alt="emoji.n">
+            <img @error="handleError($event, emoji.u)" :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`" :alt="emoji.n[0]">
 
           </button>
         </div>
@@ -34,12 +34,12 @@ export default defineComponent({
   name: "PickerBody",
   setup() {
 
-    function handleClick(unicode) {
+    function handleClick(unicode: string) {
       console.log(unicode)
     }
 
     // @todo: handle error
-    function handleError(event, unicode) {
+    function handleError(event: Event, unicode: string) {
       console.log(unicode)
     }
 
