@@ -14,7 +14,7 @@
     box-sizing: border-box;
   }
   .v3-header {
-    padding: 15px 15px 5px;
+    padding: 15px 15px 0;
     .v3-groups {
       display: flex;
       .v3-group {
@@ -70,7 +70,7 @@
 
   // picker body
   .v3-body {
-    padding: 0 0 15px 15px;
+    padding: 0 0 15px 11px;
     min-height: 0;
     .v3-body-inner {
       flex-grow: 1;
@@ -78,7 +78,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       height: 100%;
-      padding-right: 15px;
+      padding-right: 11px;
 
       .v3-group {
         h5 {
@@ -86,13 +86,29 @@
           position: sticky;
           top: 0;
           background: white;
-          padding: 3px 0;
+          padding: 7px 0 3px 4px;
         }
 
         .v3-emojis {
-          display: grid;
-          grid-template-columns: repeat(8, 1fr);
-          font-size: 14px;
+          display: flex;
+          font-size: 18px;
+          flex-wrap: wrap;
+          span {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-basis: 12.5%;
+            max-width: 12.5%;
+            flex-grow: 1;
+            padding: 4px;
+            &:hover {
+              background: #f7f7f7;
+            }
+            img {
+              max-width: 100%;
+            }
+          }
         }
 
       }
