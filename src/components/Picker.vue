@@ -2,19 +2,24 @@
   <div class="v3-emoji-picker">
     <div class="v3-header">
       <div class="v3-groups">
-        <button class="v3-group" v-for="group in groups">
-<!--          <span :title="group.title" class="v3-icon">{{ String.fromCodePoint(parseInt(group.u, 16)) }}</span>-->
+        <button
+          class="v3-group"
+          v-for="group in groups"
+          :key="group.key"
+          @click="updateGroup(group.key)"
+        >
+          <!--          <span :title="group.title" class="v3-icon">{{ String.fromCodePoint(parseInt(group.u, 16)) }}</span>-->
           <span :title="group.title" class="v3-icon">
-            <img :src="icons[group.key]" alt="">
+            <img :src="icons[group.key]" alt="" />
           </span>
         </button>
       </div>
       <div class="v3-search">
-        <input type="text" placeholder="Search emoji">
+        <input type="text" placeholder="Search emoji" />
       </div>
     </div>
 
-    <PickerBody />
+    <PickerBody :activeGroup="activeGroup" />
 
     <div class="v3-footer">
       <div class="v3-foot-left">
@@ -26,15 +31,13 @@
         <span class="v3-icon">👍</span>
       </button>
     </div>
-
   </div>
 </template>
 
-
 <script lang="ts">
-import { defineComponent } from 'vue'
-import PickerBody from "./PickerBody.vue"
-import state from "../store"
+import { defineComponent } from "vue";
+import PickerBody from "./PickerBody.vue";
+import state from "../store";
 import { GroupKeys } from "../types";
 
 /**
@@ -49,11 +52,15 @@ import objects from "../svgs/groups/objects.svg";
 import symbols from "../svgs/groups/symbols.svg";
 import flags from "../svgs/groups/flags.svg";
 
-
 export default defineComponent({
   name: "Picker",
   components: {
     PickerBody
+  },
+  data() {
+    return {
+      activeGroup: ""
+    };
   },
   setup() {
     return {
@@ -68,9 +75,12 @@ export default defineComponent({
         symbols,
         flags
       } as Record<GroupKeys, string>
+    };
+  },
+  methods: {
+    updateGroup(group: string) {
+      this.activeGroup = group;
     }
-
   }
-})
-
+});
 </script>
