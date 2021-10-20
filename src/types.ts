@@ -23,4 +23,6 @@ export type EmojiRecord = Record<GroupKeys, Emoji[]>;
 export interface State {
   groups: Group[];
   emojis: EmojiRecord;
+  search: string;
+  filteredEmojis: EmojiRecord
 }

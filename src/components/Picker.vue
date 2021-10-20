@@ -63,6 +63,9 @@ export default defineComponent({
     };
   },
   setup() {
+
+    console.log(state.filteredEmojis)
+
     return {
       groups: state.groups,
       icons: {
