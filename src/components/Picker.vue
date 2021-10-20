@@ -15,7 +15,7 @@
         </button>
       </div>
       <div class="v3-search">
-        <input type="text" placeholder="Search emoji" />
+        <input v-model="searchValue" type="text" placeholder="Search emoji" />
       </div>
     </div>
 
@@ -35,9 +35,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {computed, defineComponent} from "vue";
 import PickerBody from "./PickerBody.vue";
 import state from "../store";
+import { updateSearch } from "../store/composition"
 import { GroupKeys } from "../types";
 
 /**
@@ -64,10 +65,14 @@ export default defineComponent({
   },
   setup() {
 
-    console.log(state.filteredEmojis)
+    const searchValue = computed({
+      get: () => state.search,
+      set: (value: string) => updateSearch(value)
+    })
 
     return {
       groups: state.groups,
+      searchValue,
       icons: {
         smileys_people,
         animals_nature,

@@ -24,5 +24,4 @@ export interface State {
   groups: Group[];
   emojis: EmojiRecord;
   search: string;
-  filteredEmojis: EmojiRecord
 }

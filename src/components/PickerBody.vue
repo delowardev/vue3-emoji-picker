@@ -30,11 +30,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref } from "vue";
+import {defineComponent, watch, ref, computed} from "vue";
 import state from "../store";
 import { EmojiRecord } from "../types";
 
 import { EMOJI_REMOTE_SRC } from "../constant";
+import {filterEmojis} from "../helpers";
 
 export default defineComponent({
   name: "PickerBody",
@@ -44,6 +45,9 @@ export default defineComponent({
 
   setup(props) {
     const BodyInner = ref<HTMLElement | null>(null);
+
+    const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
+
     function handleClick(unicode: string) {
       console.log(unicode);
     }
@@ -63,7 +67,7 @@ export default defineComponent({
       }
     );
     return {
-      emojis: state.emojis as EmojiRecord,
+      emojis,
       BodyInner,
       EMOJI_REMOTE_SRC,
       handleClick,
