@@ -4,8 +4,11 @@ export type GroupKeys =
     | "food_drink"
     | "activities"
     | "travel_places"
+    | "objects"
     | "symbols"
     | "flags";
+
+export type GroupNames = Record<GroupKeys, string>;
 
 export interface Group {
   key: GroupKeys;

@@ -2,7 +2,7 @@
   <div class="v3-body">
     <div class="v3-body-inner" ref="BodyInner">
       <div class="v3-group" v-for="(group, key) in emojis" :id="key" :key="key">
-        <h5>{{ key }}</h5>
+        <h5>{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
           <button
             @click="handleClick(emoji.u)"
@@ -33,9 +33,8 @@
 import {defineComponent, watch, ref, computed} from "vue";
 import state from "../store";
 import { EmojiRecord } from "../types";
-
-import { EMOJI_REMOTE_SRC } from "../constant";
-import {filterEmojis} from "../helpers";
+import { EMOJI_REMOTE_SRC, GROUP_NAMES } from "../constant";
+import { filterEmojis } from "../helpers";
 
 export default defineComponent({
   name: "PickerBody",
@@ -70,6 +69,7 @@ export default defineComponent({
       emojis,
       BodyInner,
       EMOJI_REMOTE_SRC,
+      GROUP_NAMES,
       handleClick,
       handleError
     };
