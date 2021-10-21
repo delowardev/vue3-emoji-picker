@@ -5,7 +5,8 @@
         <h5>{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
           <button
-            @click="handleClick(emoji.u)"
+            @mouseenter="handleMouseEnter(emoji)"
+            @click="handleClick(emoji)"
             v-for="emoji in group"
             :key="emoji.u"
           >
@@ -35,6 +36,7 @@ import state from "../store";
 import { EmojiRecord } from "../types";
 import { EMOJI_REMOTE_SRC, GROUP_NAMES } from "../constant";
 import { filterEmojis } from "../helpers";
+import { updateEmoji } from "../store/composition"
 
 export default defineComponent({
   name: "PickerBody",
@@ -47,8 +49,13 @@ export default defineComponent({
 
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
 
-    function handleClick(unicode: string) {
-      console.log(unicode);
+    function handleMouseEnter(emoji: Emoji) {
+      updateEmoji(emoji);
+      console.log(emoji);
+    }
+
+    function handleClick(emoji: Emoji) {
+      console.log(emoji);
     }
 
     // @todo: handle error
@@ -71,7 +78,8 @@ export default defineComponent({
       EMOJI_REMOTE_SRC,
       GROUP_NAMES,
       handleClick,
-      handleError
+      handleError,
+      handleMouseEnter
     };
   }
 });

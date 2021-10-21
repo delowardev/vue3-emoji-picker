@@ -140,15 +140,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .v3-tone,
     .v3-foot-left {
       display: flex;
       align-items: center;
-      span:first-child {
+      img {
+        width: 20px;
+        display: block;
+      }
+      span.v3-icon {
         margin-right: 6px;
       }
     }
+    .v3-foot-left {
+      span.v3-text {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
     .v3-tone {
-      @extend .v3-foot-left;
       border: none;
       padding: 0;
       background: none;

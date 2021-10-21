@@ -1,4 +1,4 @@
-import { GroupNames } from "./types";
+import { Emoji, GroupNames } from "./types";
 
 const EMOJI_REMOTE_SRC = "https://cdn.jsdelivr.net/npm/emoji-datasource-apple@6.0.1/img/apple/64"
 
@@ -14,5 +14,12 @@ const GROUP_NAMES: GroupNames = {
   flags: "Flags",
 }
 
-export { EMOJI_REMOTE_SRC, GROUP_NAMES }
+
+
+const DEFAULT_EMOJI: Emoji = {
+  "n":[ "grinning face", "grinning" ],
+  "u":"1f600"
+}
+
+export { EMOJI_REMOTE_SRC, GROUP_NAMES, DEFAULT_EMOJI }
 

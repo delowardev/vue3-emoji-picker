@@ -1,5 +1,13 @@
 import state from "./index"
+import { Emoji } from "../types";
 
-export function updateSearch(value: string) {
+function updateSearch(value: string) {
   state.search = value
 }
+
+function updateEmoji( value: Emoji ) {
+  state.emoji = value;
+}
+
+
+export { updateSearch, updateEmoji }
