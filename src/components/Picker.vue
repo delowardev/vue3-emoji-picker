@@ -8,7 +8,6 @@
           :key="group.key"
           @click="updateGroup(group.key)"
         >
-          <!--          <span :title="group.title" class="v3-icon">{{ String.fromCodePoint(parseInt(group.u, 16)) }}</span>-->
           <span :title="group.title" class="v3-icon">
             <img :src="icons[group.key]" alt="" />
           </span>
@@ -35,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from "vue";
+import {computed, defineComponent, ref} from "vue";
 import PickerBody from "./PickerBody.vue";
 import state from "../store";
 import { updateSearch } from "../store/composition"
@@ -60,12 +59,13 @@ export default defineComponent({
   components: {
     PickerBody
   },
-  data() {
-    return {
-      activeGroup: ""
-    };
-  },
   setup() {
+
+    const activeGroup = ref<string>("");
+
+    function updateGroup( group: string) {
+      activeGroup.value = group;
+    }
 
     const searchValue = computed({
       get: () => state.search,
@@ -84,6 +84,8 @@ export default defineComponent({
       groups: state.groups,
       searchValue,
       emoji,
+      activeGroup,
+      updateGroup,
       icons: {
         smileys_people,
         animals_nature,
@@ -95,11 +97,6 @@ export default defineComponent({
         flags
       } as Record<GroupKeys, string>
     };
-  },
-  methods: {
-    updateGroup(group: string) {
-      this.activeGroup = group;
-    }
   }
 });
 </script>
