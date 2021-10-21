@@ -33,7 +33,7 @@
 <script lang="ts">
 import {defineComponent, watch, ref, computed} from "vue";
 import state from "../store";
-import { EmojiRecord } from "../types";
+import { EmojiRecord, Emoji } from "../types";
 import { EMOJI_REMOTE_SRC, GROUP_NAMES } from "../constant";
 import { filterEmojis } from "../helpers";
 import { updateEmoji } from "../store/composition"
