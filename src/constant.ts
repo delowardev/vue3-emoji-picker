@@ -2,6 +2,7 @@ import { GroupNames } from "./types";
 
 const EMOJI_REMOTE_SRC = "https://cdn.jsdelivr.net/npm/emoji-datasource-apple@6.0.1/img/apple/64"
 
+// ./data/groups.json
 const GROUP_NAMES: GroupNames = {
   smileys_people: "Smiles & People",
   animals_nature: "Animals & Nature",
@@ -12,7 +13,6 @@ const GROUP_NAMES: GroupNames = {
   symbols: "Symbols",
   flags: "Flags",
 }
-
 
 export { EMOJI_REMOTE_SRC, GROUP_NAMES }
 
