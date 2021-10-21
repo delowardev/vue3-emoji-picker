@@ -1,6 +1,6 @@
 <template>
   <div class="v3-body">
-    <div class="v3-body-inner" ref="BodyInner">
+    <div class="v3-body-inner" ref="bodyInner">
       <div class="v3-group" v-for="(group, key) in emojis" :id="key" :key="key">
         <h5>{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
@@ -43,7 +43,7 @@ export default defineComponent({
   },
 
   setup(props) {
-    const BodyInner = ref<HTMLElement | null>(null);
+    const bodyInner = ref<HTMLElement | null>(null);
 
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
 
@@ -59,15 +59,15 @@ export default defineComponent({
     watch(
       () => props.activeGroup,
       () => {
-        //  BodyInner.value.getElementById(props.activeGroup)?.scrollIntoView();
-        document
-          .getElementById(props.activeGroup as string)
+        bodyInner.value
+          ?.querySelector('#' + props.activeGroup)
           ?.scrollIntoView({ behavior: "smooth" });
       }
     );
+
     return {
       emojis,
-      BodyInner,
+      bodyInner,
       EMOJI_REMOTE_SRC,
       GROUP_NAMES,
       handleClick,
