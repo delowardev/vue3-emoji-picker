@@ -9,7 +9,7 @@
             @click="handleClick(emoji)"
             v-for="emoji in group"
             :key="emoji.u"
-          >
+          > <!-- @click=handleClick(emoji)-->
             <img
               @error="handleError($event, emoji.u)"
               :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`"
@@ -23,26 +23,30 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, watch, ref, computed} from "vue";
+import {defineComponent, watch, ref, computed, getCurrentInstance} from "vue";
 import state from "../store";
 import { EmojiRecord, Emoji } from "../types";
 import { EMOJI_REMOTE_SRC, GROUP_NAMES } from "../constant";
-import { filterEmojis } from "../helpers";
+import { filterEmojis, unicodeToEmoji } from "../helpers";
 import { updateEmoji } from "../store/composition"
+
 
 export default defineComponent({
   name: "Body",
-  emits: ["select"],
-  setup(_, { emit }) {
+  setup() {
     const bodyInner = ref<HTMLElement | null>(null);
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
+    const _this = getCurrentInstance()
 
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji);
     }
 
     function handleClick(emoji: Emoji) {
-      emit("select", emoji);
+      _this?.parent?.emit("select", {
+        ...emoji,
+        i: unicodeToEmoji(emoji.u)
+      });
     }
 
     // @todo: handle error
@@ -66,7 +70,7 @@ export default defineComponent({
       GROUP_NAMES,
       handleClick,
       handleError,
-      handleMouseEnter,
+      handleMouseEnter
     };
   }
 });

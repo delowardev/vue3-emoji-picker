@@ -1,7 +1,7 @@
 <template>
   <div class="v3-emoji-picker">
     <Header />
-    <Body @select="select" />
+    <Body />
     <Footer />
   </div>
 </template>
@@ -26,7 +26,7 @@ export default defineComponent({
   },
   setup(_, { emit }) {
 
-    function select(emoji: any): any {
+    function select(emoji: Emoji) {
       emit("select", {
         ...emoji,
         i: unicodeToEmoji(emoji.u)
@@ -44,7 +44,6 @@ export default defineComponent({
     return {
       groups: state.groups,
       emoji,
-      select,
     };
   }
 });
