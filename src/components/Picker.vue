@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <PickerBody :activeGroup="activeGroup" />
+    <PickerBody @select="select" :activeGroup="activeGroup" />
 
     <div class="v3-footer">
       <div class="v3-foot-left">
@@ -38,7 +38,7 @@ import {computed, defineComponent, ref} from "vue";
 import PickerBody from "./PickerBody.vue";
 import state from "../store";
 import { updateSearch } from "../store/composition"
-import { GroupKeys } from "../types";
+import { Emoji, GroupKeys } from "../types";
 import { unicodeToEmoji } from "../helpers"
 import { EMOJI_REMOTE_SRC } from "../constant"
 
@@ -59,12 +59,19 @@ export default defineComponent({
   components: {
     PickerBody
   },
-  setup() {
+  setup(_, { emit }) {
 
     const activeGroup = ref<string>("");
 
     function updateGroup( group: string) {
       activeGroup.value = group;
+    }
+
+    function select(emoji: Emoji) {
+      emit("select", {
+        ...emoji,
+        i: unicodeToEmoji(emoji.u)
+      })
     }
 
     const searchValue = computed({
@@ -86,6 +93,7 @@ export default defineComponent({
       emoji,
       activeGroup,
       updateGroup,
+      select,
       icons: {
         smileys_people,
         animals_nature,

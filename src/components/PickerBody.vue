@@ -10,14 +10,6 @@
             v-for="emoji in group"
             :key="emoji.u"
           >
-            <!--            &nbsp;{{-->
-            <!--              emoji.u-->
-            <!--                  .split("-")-->
-            <!--                  .map(hex => parseInt(hex, 16))-->
-            <!--                  .map(hex => String.fromCodePoint(hex))-->
-            <!--                  .join('')-->
-            <!--            }}-->
-
             <img
               @error="handleError($event, emoji.u)"
               :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`"
@@ -43,19 +35,18 @@ export default defineComponent({
   props: {
     activeGroup: String
   },
-
-  setup(props) {
+  emits: ["select"],
+  setup(props, { emit }) {
     const bodyInner = ref<HTMLElement | null>(null);
 
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
 
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji);
-      console.log(emoji);
     }
 
     function handleClick(emoji: Emoji) {
-      console.log(emoji);
+      emit("select", emoji);
     }
 
     // @todo: handle error
