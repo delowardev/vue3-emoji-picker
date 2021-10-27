@@ -13,10 +13,10 @@
 
 
 <script lang="ts">
-import {computed, defineComponent, ref} from "vue";
+import {computed, defineComponent} from "vue";
 import state from "../store";
 import {unicodeToEmoji} from "../helpers";
-import {EMOJI_REMOTE_SRC} from "../constant";
+import { EMOJI_REMOTE_SRC } from "../constant";
 
 
 export default defineComponent({
@@ -32,7 +32,7 @@ export default defineComponent({
     })
 
     return {
-      emoji
+      emoji,
     }
   }
 })
