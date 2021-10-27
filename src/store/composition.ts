@@ -9,5 +9,9 @@ function updateEmoji( value: Emoji ) {
   state.emoji = value;
 }
 
+function updateActiveGroup( group: string ) {
+  state.activeGroup = group;
+}
 
-export { updateSearch, updateEmoji }
+
+export { updateSearch, updateEmoji, updateActiveGroup }

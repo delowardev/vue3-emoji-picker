@@ -31,14 +31,10 @@ import { filterEmojis } from "../helpers";
 import { updateEmoji } from "../store/composition"
 
 export default defineComponent({
-  name: "PickerBody",
-  props: {
-    activeGroup: String
-  },
+  name: "Body",
   emits: ["select"],
-  setup(props, { emit }) {
+  setup(_, { emit }) {
     const bodyInner = ref<HTMLElement | null>(null);
-
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
 
     function handleMouseEnter(emoji: Emoji) {
@@ -55,10 +51,10 @@ export default defineComponent({
     }
 
     watch(
-      () => props.activeGroup,
+      () => state.activeGroup,
       () => {
         bodyInner.value
-          ?.querySelector('#' + props.activeGroup)
+          ?.querySelector('#' + state.activeGroup)
           ?.scrollIntoView({ behavior: "smooth" });
       }
     );
@@ -70,7 +66,7 @@ export default defineComponent({
       GROUP_NAMES,
       handleClick,
       handleError,
-      handleMouseEnter
+      handleMouseEnter,
     };
   }
 });

@@ -27,5 +27,6 @@ export interface State {
   groups: Group[];
   emojis: EmojiRecord;
   search: string;
-  emoji: Emoji
+  emoji: Emoji;
+  activeGroup: string;
 }

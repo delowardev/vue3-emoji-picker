@@ -11,5 +11,6 @@ export default reactive<State>({
   groups: groups as Group[],
   emojis: emojis as EmojiRecord,
   search: "",
-  emoji: DEFAULT_EMOJI
+  emoji: DEFAULT_EMOJI,
+  activeGroup: ""
 })
