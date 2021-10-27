@@ -26,7 +26,7 @@ export default defineComponent({
   },
   setup(_, { emit }) {
 
-    function select(emoji: Emoji) {
+    function select(emoji: any): any {
       emit("select", {
         ...emoji,
         i: unicodeToEmoji(emoji.u)
