@@ -1,10 +1,13 @@
 import { reactive } from "vue";
+import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from "../constant";
+import emojis from "../data/emojis.json";
+import groups from "../data/groups.json";
 import { EmojiRecord, Group, State } from "../types";
 
-import groups from "../data/groups.json"
-import emojis from "../data/emojis.json"
 
-import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from "../constant";
+const defaultOptions: Record<string, any> = {
+  native: false,
+}
 
 
 // @warning: don't update state directly, use ./composition instead
@@ -15,5 +18,6 @@ export default reactive<State>({
   search: "",
   emoji: DEFAULT_EMOJI,
   activeGroup: "",
-  skinTone: SKIN_TONE_NEUTRAL
+  skinTone: SKIN_TONE_NEUTRAL,
+  options: defaultOptions
 })

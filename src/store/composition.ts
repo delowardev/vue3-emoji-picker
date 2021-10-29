@@ -1,6 +1,6 @@
-import state from "./index"
+import { SKIN_TONE_NEUTRAL } from "../constant";
 import { Emoji } from "../types";
-import {SKIN_TONE_NEUTRAL} from "../constant";
+import state from "./index";
 
 function updateSearch(value: string) {
   state.search = value
@@ -18,5 +18,10 @@ function updateSkinTone( tone = SKIN_TONE_NEUTRAL ) {
   state.skinTone = tone;
 }
 
+function updateOptions( options: Record<string, any>) {
+  state.options = Object.assign(state.options, options);
+}
 
-export { updateSearch, updateEmoji, updateActiveGroup, updateSkinTone }
+
+export { updateSearch, updateEmoji, updateActiveGroup, updateSkinTone, updateOptions };
+

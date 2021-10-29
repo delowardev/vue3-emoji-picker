@@ -30,4 +30,5 @@ export interface State {
   emoji: Emoji;
   activeGroup: string;
   skinTone: string;
+  options: Record<string, any>;
 }

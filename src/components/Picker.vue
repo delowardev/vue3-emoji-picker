@@ -7,44 +7,33 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent, ref} from "vue";
+import { defineComponent } from "vue";
 import Body from "./Body.vue";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
-import state from "../store";
-import { Emoji } from "../types";
-import { unicodeToEmoji } from "../helpers"
-import { EMOJI_REMOTE_SRC } from "../constant"
+import { updateOptions } from "../store/composition"
 
 
 export default defineComponent({
   name: "Picker",
+  props: {
+    native: {
+      type: Boolean,
+      default: false
+    }
+  },
   components: {
     Body,
     Header,
     Footer
   },
-  setup(_, { emit }) {
+  setup(props) {
 
-    function select(emoji: Emoji) {
-      emit("select", {
-        ...emoji,
-        i: unicodeToEmoji(emoji.u)
-      })
-    }
-
-    const emoji = computed(() => {
-      return {
-        ...state.emoji,
-        native: unicodeToEmoji(state.emoji.u),
-        src: EMOJI_REMOTE_SRC + '/' + state.emoji.u + '.png'
-      }
+    // set-up initial props
+    updateOptions({
+      native: props.native
     })
 
-    return {
-      groups: state.groups,
-      emoji,
-    };
   }
 });
 </script>
