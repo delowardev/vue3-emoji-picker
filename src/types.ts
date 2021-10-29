@@ -29,4 +29,5 @@ export interface State {
   search: string;
   emoji: Emoji;
   activeGroup: string;
+  skinTone: string;
 }

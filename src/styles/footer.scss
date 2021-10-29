@@ -7,6 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   .v3-tone,
   .v3-foot-left {
     display: flex;
@@ -44,4 +45,64 @@
     }
   }
 
+}
+
+.v3-skin-tones {
+  position: absolute;
+  background: white;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: 200ms;
+  border-radius: 0 0 10px 10px;
+  &.v3-is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+  .v3-skin-tone {
+    display: inline-block;
+    height: 15px;
+    width: 25px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: 0ms;
+    &:hover {
+      transform: scale(1.1);
+      transition: 200ms;
+    }
+  }
+  .v3-skin- {
+    &tone-neutral {
+      color: #ffd225;
+      background-color: #ffd225;
+    }
+    &tone-1f3fb {
+      color: #ffdfbd;
+      background-color: #ffdfbd;
+    }
+    &tone-1f3fc {
+      color: #e9c197;
+      background-color: #e9c197;
+    }
+    &tone-1f3fd {
+      color: #c88e62;
+      background-color: #c88e62;
+    }
+    &tone-1f3fe {
+      color: #a86637;
+      background-color: #a86637;
+    }
+    &tone-1f3ff {
+      color: #60463a;
+      background-color: #60463a;
+    }
+  }
 }
