@@ -1,3 +1,5 @@
+import {EMOJI_NAME_KEY, EMOJI_RESULT_KEY, EMOJI_UNICODE_KEY, EMOJI_VARIATIONS_KEY} from "./constant";
+
 export type GroupKeys =
     | "smileys_people"
     | "animals_nature"
@@ -17,8 +19,11 @@ export interface Group {
 }
 
 export interface Emoji {
-  n: string[];
-  u: string
+  [EMOJI_NAME_KEY]: string[];
+  [EMOJI_UNICODE_KEY]: string;
+  [EMOJI_VARIATIONS_KEY]?: string[];
+  [EMOJI_RESULT_KEY]: string;
+  src?: string;
 }
 
 export type EmojiRecord = Record<GroupKeys, Emoji[]>;

@@ -1,8 +1,11 @@
 <template>
   <div @mouseleave="updateSkinToneState(false)" class="v3-footer">
     <div class="v3-foot-left">
-      <span class="v3-icon"><img :src="emoji.src" /></span>
-      <span class="v3-text">:{{ emoji.n[1] || emoji.n[0] }}:</span>
+      <span class="v3-icon">
+        <!-- @todo: render native emoji when state.options.native = true -->
+        <img :src="emoji.src" />
+      </span>
+      <span class="v3-text">:{{ emoji[EMOJI_NAME_KEY][1] || emoji[EMOJI_NAME_KEY][0] }}:</span>
     </div>
 
     <button class="v3-tone" @click="toggleSkinToneState">
@@ -21,9 +24,10 @@
 <script lang="ts">
 import {computed, defineComponent, ref} from "vue";
 import state from "../store";
-import {unicodeToEmoji} from "../helpers";
-import { EMOJI_REMOTE_SRC, SKIN_TONES } from "../constant";
+import { EMOJI_REMOTE_SRC, SKIN_TONES, EMOJI_RESULT_KEY, EMOJI_NAME_KEY } from "../constant";
 import { updateSkinTone} from "../store/composition";
+
+
 
 export default defineComponent({
   name: "Header",
@@ -31,11 +35,11 @@ export default defineComponent({
 
     const skinTone = ref(false)
 
-    const emoji = computed(() => {
+    // @todo: type shouldn't be 'any'
+    const emoji = computed<any>(() => {
       return {
         ...state.emoji,
-        native: unicodeToEmoji(state.emoji.u),
-        src: EMOJI_REMOTE_SRC + '/' + state.emoji.u + '.png'
+        src: EMOJI_REMOTE_SRC + '/' + state.emoji[EMOJI_RESULT_KEY] + '.png'
       }
     })
 
@@ -59,7 +63,9 @@ export default defineComponent({
       updateSkinToneState,
       skinTone,
       selectSkinTone,
-      toggleSkinToneState
+      toggleSkinToneState,
+      EMOJI_RESULT_KEY,
+      EMOJI_NAME_KEY
     }
   }
 })

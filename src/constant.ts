@@ -14,10 +14,16 @@ export const GROUP_NAMES: GroupNames = {
   flags: "Flags",
 }
 
+export const EMOJI_UNICODE_KEY = "u";
+export const EMOJI_NAME_KEY = "n";
+export const EMOJI_VARIATIONS_KEY = "v";
+export const EMOJI_RESULT_KEY = "r";
+
 
 export const DEFAULT_EMOJI: Emoji = {
-  "n":[ "grinning face", "grinning" ],
-  "u":"1f600"
+  [EMOJI_NAME_KEY]: [ "grinning face", "grinning" ],
+  [EMOJI_UNICODE_KEY]: "1f600",
+  [EMOJI_RESULT_KEY]: "1f600",
 }
 
 export const SKIN_TONE_NEUTRAL = 'neutral';

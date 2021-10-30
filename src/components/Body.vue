@@ -8,17 +8,17 @@
             @mouseenter="handleMouseEnter(emoji)"
             @click="handleClick(emoji)"
             v-for="emoji in group"
-            :key="emoji.u"
+            :key="emoji.r"
           >
 
             <!-- Native emoi -->
-            <span v-if="native"> {{ unicodeToEmoji(emoji.u) }}</span>
+            <span v-if="native"> {{ unicodeToEmoji(emoji.r) }}</span>
 
             <!-- Load from CDN when options.native = true -->
             <img
               v-else
-              @error="handleError($event, emoji.u)"
-              :src="EMOJI_REMOTE_SRC + `/${emoji.u}.png`"
+              @error="handleError($event, emoji.r)"
+              :src="EMOJI_REMOTE_SRC + `/${emoji.r}.png`"
               :alt="emoji.n[0]"
             />
           </button>
@@ -37,7 +37,7 @@
 import { defineComponent, watch, ref, computed, getCurrentInstance } from "vue";
 import state from "../store";
 import { EmojiRecord, Emoji } from "../types";
-import { EMOJI_REMOTE_SRC, GROUP_NAMES } from "../constant";
+import { EMOJI_REMOTE_SRC, GROUP_NAMES, EMOJI_RESULT_KEY, EMOJI_NAME_KEY } from "../constant";
 import { filterEmojis, unicodeToEmoji } from "../helpers";
 import { updateEmoji } from "../store/composition"
 
@@ -46,7 +46,7 @@ export default defineComponent({
   name: "Body",
   setup() {
     const bodyInner = ref<HTMLElement | null>(null);
-    const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search))
+    const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search, state.skinTone))
     const _this = getCurrentInstance()
 
     function handleMouseEnter(emoji: Emoji) {
@@ -83,7 +83,9 @@ export default defineComponent({
       handleError,
       handleMouseEnter,
       native: state.options.native,
-      unicodeToEmoji
+      unicodeToEmoji,
+      EMOJI_RESULT_KEY,
+      EMOJI_NAME_KEY
     };
   }
 });
