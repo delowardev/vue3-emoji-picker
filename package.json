@@ -1,22 +1,46 @@
 {
-  "version": "0.0.0",
+  "name": "vue3-emoji-picker",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "delowardev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/delowardev/vue3-emoji-picker"
+  },
+  "bugs": {
+    "url": "https://github.com/delowardev/vue3-emoji-picker/issues"
+  },
+  "homepage": "https://github.com/delowardev/vue3-emoji-picker/",
+  "keywords": [
+    "vue3-emoji-picker",
+    "emoji-picker",
+    "emoji"
+  ],
+  "files": ["dist"],
+  "main": "./dist/emoji-picker.umd.js",
+  "module": "./dist/emoji-picker.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/emoji-picker.es.js",
+      "require": "./dist/emoji-picker.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "prepare":  "husky install",
+    "prepare": "husky install",
     "type-check": "vue-tsc --noEmit"
   },
-  "dependencies": {
-    "vue": "^3.0.5"
+  "peerDependencies": {
+    "vue": "^3.2.21"
   },
   "devDependencies": {
     "@babel/types": "^7.15.6",
+    "@types/node": "^16.11.7",
     "@vitejs/plugin-vue": "^1.2.5",
     "@vue/compiler-sfc": "^3.0.5",
-    "emoji-datasource-apple": "^7.0.2",
     "husky": "^7.0.4",
-    "ncp": "^2.0.0",
     "sass": "^1.43.2",
     "typescript": "^4.3.2",
     "vite": "^2.4.2",
