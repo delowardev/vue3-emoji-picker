@@ -1,7 +1,8 @@
 # __ vue3-emoji-picker __
 
-Live preview: [https://vue3-emoji-picker.vercel.app](https://vue3-emoji-picker.vercel.app)
+<img src="https://i.imgur.com/f6wH0sI.png" width="280" />
 
+Live preview: [https://vue3-emoji-picker.vercel.app](https://vue3-emoji-picker.vercel.app)
 
 
 ### Options
