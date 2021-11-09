@@ -5,10 +5,10 @@
         <h5>{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
           <button
-            @mouseenter="handleMouseEnter(emoji)"
-            @click="handleClick(emoji)"
-            v-for="emoji in group"
-            :key="emoji.r"
+              @mouseenter="handleMouseEnter(emoji)"
+              @click="handleClick(emoji)"
+              v-for="emoji in group"
+              :key="emoji.r"
           >
 
             <!-- Native emoi -->
@@ -16,10 +16,11 @@
 
             <!-- Load from CDN when options.native = true -->
             <img
-              v-else
-              @error="handleError($event, emoji.r)"
-              :src="EMOJI_REMOTE_SRC + `/${emoji.r}.png`"
-              :alt="emoji.n[0]"
+                loading="lazy"
+                v-else
+                @error="handleError($event, emoji.r)"
+                :src="EMOJI_REMOTE_SRC + `/${emoji.r}.png`"
+                :alt="emoji.n[0]"
             />
           </button>
         </div>
@@ -56,7 +57,8 @@ export default defineComponent({
     function handleClick(emoji: Emoji) {
       _this?.parent?.emit("select", {
         ...emoji,
-        i: unicodeToEmoji(emoji.u)
+        t: state.skinTone,
+        i: unicodeToEmoji(emoji.r),
       });
     }
 
@@ -66,12 +68,12 @@ export default defineComponent({
     }
 
     watch(
-      () => state.activeGroup,
-      () => {
-        bodyInner.value
-          ?.querySelector('#' + state.activeGroup)
-          ?.scrollIntoView({ behavior: "smooth" });
-      }
+        () => state.activeGroup,
+        () => {
+          bodyInner.value
+              ?.querySelector('#' + state.activeGroup)
+              ?.scrollIntoView({ behavior: "smooth" });
+        }
     );
 
     return {

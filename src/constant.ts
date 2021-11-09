@@ -43,14 +43,4 @@ export const SKIN_TONES = [
   SKIN_TONE_DARK
 ]
 
-//
-// export const SKIN_TONES = {
-//   SKIN_TONE_NEUTRAL: "neutral",
-//   SKIN_TONE_LIGHT: "1f3fb",
-//   SKIN_TONE_MEDIUM_LIGHT: "1f3fc",
-//   SKIN_TONE_MEDIUM: "1f3fe",
-//   SKIN_TONE_MEDIUM_DARK: "1f3ff",
-//   SKIN_TONE_DARK: "1f3fd",
-// }
-
 
