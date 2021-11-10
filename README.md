@@ -1,7 +1,8 @@
-### Emoji Picker Component for Vue3
-Live preview: [https://vue3-emoji-picker.vercel.app](https://vue3-emoji-picker.vercel.app)
+# Vue3 Emoji Picker Component
 
 <img src="https://i.imgur.com/CQc1nCF.png" width="280" />
+
+Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
 
 ### Options
 
