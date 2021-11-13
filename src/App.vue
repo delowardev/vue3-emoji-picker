@@ -4,7 +4,12 @@
     <input v-model="inputValue" type="text" placeholder="Hello world">
   </div>
 
-  <Picker :native="false" @select="updateEmoji" />
+  <Picker
+      :native="false"
+      :search="true"
+      :groupsIcons="true"
+      @select="updateEmoji"
+  />
 </template>
 
 <script lang="ts">

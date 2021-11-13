@@ -4,11 +4,15 @@
 
 Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
 
+> Notice: This component is for internal use only, it's not ready for production use yet.
+
 ### Options
 
 | Option | Type | Default Value | Description | Range |
 | :---: | :---: | :---: | :---: | :---: |
 | native | Boolean | false | Load native emoji instead of image. |  N/A |
+| search | Boolean | true | Show/hide search input. |  N/A |
+| groupsIcons | Boolean | true | Show/hide header group icons. |  N/A |
 | select | event | N/A | fires on emoji onClick |  N/A |
 
 #### Option Example:
@@ -27,6 +31,8 @@ import "node_modules/vue3-emoji-picker/dist/style.css"
 // use picker component
 <EmojiPicker 
     :native="true" 
+    :search="true"
+    :groupsIcons="true"
     @select="onSelectEmoji"
 />
 ```

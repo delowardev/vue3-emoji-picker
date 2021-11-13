@@ -1,6 +1,6 @@
 <template>
-  <div class="v3-header">
-    <div class="v3-groups">
+  <div v-if="hasGroupsIcons || hasSearch" class="v3-header">
+    <div v-if="hasGroupsIcons" class="v3-groups">
       <button
           class="v3-group"
           v-for="group in groups"
@@ -12,7 +12,8 @@
           </span>
       </button>
     </div>
-    <div class="v3-search">
+    <div v-if="hasGroupsIcons && hasSearch" class="v3-spacing"></div>
+    <div v-if="hasSearch" class="v3-search">
       <input v-model="searchValue" type="text" placeholder="Search emoji" />
     </div>
   </div>
@@ -42,6 +43,8 @@ export default defineComponent({
   name: "Header",
   setup() {
 
+    const hasSearch = computed(() => state.options.search);
+    const hasGroupsIcons = computed(() => state.options.groupsIcons);
 
     const searchValue = computed({
       get: () => state.search,
@@ -53,6 +56,8 @@ export default defineComponent({
       groups: state.groups,
       searchValue,
       updateActiveGroup,
+      hasSearch,
+      hasGroupsIcons,
       icons: {
         smileys_people,
         animals_nature,
