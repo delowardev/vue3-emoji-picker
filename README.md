@@ -12,7 +12,7 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 | :---: | :---: | :---: | :---: | :---: |
 | native | Boolean | false | Load native emoji instead of image. |  N/A |
 | search | Boolean | true | Show/hide search input. |  N/A |
-| groupsIcons | Boolean | true | Show/hide header group icons. |  N/A |
+| groupIcons | Boolean | true | Show/hide header group icons. |  N/A |
 | select | event | N/A | fires on emoji onClick |  N/A |
 
 #### Option Example:
@@ -32,7 +32,7 @@ import "node_modules/vue3-emoji-picker/dist/style.css"
 <EmojiPicker 
     :native="true" 
     :search="true"
-    :groupsIcons="true"
+    :groupIcons="true"
     @select="onSelectEmoji"
 />
 ```

@@ -8,7 +8,7 @@ import { EmojiRecord, Group, State } from "../types";
 const defaultOptions: Record<string, any> = {
   native: false,
   search: true,
-  groupsIcons: true,
+  groupIcons: true,
 }
 
 

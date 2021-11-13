@@ -25,7 +25,7 @@ export default defineComponent({
       type: Boolean,
       default: true
     },
-    groupsIcons: {
+    groupIcons: {
       type: Boolean,
       default: true
     },
@@ -41,7 +41,7 @@ export default defineComponent({
     updateOptions({
       native: props.native,
       search: props.search,
-      groupsIcons: props.groupsIcons,
+      groupIcons: props.groupIcons,
     })
 
   }
