@@ -6,16 +6,16 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 
 > Notice: This component is for internal use only, it's not ready for production use yet.
 
-### Options
+### Props
 
-| Option | Type | Default Value | Description | Range |
-| :---: | :---: | :---: | :---: | :---: |
-| native | Boolean | false | Load native emoji instead of image. |  N/A |
-| search | Boolean | true | Show/hide search input. |  N/A |
-| groupIcons | Boolean | true | Show/hide header group icons. |  N/A |
-| select | event | N/A | fires on emoji onClick |  N/A |
+| Name          | Type      | Default Value  | Required  |  Description |
+| :---:         | :---:     | :---:          | :---:     | :---: |
+| native        | Boolean   | false          |  false    |Load native emoji instead of image. |
+| search        | Boolean   | true           |  false    | Show/hide search input. |
+| groupIcons    | Boolean   | true           |  false    | Show/hide header group icons. |
+| select        | event     | N/A            |  false      | callback function on emoji click/select |
 
-#### Option Example:
+### Example:
 
 ```javascript
 
@@ -31,8 +31,6 @@ import "node_modules/vue3-emoji-picker/dist/style.css"
 // use picker component
 <EmojiPicker 
     :native="true" 
-    :search="true"
-    :groupIcons="true"
     @select="onSelectEmoji"
 />
 ```
