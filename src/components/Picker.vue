@@ -20,7 +20,15 @@ export default defineComponent({
     native: {
       type: Boolean,
       default: false
-    }
+    },
+    search: {
+      type: Boolean,
+      default: true
+    },
+    groupIcons: {
+      type: Boolean,
+      default: true
+    },
   },
   components: {
     Body,
@@ -31,7 +39,9 @@ export default defineComponent({
 
     // set-up initial props
     updateOptions({
-      native: props.native
+      native: props.native,
+      search: props.search,
+      groupIcons: props.groupIcons,
     })
 
   }
