@@ -6,8 +6,6 @@
 
   <Picker
       :native="false"
-      :search="true"
-      :groupIcons="true"
       @select="updateEmoji"
   />
 </template>
