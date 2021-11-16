@@ -2,7 +2,7 @@
   <div class="v3-body">
     <div class="v3-body-inner" ref="bodyInner">
       <div v-if="Object.keys(emojis).length" class="v3-group" v-for="(group, key) in emojis" :id="key" :key="key">
-        <h5>{{ GROUP_NAMES[key] }}</h5>
+        <h5 v-if="hasGroupNames">{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
           <button
               @mouseenter="handleMouseEnter(emoji)"
@@ -49,6 +49,7 @@ export default defineComponent({
     const bodyInner = ref<HTMLElement | null>(null);
     const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search, state.skinTone))
     const _this = getCurrentInstance()
+    const hasGroupNames = computed(() => !state.options.hideGroupNames);
 
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji);
@@ -87,7 +88,8 @@ export default defineComponent({
       native: state.options.native,
       unicodeToEmoji,
       EMOJI_RESULT_KEY,
-      EMOJI_NAME_KEY
+      EMOJI_NAME_KEY,
+      hasGroupNames
     };
   }
 });

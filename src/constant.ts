@@ -43,4 +43,9 @@ export const SKIN_TONES = [
   SKIN_TONE_DARK
 ]
 
+export const STATIC_TEXTS = {
+  placeholder: 'Search emoji',
+  skinTone: 'Skin tone',
+}
+
 

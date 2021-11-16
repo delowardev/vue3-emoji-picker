@@ -9,7 +9,7 @@
     </div>
 
     <button class="v3-tone" @click="toggleSkinToneState">
-      <span class="v3-text">Skin tone</span>
+      <span class="v3-text">{{ skinToneText }}</span>
       <span class="v3-icon">👍</span>
     </button>
 
@@ -34,6 +34,7 @@ export default defineComponent({
   setup() {
 
     const skinTone = ref(false)
+    const skinToneText = computed(() => state.options.staticTexts.skinTone || 'Skin tone');
 
     // @todo: type shouldn't be 'any'
     const emoji = computed<any>(() => {
@@ -65,7 +66,8 @@ export default defineComponent({
       selectSkinTone,
       toggleSkinToneState,
       EMOJI_RESULT_KEY,
-      EMOJI_NAME_KEY
+      EMOJI_NAME_KEY,
+      skinToneText
     }
   }
 })

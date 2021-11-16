@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from "../constant";
+import {DEFAULT_EMOJI, SKIN_TONE_NEUTRAL, STATIC_TEXTS} from "../constant";
 import emojis from "../data/emojis.json";
 import groups from "../data/groups.json";
 import { EmojiRecord, Group, State } from "../types";
@@ -7,8 +7,10 @@ import { EmojiRecord, Group, State } from "../types";
 
 const defaultOptions: Record<string, any> = {
   native: false,
-  search: true,
-  groupIcons: true,
+  hideSearch: true,
+  hideGroupIcons: false,
+  hideGroupNames: false,
+  staticTexts: {}
 }
 
 
