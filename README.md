@@ -6,14 +6,26 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 
 > Notice: This component is for internal use only, it's not ready for production use yet.
 
-### Props
+### props
 
-| Name          | Type      | Default Value  | Required  |  Description |
+| Prop          | Type      | Default Value  | Required  |  Description |
 | :---:         | :---:     | :---:          | :---:     | :---: |
-| native        | Boolean   | false          |  false    |Load native emoji instead of image. |
-| search        | Boolean   | true           |  false    | Show/hide search input. |
-| groupIcons    | Boolean   | true           |  false    | Show/hide header group icons. |
-| select        | event     | N/A            |  false      | callback function on emoji click/select |
+| native        | Boolean   | false          |  No    |Load native emoji instead of image. |
+| hide-search        | Boolean   | true           |  No    | Show/hide search input. |
+| hide-group-icons | Boolean   | false       |  No    | Show/hide header group icons. |
+| hide-group-names | Boolean   | false       |  No    | Show/hide group names. |
+| static-texts | Object   | Object           |  No    | See `props['static-texts']` table |
+| select        | event     | N/A            |  No    | callback function on emoji click/select |
+
+### props['static-texts']
+| Prop          | Type      | Default Value  | Required  |  Description |
+| :---:         | :---:     | :---:          | :---:     | :---: |
+| placeholder   | String | Search emoji | No | Update search input placeholder text. |
+| skinTone   | String | Skin tone | No | Footer  skin tone button text. |
+
+Example: 
+``` :static-texts="{ placeholder: 'Search emoji'}"  ```<br/>
+
 
 ### Example:
 

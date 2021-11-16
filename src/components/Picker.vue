@@ -12,6 +12,7 @@ import Body from "./Body.vue";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import { updateOptions } from "../store/composition"
+import { STATIC_TEXTS } from "../constant"
 
 
 export default defineComponent({
@@ -21,14 +22,22 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    search: {
+    hideSearch: {
       type: Boolean,
-      default: true
+      default: false
     },
-    groupIcons: {
+    hideGroupIcons: {
       type: Boolean,
-      default: true
+      default: false
     },
+    hideGroupNames: {
+      type: Boolean,
+      default: false
+    },
+    staticTexts: {
+      type: Object,
+      default: {}
+    }
   },
   components: {
     Body,
@@ -40,8 +49,13 @@ export default defineComponent({
     // set-up initial props
     updateOptions({
       native: props.native,
-      search: props.search,
-      groupIcons: props.groupIcons,
+      hideSearch: props.hideSearch,
+      hideGroupIcons: props.hideGroupIcons,
+      hideGroupNames: props.hideGroupNames,
+      staticTexts: {
+        ...STATIC_TEXTS,
+        ...props.staticTexts
+      }
     })
 
   }

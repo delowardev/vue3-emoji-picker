@@ -14,7 +14,7 @@
     </div>
     <div v-if="hasGroupIcons && hasSearch" class="v3-spacing"></div>
     <div v-if="hasSearch" class="v3-search">
-      <input v-model="searchValue" type="text" placeholder="Search emoji" />
+      <input v-model="searchValue" type="text" :placeholder="placeholder" />
     </div>
   </div>
 </template>
@@ -43,8 +43,9 @@ export default defineComponent({
   name: "Header",
   setup() {
 
-    const hasSearch = computed(() => state.options.search);
-    const hasGroupIcons = computed(() => state.options.groupIcons);
+    const hasSearch = computed(() => !state.options.hideSearch);
+    const hasGroupIcons = computed(() => !state.options.hideGroupIcons);
+    const placeholder = computed(() => state.options.staticTexts.placeholder || '');
 
     const searchValue = computed({
       get: () => state.search,
@@ -58,6 +59,7 @@ export default defineComponent({
       updateActiveGroup,
       hasSearch,
       hasGroupIcons,
+      placeholder,
       icons: {
         smileys_people,
         animals_nature,
