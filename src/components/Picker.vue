@@ -12,7 +12,7 @@ import Body from "./Body.vue";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import { updateOptions } from "../store/composition"
-import { STATIC_TEXTS } from "../constant"
+import {GROUP_NAMES, STATIC_TEXTS} from "../constant"
 
 
 export default defineComponent({
@@ -37,6 +37,22 @@ export default defineComponent({
     staticTexts: {
       type: Object,
       default: {}
+    },
+    disableStickyGroupNames: {
+      type: Boolean,
+      default: false
+    },
+    disableGroups: {
+      type: Array,
+      default: []
+    },
+    groupNames: {
+      type: Object,
+      default: {}
+    },
+    disableSkinTones: {
+      type: Boolean,
+      default: false
     }
   },
   components: {
@@ -55,7 +71,14 @@ export default defineComponent({
       staticTexts: {
         ...STATIC_TEXTS,
         ...props.staticTexts
-      }
+      },
+      disableStickyGroupNames: props.disableStickyGroupNames,
+      disableGroups: props.disableGroups,
+      groupNames: {
+        ...GROUP_NAMES,
+        ...props.groupNames
+      },
+      disableSkinTones: props.disableSkinTones,
     })
 
   }

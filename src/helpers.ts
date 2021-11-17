@@ -1,18 +1,51 @@
-import {Emoji, EmojiRecord, GroupKeys} from "./types";
-import {SKIN_TONE_NEUTRAL, EMOJI_VARIATIONS_KEY, EMOJI_UNICODE_KEY, EMOJI_NAME_KEY, EMOJI_RESULT_KEY} from "./constant";
+import {Emoji, EmojiRecord, Group, GroupKeys} from "./types";
+import {
+  SKIN_TONE_NEUTRAL,
+  EMOJI_VARIATIONS_KEY,
+  EMOJI_UNICODE_KEY,
+  EMOJI_NAME_KEY,
+  EMOJI_RESULT_KEY
+} from "./constant";
 
+
+/**
+ * Convert unicode to native emoji
+ *
+ * @param unicode - emoji unicode
+ */
 export function unicodeToEmoji(unicode: string) {
-  return unicode.split("-").map(hex => parseInt(hex, 16)).map(hex => String.fromCodePoint(hex)).join('')
+  return unicode.split("-")
+      .map(hex => parseInt(hex, 16))
+      .map(hex => String.fromCodePoint(hex))
+      .join('')
 }
 
-export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: string): EmojiRecord {
+
+/**
+ * Filter emoji by search keyword
+ *
+ * @param emojis - Emoji data
+ * @param keyword - filter keyword
+ * @param skinTone - current skin tones
+ */
+export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: string, disableGroups: Group[] = []): EmojiRecord {
   const _emojiData = {} as EmojiRecord;
+  
+  /**
+   * Remove disabled emoji group from the record
+   */
+  if (Array.isArray(disableGroups) && disableGroups.length) {
+    disableGroups.forEach((key: Group) => {
+      // @ts-ignore
+      delete emojis[key]
+    })
+  }
+  
   Object.keys(emojis).forEach((key) => {
     const _emojis: Emoji[] = [];
     emojis[key as GroupKeys].forEach(emoji => {
       // if search key match
       if (emoji[EMOJI_NAME_KEY][0].includes(keyword.toLocaleLowerCase())) {
-        
         
         let result = emoji[EMOJI_UNICODE_KEY];
         

@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import {DEFAULT_EMOJI, SKIN_TONE_NEUTRAL, STATIC_TEXTS} from "../constant";
 import emojis from "../data/emojis.json";
-import groups from "../data/groups.json";
+import _groups from "../data/groups.json";
 import { EmojiRecord, Group, State } from "../types";
 
 
@@ -17,11 +17,14 @@ const defaultOptions: Record<string, any> = {
 // @warning: don't update state directly, use ./composition instead
 // @todo: protect store from direct update
 export default reactive<State>({
-  groups: groups as Group[],
   emojis: emojis as EmojiRecord,
   search: "",
   emoji: DEFAULT_EMOJI,
   activeGroup: "",
   skinTone: SKIN_TONE_NEUTRAL,
-  options: defaultOptions
+  options: defaultOptions,
+  get groups(): Group[] {
+    const disabled = Array.isArray(this.options.disableGroups) ? this.options.disableGroups : [];
+    return _groups.filter(group => !disabled.includes(group.key)) as Group[]
+  }
 })
