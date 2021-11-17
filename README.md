@@ -9,7 +9,7 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 ### props
 
 | Prop          | Type      | Default Value  | Required  |  Description |
-| :---:         | :---:     | :---:          | :---:     | :---: |
+| :---         | :---     | :---          | :---     | :--- |
 | native        | Boolean   | false          |  No    |Load native emoji instead of image. |
 | hide-search        | Boolean   | true           |  No    | Show/hide search input. |
 | hide-group-icons | Boolean   | false       |  No    | Show/hide header group icons. |
@@ -19,7 +19,7 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 
 ### props['static-texts']
 | Prop          | Type      | Default Value  | Required  |  Description |
-| :---:         | :---:     | :---:          | :---:     | :---: |
+| :---         | :---     | :---          | :---     | :--- |
 | placeholder   | String | Search emoji | No | Update search input placeholder text. |
 | skinTone   | String | Skin tone | No | Footer  skin tone button text. |
 
