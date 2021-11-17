@@ -31,17 +31,16 @@ export function unicodeToEmoji(unicode: string) {
 export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: string, disableGroups: Group[] = []): EmojiRecord {
   const _emojiData = {} as EmojiRecord;
   
-  /**
-   * Remove disabled emoji group from the record
-   */
-  if (Array.isArray(disableGroups) && disableGroups.length) {
-    disableGroups.forEach((key: Group) => {
-      // @ts-ignore
-      delete emojis[key]
-    })
-  }
-  
   Object.keys(emojis).forEach((key) => {
+  
+    /**
+     * Exclude disabled emoji group from the record
+     */
+    // @ts-ignore
+    if (disableGroups.includes(key)) {
+      return;
+    }
+    
     const _emojis: Emoji[] = [];
     emojis[key as GroupKeys].forEach(emoji => {
       // if search key match
