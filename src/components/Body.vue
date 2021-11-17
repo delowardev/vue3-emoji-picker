@@ -2,7 +2,7 @@
   <div class="v3-body">
     <div class="v3-body-inner" ref="bodyInner">
       <div v-if="Object.keys(emojis).length" class="v3-group" v-for="(group, key) in emojis" :id="key" :key="key">
-        <h5 :class="isSticky ? 'v3-sticky' : ''" v-if="hasGroupNames">{{ GROUP_NAMES[key] }}</h5>
+        <h5 :class="isSticky ? 'v3-sticky' : ''" v-if="hasGroupNames">{{ groupNames[key] }}</h5>
         <div class="v3-emojis">
           <button
               @mouseenter="handleMouseEnter(emoji)"
@@ -58,6 +58,7 @@ export default defineComponent({
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames);
     const isSticky = computed(() => !state.options.disableStickyGroupNames);
+    const groupNames = computed(() => state.options.groupNames);
 
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji);
@@ -98,7 +99,8 @@ export default defineComponent({
       EMOJI_RESULT_KEY,
       EMOJI_NAME_KEY,
       hasGroupNames,
-      isSticky
+      isSticky,
+      groupNames
     };
   }
 });
