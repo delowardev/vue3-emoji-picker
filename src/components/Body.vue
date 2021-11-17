@@ -1,8 +1,14 @@
 <template>
   <div class="v3-body">
     <div class="v3-body-inner" ref="bodyInner">
-      <div v-if="Object.keys(emojis).length" class="v3-group" v-for="(group, key) in emojis" :id="key" :key="key">
-        <h5 :class="isSticky ? 'v3-sticky' : ''" v-if="hasGroupNames">{{ groupNames[key] }}</h5>
+      <div
+          v-if="Object.keys(emojis).length"
+          class="v3-group"
+          v-for="(group, key) in emojis"
+          :id="key"
+          :key="key"
+      >
+        <h5 v-if="hasGroupNames">{{ GROUP_NAMES[key] }}</h5>
         <div class="v3-emojis">
           <button
               @mouseenter="handleMouseEnter(emoji)"
@@ -16,7 +22,6 @@
 
             <!-- Load from CDN when options.native = true -->
             <img
-                loading="lazy"
                 v-else
                 @error="handleError($event, emoji.r)"
                 :src="EMOJI_REMOTE_SRC + `/${emoji.r}.png`"
