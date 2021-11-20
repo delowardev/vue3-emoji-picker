@@ -52,9 +52,18 @@ export default defineComponent({
   name: "Body",
   setup() {
     const bodyInner = ref<HTMLElement | null>(null);
-    const emojis = computed<EmojiRecord>(() => filterEmojis(state.emojis, state.search, state.skinTone))
+    const emojis = computed<EmojiRecord>(
+        () => filterEmojis(
+            state.emojis,
+            state.search,
+            state.skinTone,
+            state.options.disableGroups
+        )
+    );
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames);
+    const isSticky = computed(() => !state.options.disableStickyGroupNames);
+    const groupNames = computed(() => state.options.groupNames);
 
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji);
@@ -94,7 +103,9 @@ export default defineComponent({
       unicodeToEmoji,
       EMOJI_RESULT_KEY,
       EMOJI_NAME_KEY,
-      hasGroupNames
+      hasGroupNames,
+      isSticky,
+      groupNames
     };
   }
 });

@@ -16,10 +16,12 @@
       .v3-group {
         h5 {
           margin: 0;
-          position: sticky;
           top: 0;
           background: white;
           padding: 7px 0 3px 4px;
+          &.v3-sticky {
+            position: sticky;
+          }
         }
 
         .v3-emojis {
