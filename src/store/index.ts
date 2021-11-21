@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import {DEFAULT_EMOJI, SKIN_TONE_NEUTRAL, STATIC_TEXTS} from "../constant";
+import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from "../constant";
 import emojis from "../data/emojis.json";
 import _groups from "../data/groups.json";
 import { EmojiRecord, Group, State } from "../types";
@@ -10,7 +10,8 @@ const defaultOptions: Record<string, any> = {
   hideSearch: true,
   hideGroupIcons: false,
   hideGroupNames: false,
-  staticTexts: {}
+  staticTexts: {},
+  disabledGroups: []
 }
 
 
@@ -24,7 +25,7 @@ export default reactive<State>({
   skinTone: SKIN_TONE_NEUTRAL,
   options: defaultOptions,
   get groups(): Group[] {
-    const disabled = Array.isArray(this.options.disableGroups) ? this.options.disableGroups : [];
+    const disabled = Array.isArray(this.options.disabledGroups) ? this.options.disabledGroups : [];
     return _groups.filter(group => !disabled.includes(group.key)) as Group[]
   }
 })

@@ -42,7 +42,7 @@ export default defineComponent({
       type: Boolean,
       default: false
     },
-    disableGroups: {
+    disabledGroups: {
       type: Array,
       default: []
     },
@@ -73,7 +73,7 @@ export default defineComponent({
         ...props.staticTexts
       },
       disableStickyGroupNames: props.disableStickyGroupNames,
-      disableGroups: props.disableGroups,
+      disabledGroups: props.disabledGroups,
       groupNames: {
         ...GROUP_NAMES,
         ...props.groupNames

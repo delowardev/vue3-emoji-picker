@@ -57,7 +57,7 @@ export default defineComponent({
             state.emojis,
             state.search,
             state.skinTone,
-            state.options.disableGroups
+            state.options.disabledGroups
         )
     );
     const _this = getCurrentInstance()

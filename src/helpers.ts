@@ -28,7 +28,7 @@ export function unicodeToEmoji(unicode: string) {
  * @param keyword - filter keyword
  * @param skinTone - current skin tones
  */
-export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: string, disableGroups: Group[] = []): EmojiRecord {
+export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: string, disabledGroups: Group[] = []): EmojiRecord {
   const _emojiData = {} as EmojiRecord;
   
   Object.keys(emojis).forEach((key) => {
@@ -37,7 +37,7 @@ export function filterEmojis(emojis: EmojiRecord, keyword: string, skinTone: str
      * Exclude disabled emoji group from the record
      */
     // @ts-ignore
-    if (disableGroups.includes(key)) {
+    if (disabledGroups.includes(key)) {
       return;
     }
     

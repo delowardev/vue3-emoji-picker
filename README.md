@@ -4,8 +4,6 @@
 
 Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
 
-> Notice: This component is for internal use only, it's not ready for production use yet.
-
 ### props
 
 | Prop          | Type      | Default Value  | Required  |  Description |
@@ -16,7 +14,7 @@ Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?fil
 | hide-group-names | Boolean   | false       |  No    | Show/hide group names. |
 | disable-sticky-group-names | Boolean   | false       |  No    | Disable sticky for group names |
 | disable-skin-tones | Boolean   | false       |  No    | Disable skin tones. |
-| disable-groups | Array   | [] |  No    | Disable any group/category. See [Available groups](#available-groups) |
+| disabled-groups | Array   | [] |  No    | Disable any group/category. See [Available groups](#available-groups) |
 | group-names | Object  | {}  |  No    | Change any group name. See [Default Group names](#default-group-names) |
 | static-texts | Object   | Object           |  No    | See [static-texts](#propsstatic-texts) table |
 | select        | event     | N/A            |  No    | callback function on emoji click/select |
