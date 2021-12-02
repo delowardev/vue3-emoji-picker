@@ -7,67 +7,65 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide } from "vue";
-import Body from "./Body.vue";
-import Header from "./Header.vue";
-import Footer from "./Footer.vue";
-import { GROUP_NAMES, STATIC_TEXTS } from "../constant"
-import Store from "../store";
-
+import { defineComponent, provide } from 'vue';
+import Body from './Body.vue';
+import Header from './Header.vue';
+import Footer from './Footer.vue';
+import { GROUP_NAMES, STATIC_TEXTS } from '../constant';
+import Store from '../store';
 
 export default defineComponent({
-  name: "Picker",
-  props: {
-    native: {
-      type: Boolean,
-      default: false
-    },
-    hideSearch: {
-      type: Boolean,
-      default: false
-    },
-    hideGroupIcons: {
-      type: Boolean,
-      default: false
-    },
-    hideGroupNames: {
-      type: Boolean,
-      default: false
-    },
-    staticTexts: {
-      type: Object,
-      default: {}
-    },
-    disableStickyGroupNames: {
-      type: Boolean,
-      default: false
-    },
-    disabledGroups: {
-      type: Array,
-      default: []
-    },
-    groupNames: {
-      type: Object,
-      default: {}
-    },
-    disableSkinTones: {
-      type: Boolean,
-      default: false
-    }
-  },
+  name: 'Picker',
   components: {
     Body,
     Header,
-    Footer
+    Footer,
+  },
+  props: {
+    native: {
+      type: Boolean,
+      default: false,
+    },
+    hideSearch: {
+      type: Boolean,
+      default: false,
+    },
+    hideGroupIcons: {
+      type: Boolean,
+      default: false,
+    },
+    hideGroupNames: {
+      type: Boolean,
+      default: false,
+    },
+    staticTexts: {
+      type: Object,
+      default: () => ({}),
+    },
+    disableStickyGroupNames: {
+      type: Boolean,
+      default: false,
+    },
+    disabledGroups: {
+      type: Array,
+      default: () => [],
+    },
+    groupNames: {
+      type: Object,
+      default: () => ({}),
+    },
+    disableSkinTones: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup(props) {
-
     /**
      * Create a brand new store and
      * (provide) make available for entire app.
      */
     const store = Store();
-    provide("store", store);
+    provide('store', store);
 
     // set-up initial props
     store.updateOptions({
@@ -77,17 +75,16 @@ export default defineComponent({
       hideGroupNames: props.hideGroupNames,
       staticTexts: {
         ...STATIC_TEXTS,
-        ...props.staticTexts
+        ...props.staticTexts,
       },
       disableStickyGroupNames: props.disableStickyGroupNames,
       disabledGroups: props.disabledGroups,
       groupNames: {
         ...GROUP_NAMES,
-        ...props.groupNames
+        ...props.groupNames,
       },
       disableSkinTones: props.disableSkinTones,
-    })
-
-  }
+    });
+  },
 });
 </script>

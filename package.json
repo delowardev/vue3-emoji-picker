@@ -16,7 +16,9 @@
     "emoji-picker",
     "emoji"
   ],
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/emoji-picker.umd.js",
   "module": "./dist/emoji-picker.es.js",
   "exports": {
@@ -30,7 +32,11 @@
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
     "prepare": "husky install",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "lint": "eslint --ext .js,.vue src",
+    "lint:fix": "eslint --fix --ext .js,.vue src",
+    "prettier": "prettier -c --ignore-unknown src",
+    "prettier:fix": "prettier -c --write --ignore-unknown src"
   },
   "peerDependencies": {
     "vue": "^3.2.21"
@@ -38,12 +44,18 @@
   "devDependencies": {
     "@babel/types": "^7.15.6",
     "@types/node": "^16.11.7",
+    "@typescript-eslint/parser": "^5.5.0",
     "@vitejs/plugin-vue": "^1.2.5",
     "@vue/compiler-sfc": "^3.0.5",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-vue": "^8.1.1",
     "husky": "^7.0.4",
+    "prettier": "^2.5.0",
     "sass": "^1.43.2",
     "typescript": "^4.3.2",
     "vite": "^2.4.2",
+    "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.0.24"
   }
 }

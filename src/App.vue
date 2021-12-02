@@ -1,39 +1,34 @@
 <template>
-
   <div class="input-wrap">
-    <input v-model="inputValue" type="text" placeholder="Hello world">
+    <input v-model="inputValue" type="text" placeholder="Hello world" />
   </div>
 
-  <Picker
-      :native="false"
-      @select="updateEmoji"
-  />
+  <Picker :native="false" @select="updateEmoji" />
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
-import Picker from "./components/Picker.vue";
+import { defineComponent, ref } from 'vue';
+import Picker from './components/Picker.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
-    Picker
+    Picker,
   },
   setup() {
-
-    const inputValue = ref("")
+    const inputValue = ref('');
 
     function updateEmoji(emoji: any) {
-      console.log(emoji)
-      inputValue.value += emoji.i
+      console.log(emoji);
+      inputValue.value += emoji.i;
     }
 
     return {
       inputValue,
-      updateEmoji
-    }
-  }
-})
+      updateEmoji,
+    };
+  },
+});
 </script>
 
 <style lang="scss">

@@ -1,7 +1,7 @@
 $size: 8px;
 
-.v3-body-inner{
-  scrollbar-color: #393D3F rgba(#000, .1);
+.v3-body-inner {
+  scrollbar-color: #393d3f rgba(#000, 0.1);
   scrollbar-width: thin;
 
   &::-webkit-scrollbar {
@@ -14,12 +14,11 @@ $size: 8px;
 
   &::-webkit-scrollbar-thumb {
     display: none;
-    background: rgba(#000, .3);
+    background: rgba(#000, 0.3);
     border-radius: 5px;
   }
 
   &:hover::-webkit-scrollbar-thumb {
     display: block;
   }
-
 }
