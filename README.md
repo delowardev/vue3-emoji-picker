@@ -70,7 +70,16 @@ function onSelectEmoji(emoji) {
 ### Available groups
 
 ```javascript
-['smileys_people', 'animals_nature', 'food_drink', 'activities', 'travel_places', 'objects', 'symbols', 'flags']
+[
+    'smileys_people', 
+    'animals_nature', 
+    'food_drink', 
+    'activities', 
+    'travel_places', 
+    'objects', 
+    'symbols', 
+    'flags'
+]
 ```
 
 ### Default Group names
