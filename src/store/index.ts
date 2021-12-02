@@ -14,25 +14,20 @@ const defaultOptions: Record<string, any> = {
   disabledGroups: []
 }
 
-
-const defaultState = {
-  emojis: emojis as EmojiRecord,
-  search: "",
-  emoji: DEFAULT_EMOJI,
-  activeGroup: "",
-  skinTone: SKIN_TONE_NEUTRAL,
-  options: defaultOptions,
-  get groups(): Group[] {
-    const disabled = Array.isArray(this.options.disabledGroups) ? this.options.disabledGroups : [];
-    return _groups.filter(group => !disabled.includes(group.key)) as Group[]
-  }
-};
-
-
-
 export default function Store (): Store {
   
-  const state = reactive<State>(defaultState);
+  const state = reactive<State>({
+    emojis: emojis as EmojiRecord,
+    search: "",
+    emoji: DEFAULT_EMOJI,
+    activeGroup: "",
+    skinTone: SKIN_TONE_NEUTRAL,
+    options: defaultOptions,
+    get groups(): Group[] {
+      const disabled = Array.isArray(this.options.disabledGroups) ? this.options.disabledGroups : [];
+      return _groups.filter(group => !disabled.includes(group.key)) as Group[]
+    }
+  });
   
   /**
    * Update search text.
