@@ -8,16 +8,23 @@
       :native="false"
       @select="updateEmoji"
   />
+
+  <h2> Input Picker </h2>
+  <Input />
+
+
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import Picker from "./components/Picker.vue";
+import Input from "./components/Input.vue";
 
 export default defineComponent({
   name: 'App',
   components: {
-    Picker
+    Picker,
+    Input
   },
   setup() {
 
@@ -43,7 +50,8 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  max-width: 960px;
+  margin: 60px auto 0;
 }
 .input-wrap {
   input {

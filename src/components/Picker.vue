@@ -13,48 +13,12 @@ import Header from "./Header.vue";
 import Footer from "./Footer.vue";
 import { GROUP_NAMES, STATIC_TEXTS } from "../constant"
 import Store from "../store";
+import props from "../props";
 
 
 export default defineComponent({
   name: "Picker",
-  props: {
-    native: {
-      type: Boolean,
-      default: false
-    },
-    hideSearch: {
-      type: Boolean,
-      default: false
-    },
-    hideGroupIcons: {
-      type: Boolean,
-      default: false
-    },
-    hideGroupNames: {
-      type: Boolean,
-      default: false
-    },
-    staticTexts: {
-      type: Object,
-      default: {}
-    },
-    disableStickyGroupNames: {
-      type: Boolean,
-      default: false
-    },
-    disabledGroups: {
-      type: Array,
-      default: []
-    },
-    groupNames: {
-      type: Object,
-      default: {}
-    },
-    disableSkinTones: {
-      type: Boolean,
-      default: false
-    }
-  },
+  props,
   components: {
     Body,
     Header,
