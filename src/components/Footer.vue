@@ -24,17 +24,16 @@
 
 
 <script lang="ts">
-import {computed, defineComponent, ref} from "vue";
-import state from "../store";
+import { computed, defineComponent, inject, ref } from "vue";
 import { EMOJI_REMOTE_SRC, SKIN_TONES, EMOJI_RESULT_KEY, EMOJI_NAME_KEY } from "../constant";
-import { updateSkinTone} from "../store/composition";
+import { Store } from "../types";
 
 
 
 export default defineComponent({
   name: "Header",
   setup() {
-
+    const { state, updateSkinTone } = inject('store') as Store;
     const skinTone = ref(false)
     const skinToneText = computed(() => state.options.staticTexts.skinTone || 'Skin tone');
     const hasSkinTones = computed(() => !state.options.disableSkinTones);

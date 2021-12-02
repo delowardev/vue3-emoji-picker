@@ -40,17 +40,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, ref, computed, getCurrentInstance } from "vue";
-import state from "../store";
-import { EmojiRecord, Emoji } from "../types";
+import { defineComponent, watch, ref, computed, getCurrentInstance, inject } from "vue";
+import { EmojiRecord, Emoji, Store } from "../types";
 import { EMOJI_REMOTE_SRC, GROUP_NAMES, EMOJI_RESULT_KEY, EMOJI_NAME_KEY } from "../constant";
 import { filterEmojis, unicodeToEmoji } from "../helpers";
-import { updateEmoji } from "../store/composition"
 
 
 export default defineComponent({
   name: "Body",
   setup() {
+    const { state, updateEmoji } = inject('store') as Store;
     const bodyInner = ref<HTMLElement | null>(null);
     const emojis = computed<EmojiRecord>(
         () => filterEmojis(
