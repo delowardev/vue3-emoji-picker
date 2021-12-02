@@ -21,9 +21,8 @@
 
 
 <script lang="ts">
-import {computed, defineComponent, ref} from "vue";
-import state from "../store";
-import { GroupKeys } from "../types";
+import {computed, defineComponent, inject } from "vue";
+import { GroupKeys, Store } from "../types";
 
 
 /**
@@ -37,11 +36,12 @@ import travel_places from "../svgs/groups/travel_places.svg";
 import objects from "../svgs/groups/objects.svg";
 import symbols from "../svgs/groups/symbols.svg";
 import flags from "../svgs/groups/flags.svg";
-import { updateSearch, updateActiveGroup } from "../store/composition";
 
 export default defineComponent({
   name: "Header",
   setup() {
+
+    const { state, updateSearch, updateActiveGroup } = inject('store') as Store;
 
     const hasSearch = computed(() => !state.options.hideSearch);
     const hasGroupIcons = computed(() => !state.options.hideGroupIcons);

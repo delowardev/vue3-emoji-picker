@@ -37,3 +37,12 @@ export interface State {
   skinTone: string;
   options: Record<string, any>;
 }
+
+export interface Store {
+  state: State;
+  updateSearch: ( v: string ) => void;
+  updateEmoji: ( v: Emoji ) => void;
+  updateActiveGroup: ( v: string ) => void;
+  updateSkinTone: ( v: string ) => void;
+  updateOptions: ( v: Record<string, any> ) => void;
+}

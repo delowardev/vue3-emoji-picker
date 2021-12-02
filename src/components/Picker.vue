@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, provide } from "vue";
 import Body from "./Body.vue";
 import Header from "./Header.vue";
 import Footer from "./Footer.vue";
-import { updateOptions } from "../store/composition"
-import {GROUP_NAMES, STATIC_TEXTS} from "../constant"
+import { GROUP_NAMES, STATIC_TEXTS } from "../constant"
+import Store from "../store";
 
 
 export default defineComponent({
@@ -62,8 +62,15 @@ export default defineComponent({
   },
   setup(props) {
 
+    /**
+     * Create a brand new store and
+     * (provide) make available for entire app.
+     */
+    const store = Store();
+    provide("store", store);
+
     // set-up initial props
-    updateOptions({
+    store.updateOptions({
       native: props.native,
       hideSearch: props.hideSearch,
       hideGroupIcons: props.hideGroupIcons,

@@ -1,8 +1,8 @@
-import { reactive } from "vue";
+import { reactive, readonly } from "vue";
 import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from "../constant";
+import { Emoji, EmojiRecord, Group, State, Store } from "../types";
 import emojis from "../data/emojis.json";
 import _groups from "../data/groups.json";
-import { EmojiRecord, Group, State } from "../types";
 
 
 const defaultOptions: Record<string, any> = {
@@ -15,9 +15,7 @@ const defaultOptions: Record<string, any> = {
 }
 
 
-// @warning: don't update state directly, use ./composition instead
-// @todo: protect store from direct update
-export default reactive<State>({
+const defaultState = {
   emojis: emojis as EmojiRecord,
   search: "",
   emoji: DEFAULT_EMOJI,
@@ -28,4 +26,62 @@ export default reactive<State>({
     const disabled = Array.isArray(this.options.disabledGroups) ? this.options.disabledGroups : [];
     return _groups.filter(group => !disabled.includes(group.key)) as Group[]
   }
-})
+};
+
+
+
+export default function Store (): Store {
+  
+  const state = reactive<State>(defaultState);
+  
+  /**
+   * Update search text.
+   * @param value - string.
+   */
+  const updateSearch = (value: string) => {
+    state.search = value
+  }
+  
+  /**
+   * Update currently selected emoji.
+   * @param value - Emoji.
+   */
+  const updateEmoji = ( value: Emoji ) => {
+    state.emoji = value;
+  }
+  
+  /**
+   * Update active emoji group/category.
+   * @param group - GroupName
+   */
+  const updateActiveGroup = ( group: string ) => {
+    state.activeGroup = group;
+  }
+  
+  /**
+   * Update emoji skin tone
+   * @param tone - skin tone value
+   */
+  const updateSkinTone = ( tone = SKIN_TONE_NEUTRAL ) => {
+    state.skinTone = tone;
+  }
+  
+  /**
+   * Update/merge options.
+   * @param options
+   */
+  const updateOptions = ( options: Record<string, any>) => {
+    state.options = Object.assign(state.options, options);
+  }
+  
+  
+  return {
+    state: readonly(state) as State,
+    updateSearch,
+    updateEmoji,
+    updateActiveGroup,
+    updateSkinTone,
+    updateOptions
+  }
+  
+}
