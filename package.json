@@ -1,6 +1,6 @@
 {
   "name": "vue3-emoji-picker",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "license": "MIT",
   "author": "delowardev",
   "repository": {
@@ -38,7 +38,7 @@
     "prettier": "prettier -c --ignore-unknown src",
     "prettier:fix": "prettier -c --write --ignore-unknown src"
   },
-  "dependencies": {
+  "peerDependencies": {
     "vue": "^3.2.23"
   },
   "devDependencies": {
