@@ -7,12 +7,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, provide } from 'vue';
-import Body from './Body.vue';
-import Header from './Header.vue';
-import Footer from './Footer.vue';
-import { GROUP_NAMES, STATIC_TEXTS } from '../constant';
-import Store from '../store';
+import { defineComponent, provide } from 'vue'
+import Body from './Body.vue'
+import Header from './Header.vue'
+import Footer from './Footer.vue'
+import { GROUP_NAMES, STATIC_TEXTS } from '../constant'
+import Store from '../store'
 
 export default defineComponent({
   name: 'Picker',
@@ -64,8 +64,8 @@ export default defineComponent({
      * Create a brand new store and
      * (provide) make available for entire app.
      */
-    const store = Store();
-    provide('store', store);
+    const store = Store()
+    provide('store', store)
 
     // set-up initial props
     store.updateOptions({
@@ -84,7 +84,7 @@ export default defineComponent({
         ...props.groupNames,
       },
       disableSkinTones: props.disableSkinTones,
-    });
+    })
   },
-});
+})
 </script>

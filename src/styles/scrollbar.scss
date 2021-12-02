@@ -1,24 +1,24 @@
 $size: 8px;
 
 .v3-body-inner {
-  scrollbar-color: #393d3f rgba(#000, 0.1);
-  scrollbar-width: thin;
+    scrollbar-color: #393d3f rgba(#000, 0.1);
+    scrollbar-width: thin;
 
-  &::-webkit-scrollbar {
-    width: $size;
-  }
+    &::-webkit-scrollbar {
+        width: $size;
+    }
 
-  &::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
+    &::-webkit-scrollbar-track {
+        background-color: transparent;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    display: none;
-    background: rgba(#000, 0.3);
-    border-radius: 5px;
-  }
+    &::-webkit-scrollbar-thumb {
+        display: none;
+        background: rgba(#000, 0.3);
+        border-radius: 5px;
+    }
 
-  &:hover::-webkit-scrollbar-thumb {
-    display: block;
-  }
+    &:hover::-webkit-scrollbar-thumb {
+        display: block;
+    }
 }

@@ -1,11 +1,11 @@
-import { Emoji, EmojiRecord, Group, GroupKeys } from './types';
+import { Emoji, EmojiRecord, Group, GroupKeys } from './types'
 import {
   SKIN_TONE_NEUTRAL,
   EMOJI_VARIATIONS_KEY,
   EMOJI_UNICODE_KEY,
   EMOJI_NAME_KEY,
   EMOJI_RESULT_KEY,
-} from './constant';
+} from './constant'
 
 /**
  * Convert unicode to native emoji
@@ -17,7 +17,7 @@ export function unicodeToEmoji(unicode: string) {
     .split('-')
     .map((hex) => parseInt(hex, 16))
     .map((hex) => String.fromCodePoint(hex))
-    .join('');
+    .join('')
 }
 
 /**
@@ -33,7 +33,7 @@ export function filterEmojis(
   skinTone: string,
   disabledGroups: Group[] = []
 ): EmojiRecord {
-  const _emojiData = {} as EmojiRecord;
+  const _emojiData = {} as EmojiRecord
 
   Object.keys(emojis).forEach((key) => {
     /**
@@ -41,14 +41,14 @@ export function filterEmojis(
      */
     // @ts-ignore
     if (disabledGroups.includes(key)) {
-      return;
+      return
     }
 
-    const _emojis: Emoji[] = [];
+    const _emojis: Emoji[] = []
     emojis[key as GroupKeys].forEach((emoji) => {
       // if search key match
       if (emoji[EMOJI_NAME_KEY][0].includes(keyword.toLocaleLowerCase())) {
-        let result = emoji[EMOJI_UNICODE_KEY];
+        let result = emoji[EMOJI_UNICODE_KEY]
 
         // check skin tone
         if (
@@ -58,23 +58,23 @@ export function filterEmojis(
           const v_index =
             emoji[EMOJI_VARIATIONS_KEY]?.findIndex((v) =>
               v.includes(skinTone)
-            ) || -1;
+            ) || -1
           if (v_index !== -1 && emoji[EMOJI_VARIATIONS_KEY]) {
             // @ts-ignore
-            result = emoji[EMOJI_VARIATIONS_KEY][v_index];
+            result = emoji[EMOJI_VARIATIONS_KEY][v_index]
           }
         }
 
         return _emojis.push({
           ...emoji,
           [EMOJI_RESULT_KEY]: result,
-        });
+        })
       }
-    });
+    })
 
     if (_emojis.length) {
-      _emojiData[key as GroupKeys] = _emojis;
+      _emojiData[key as GroupKeys] = _emojis
     }
-  });
-  return _emojiData;
+  })
+  return _emojiData
 }

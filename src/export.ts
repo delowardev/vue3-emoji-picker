@@ -1,4 +1,4 @@
-import Picker from './components/Picker.vue';
-import './styles/index.scss';
+import Picker from './components/Picker.vue'
+import './styles/index.scss'
 
-export default Picker;
+export default Picker

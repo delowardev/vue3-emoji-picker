@@ -8,7 +8,9 @@
           :key="key"
           class="v3-group"
         >
-          <h5 v-if="hasGroupNames">{{ GROUP_NAMES[key] }}</h5>
+          <h5 v-if="hasGroupNames">
+            {{ GROUP_NAMES[key] }}
+          </h5>
           <div class="v3-emojis">
             <button
               v-for="emoji in group"
@@ -45,21 +47,21 @@ import {
   computed,
   getCurrentInstance,
   inject,
-} from 'vue';
-import { EmojiRecord, Emoji, Store } from '../types';
+} from 'vue'
+import { EmojiRecord, Emoji, Store } from '../types'
 import {
   EMOJI_REMOTE_SRC,
   GROUP_NAMES,
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
-} from '../constant';
-import { filterEmojis, unicodeToEmoji } from '../helpers';
+} from '../constant'
+import { filterEmojis, unicodeToEmoji } from '../helpers'
 
 export default defineComponent({
   name: 'Body',
   setup() {
-    const { state, updateEmoji } = inject('store') as Store;
-    const bodyInner = ref<HTMLElement | null>(null);
+    const { state, updateEmoji } = inject('store') as Store
+    const bodyInner = ref<HTMLElement | null>(null)
     const emojis = computed<EmojiRecord>(() =>
       filterEmojis(
         state.emojis,
@@ -67,14 +69,14 @@ export default defineComponent({
         state.skinTone,
         state.options.disabledGroups
       )
-    );
-    const _this = getCurrentInstance();
-    const hasGroupNames = computed(() => !state.options.hideGroupNames);
-    const isSticky = computed(() => !state.options.disableStickyGroupNames);
-    const groupNames = computed(() => state.options.groupNames);
+    )
+    const _this = getCurrentInstance()
+    const hasGroupNames = computed(() => !state.options.hideGroupNames)
+    const isSticky = computed(() => !state.options.disableStickyGroupNames)
+    const groupNames = computed(() => state.options.groupNames)
 
     function handleMouseEnter(emoji: Emoji) {
-      updateEmoji(emoji);
+      updateEmoji(emoji)
     }
 
     function handleClick(emoji: Emoji) {
@@ -82,12 +84,12 @@ export default defineComponent({
         ...emoji,
         t: state.skinTone,
         i: unicodeToEmoji(emoji.r),
-      });
+      })
     }
 
     // @todo: handle error
     function handleError(event: Event, unicode: string) {
-      console.log(unicode);
+      console.log(unicode)
     }
 
     watch(
@@ -95,9 +97,9 @@ export default defineComponent({
       () => {
         bodyInner.value
           ?.querySelector('#' + state.activeGroup)
-          ?.scrollIntoView({ behavior: 'smooth' });
+          ?.scrollIntoView({ behavior: 'smooth' })
       }
-    );
+    )
 
     return {
       emojis,
@@ -114,7 +116,7 @@ export default defineComponent({
       hasGroupNames,
       isSticky,
       groupNames,
-    };
+    }
   },
-});
+})
 </script>

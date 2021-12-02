@@ -1,106 +1,106 @@
 // picker footer
 .v3-emoji-picker .v3-footer {
-  font-size: 14px;
-  border-top: 1px solid #dddddd;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-  .v3-tone,
-  .v3-foot-left {
+    font-size: 14px;
+    border-top: 1px solid #dddddd;
+    padding: 15px;
     display: flex;
     align-items: center;
-    img {
-      width: 20px;
-      display: block;
+    justify-content: space-between;
+    position: relative;
+    .v3-tone,
+    .v3-foot-left {
+        display: flex;
+        align-items: center;
+        img {
+            width: 20px;
+            display: block;
+        }
+        > span:first-child {
+            margin-right: 6px;
+        }
     }
-    > span:first-child {
-      margin-right: 6px;
+    .v3-foot-left {
+        > span.v3-text {
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
     }
-  }
-  .v3-foot-left {
-    > span.v3-text {
-      max-width: 100px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+    .v3-tone {
+        border: none;
+        padding: 0;
+        background: none;
+        cursor: pointer;
+        > span {
+            display: inline-flex;
+            vertical-align: top;
+        }
+        .v3-text {
+            font-size: 13px;
+        }
+        .v3-icon {
+            padding-bottom: 3px;
+        }
     }
-  }
-  .v3-tone {
-    border: none;
-    padding: 0;
-    background: none;
-    cursor: pointer;
-    > span {
-      display: inline-flex;
-      vertical-align: top;
-    }
-    .v3-text {
-      font-size: 13px;
-    }
-    .v3-icon {
-      padding-bottom: 3px;
-    }
-  }
 }
 
 .v3-skin-tones {
-  position: absolute;
-  background: white;
-  height: 100%;
-  width: 60%;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 15px;
-  opacity: 0;
-  visibility: hidden;
-  transition: 200ms;
-  border-radius: 0 0 10px 10px;
-  &.v3-is-open {
-    opacity: 1;
-    visibility: visible;
-  }
-  .v3-skin-tone {
-    display: inline-block;
-    height: 15px;
-    width: 25px;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    transition: 0ms;
-    &:hover {
-      transform: scale(1.1);
-      transition: 200ms;
+    position: absolute;
+    background: white;
+    height: 100%;
+    width: 60%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 15px;
+    opacity: 0;
+    visibility: hidden;
+    transition: 200ms;
+    border-radius: 0 0 10px 10px;
+    &.v3-is-open {
+        opacity: 1;
+        visibility: visible;
     }
-  }
-  .v3-skin- {
-    &tone-neutral {
-      color: #ffd225;
-      background-color: #ffd225;
+    .v3-skin-tone {
+        display: inline-block;
+        height: 15px;
+        width: 25px;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: 0ms;
+        &:hover {
+            transform: scale(1.1);
+            transition: 200ms;
+        }
     }
-    &tone-1f3fb {
-      color: #ffdfbd;
-      background-color: #ffdfbd;
+    .v3-skin- {
+        &tone-neutral {
+            color: #ffd225;
+            background-color: #ffd225;
+        }
+        &tone-1f3fb {
+            color: #ffdfbd;
+            background-color: #ffdfbd;
+        }
+        &tone-1f3fc {
+            color: #e9c197;
+            background-color: #e9c197;
+        }
+        &tone-1f3fd {
+            color: #c88e62;
+            background-color: #c88e62;
+        }
+        &tone-1f3fe {
+            color: #a86637;
+            background-color: #a86637;
+        }
+        &tone-1f3ff {
+            color: #60463a;
+            background-color: #60463a;
+        }
     }
-    &tone-1f3fc {
-      color: #e9c197;
-      background-color: #e9c197;
-    }
-    &tone-1f3fd {
-      color: #c88e62;
-      background-color: #c88e62;
-    }
-    &tone-1f3fe {
-      color: #a86637;
-      background-color: #a86637;
-    }
-    &tone-1f3ff {
-      color: #60463a;
-      background-color: #60463a;
-    }
-  }
 }

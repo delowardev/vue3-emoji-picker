@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
-import Picker from './components/Picker.vue';
+import { defineComponent, ref } from 'vue'
+import Picker from './components/Picker.vue'
 
 export default defineComponent({
   name: 'App',
@@ -16,19 +16,19 @@ export default defineComponent({
     Picker,
   },
   setup() {
-    const inputValue = ref('');
+    const inputValue = ref('')
 
     function updateEmoji(emoji: any) {
-      console.log(emoji);
-      inputValue.value += emoji.i;
+      console.log(emoji)
+      inputValue.value += emoji.i
     }
 
     return {
       inputValue,
       updateEmoji,
-    };
+    }
   },
-});
+})
 </script>
 
 <style lang="scss">

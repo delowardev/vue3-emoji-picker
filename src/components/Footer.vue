@@ -31,44 +31,44 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, inject, ref } from 'vue';
+import { computed, defineComponent, inject, ref } from 'vue'
 import {
   EMOJI_REMOTE_SRC,
   SKIN_TONES,
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
-} from '../constant';
-import { Store } from '../types';
+} from '../constant'
+import { Store } from '../types'
 
 export default defineComponent({
   name: 'Header',
   setup() {
-    const { state, updateSkinTone } = inject('store') as Store;
-    const skinTone = ref(false);
+    const { state, updateSkinTone } = inject('store') as Store
+    const skinTone = ref(false)
     const skinToneText = computed(
       () => state.options.staticTexts.skinTone || 'Skin tone'
-    );
-    const hasSkinTones = computed(() => !state.options.disableSkinTones);
+    )
+    const hasSkinTones = computed(() => !state.options.disableSkinTones)
 
     // @todo: type shouldn't be 'any'
     const emoji = computed<any>(() => {
       return {
         ...state.emoji,
         src: EMOJI_REMOTE_SRC + '/' + state.emoji[EMOJI_RESULT_KEY] + '.png',
-      };
-    });
+      }
+    })
 
     function updateSkinToneState(open = true) {
-      skinTone.value = open;
+      skinTone.value = open
     }
 
     function toggleSkinToneState() {
-      skinTone.value = !skinTone.value;
+      skinTone.value = !skinTone.value
     }
 
     function selectSkinTone(tone: string) {
-      updateSkinTone(tone);
-      updateSkinToneState(false);
+      updateSkinTone(tone)
+      updateSkinToneState(false)
     }
 
     return {
@@ -82,7 +82,7 @@ export default defineComponent({
       EMOJI_NAME_KEY,
       skinToneText,
       hasSkinTones,
-    };
+    }
   },
-});
+})
 </script>
