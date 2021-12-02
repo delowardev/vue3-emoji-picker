@@ -4,55 +4,35 @@
 
 Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
 
-### props
+### Installation:
 
-| Prop          | Type      | Default Value  | Required  |  Description |
-| :---         | :---     | :---          | :---     | :--- |
-| native        | Boolean   | false          |  No    |Load native emoji instead of image. |
-| hide-search        | Boolean   | true           |  No    | Show/hide search input. |
-| hide-group-icons | Boolean   | false       |  No    | Show/hide header group icons. |
-| hide-group-names | Boolean   | false       |  No    | Show/hide group names. |
-| disable-sticky-group-names | Boolean   | false       |  No    | Disable sticky for group names |
-| disable-skin-tones | Boolean   | false       |  No    | Disable skin tones. |
-| disabled-groups | Array   | [] |  No    | Disable any group/category. See [Available groups](#available-groups) |
-| group-names | Object  | {}  |  No    | Change any group name. See [Default Group names](#default-group-names) |
-| static-texts | Object   | Object           |  No    | See [static-texts](#propsstatic-texts) table |
-| select        | event     | N/A            |  No    | callback function on emoji click/select |
+```
+npm install vue3-emoji-picker
 
-### props['static-texts']
-| Prop          | Type      | Default Value  | Required  |  Description |
-| :---         | :---     | :---          | :---     | :--- |
-| placeholder   | String | Search emoji | No | Update search input placeholder text. |
-| skinTone   | String | Skin tone | No | Footer  skin tone button text. |
+// or
+yarn add vue3-emoji-picker
+```
 
-Example: 
-``` :static-texts="{ placeholder: 'Search emoji'}"  ```<br/>
-
-
-### Example:
+### Usage:
 
 ```javascript
-
 // import picker compopnent
-import EmojiPicker from "vue3-emoji-picker"
+import EmojiPicker from 'vue3-emoji-picker'
 
 // import css
-import "node_modules/vue3-emoji-picker/dist/style.css"
-
+import 'node_modules/vue3-emoji-picker/dist/style.css'
 ```
+
 ```vue
-
 // use picker component
-<EmojiPicker 
-    :native="true" 
-    @select="onSelectEmoji"
-/>
+<EmojiPicker :native="true" @select="onSelectEmoji" />
 ```
+
 ```javascript
 // event callback
 function onSelectEmoji(emoji) {
-    console.log(emoji)
-    /*
+  console.log(emoji)
+  /*
     // result
     { 
         i: "😚", 
@@ -65,24 +45,48 @@ function onSelectEmoji(emoji) {
 }
 ```
 
+### props
 
+| Prop                       | Type    | Default Value | Required | Description                                                            |
+| :------------------------- | :------ | :------------ | :------- | :--------------------------------------------------------------------- |
+| native                     | Boolean | false         | No       | Load native emoji instead of image.                                    |
+| hide-search                | Boolean | true          | No       | Show/hide search input.                                                |
+| hide-group-icons           | Boolean | false         | No       | Show/hide header group icons.                                          |
+| hide-group-names           | Boolean | false         | No       | Show/hide group names.                                                 |
+| disable-sticky-group-names | Boolean | false         | No       | Disable sticky for group names                                         |
+| disable-skin-tones         | Boolean | false         | No       | Disable skin tones.                                                    |
+| disabled-groups            | Array   | []            | No       | Disable any group/category. See [Available groups](#available-groups)  |
+| group-names                | Object  | {}            | No       | Change any group name. See [Default Group names](#default-group-names) |
+| static-texts               | Object  | Object        | No       | See [static-texts](#propsstatic-texts) table                           |
+| select                     | event   | N/A           | No       | callback function on emoji click/select                                |
+
+### props['static-texts']
+
+| Prop        | Type   | Default Value | Required | Description                           |
+| :---------- | :----- | :------------ | :------- | :------------------------------------ |
+| placeholder | String | Search emoji  | No       | Update search input placeholder text. |
+| skinTone    | String | Skin tone     | No       | Footer skin tone button text.         |
+
+Example:
+`:static-texts="{ placeholder: 'Search emoji'}" `<br/>
 
 ### Available groups
 
 ```javascript
-[
-    'smileys_people', 
-    'animals_nature', 
-    'food_drink', 
-    'activities', 
-    'travel_places', 
-    'objects', 
-    'symbols', 
-    'flags'
+;[
+  'smileys_people',
+  'animals_nature',
+  'food_drink',
+  'activities',
+  'travel_places',
+  'objects',
+  'symbols',
+  'flags',
 ]
 ```
 
 ### Default Group names
+
 ```javascript
 {
   smileys_people: "Smiles & People",
