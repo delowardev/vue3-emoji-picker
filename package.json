@@ -36,7 +36,8 @@
     "lint": "eslint --ext .ts,.js,.vue src",
     "lint:fix": "eslint --fix --ext .ts,.js,.vue src",
     "prettier": "prettier -c --ignore-unknown src",
-    "prettier:fix": "prettier -c --write --ignore-unknown src"
+    "prettier:fix": "prettier -c --write --ignore-unknown src",
+    "precommit": "npm run prettier:fix && npm run lint:fix"
   },
   "peerDependencies": {
     "vue": "^3.2.23"
@@ -62,5 +63,8 @@
   "lint-staged": {
     "*.{js,ts,vue}": "npm run lint:fix",
     "*.{js,ts,css,md,vue}": "npm run prettier:fix"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.0"
   }
 }

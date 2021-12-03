@@ -26,6 +26,7 @@ export function unicodeToEmoji(unicode: string) {
  * @param emojis - Emoji data
  * @param keyword - filter keyword
  * @param skinTone - current skin tones
+ * @param disabledGroups - groups to be excluded
  */
 export function filterEmojis(
   emojis: EmojiRecord,
