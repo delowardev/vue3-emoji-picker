@@ -1,36 +1,44 @@
 <template>
   <h2>Default</h2>
-  <div class="input-wrap">
-    <input v-model="inputValue" type="text" placeholder="Hello world" />
-  </div>
-  <Picker :native="false" @select="updateEmoji" />
+  <picker />
 
-  <h2>With Input Picker</h2>
-  <Input />
+  <h2>With input</h2>
+  <picker :text="text" picker-type="input" @update:text="onChangeText" />
 </template>
 
 <script lang="ts">
+/**
+ * External dependencies
+ */
 import { defineComponent, ref } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import Picker from './components/Picker.vue'
-import Input from './components/Input.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
     Picker,
-    Input,
   },
   setup() {
-    const inputValue = ref('')
+    const text = ref('input')
 
-    function updateEmoji(emoji: any) {
-      console.log(emoji)
-      inputValue.value += emoji.i
+    /**
+     * Handle text change
+     * @param new_text
+     */
+    function onChangeText(new_text: string | undefined) {
+      text.value = new_text || ''
     }
 
+    /**
+     * Return vars
+     */
     return {
-      inputValue,
-      updateEmoji,
+      onChangeText,
+      text,
     }
   },
 })
@@ -46,7 +54,7 @@ h2 {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin: 0 auto;
+  margin: 60px auto 0;
   max-width: 560px;
 }
 .input-wrap {

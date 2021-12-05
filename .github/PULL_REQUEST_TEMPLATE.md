@@ -27,6 +27,7 @@ Include before/after screenshots or a short video.
 
 - [ ] I have tested this code to the best of my abilities
 - [ ] I have added documentation where necessary
+
 ---
 
 <!--

@@ -9,15 +9,15 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'src/export.ts'),
       name: 'EmojiPicker',
-      fileName: (format) => `emoji-picker.${format}.js`
+      fileName: (format) => `emoji-picker.${format}.js`,
     },
     rollupOptions: {
       external: ['vue'],
       output: {
         globals: {
-          vue: 'Vue'
-        }
-      }
-    }
-  }
+          vue: 'Vue',
+        },
+      },
+    },
+  },
 })

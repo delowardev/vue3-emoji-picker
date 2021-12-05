@@ -1,6 +1,6 @@
 {
   "name": "vue3-emoji-picker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": "delowardev",
   "repository": {
@@ -33,11 +33,11 @@
     "serve": "vite preview",
     "prepare": "husky install",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint --ext .ts,.js,.vue src",
-    "lint:fix": "eslint --fix --ext .ts,.js,.vue src",
-    "prettier": "prettier -c --ignore-unknown src",
-    "prettier:fix": "prettier -c --write --ignore-unknown src",
-    "precommit": "npm run prettier:fix && npm run lint:fix"
+    "lint": "eslint --ext .ts,.js,.vue ./",
+    "lint:fix": "eslint --fix --ext .ts,.js,.vue ./",
+    "prettier": "prettier -c --ignore-unknown ./",
+    "prettier:fix": "prettier -c --write --ignore-unknown ./",
+    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix"
   },
   "peerDependencies": {
     "vue": "^3.2.23"

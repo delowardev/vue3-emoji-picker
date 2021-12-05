@@ -31,7 +31,14 @@
 </template>
 
 <script lang="ts">
+/**
+ * External dependencies
+ */
 import { computed, defineComponent, inject, ref } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import {
   EMOJI_REMOTE_SRC,
   SKIN_TONES,

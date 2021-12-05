@@ -8,7 +8,7 @@
           :key="key"
           class="v3-group"
         >
-          <h5 v-if="hasGroupNames">
+          <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
             {{ GROUP_NAMES[key] }}
           </h5>
           <div class="v3-emojis">
@@ -40,6 +40,9 @@
 </template>
 
 <script lang="ts">
+/**
+ * External dependencies
+ */
 import {
   defineComponent,
   watch,
@@ -48,6 +51,10 @@ import {
   getCurrentInstance,
   inject,
 } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import { EmojiRecord, Emoji, Store } from '../types'
 import {
   EMOJI_REMOTE_SRC,
@@ -80,7 +87,7 @@ export default defineComponent({
     }
 
     function handleClick(emoji: Emoji) {
-      _this?.parent?.emit('select', {
+      _this?.emit('select', {
         ...emoji,
         t: state.skinTone,
         i: unicodeToEmoji(emoji.r),
