@@ -1,25 +1,24 @@
 <template>
-  <div class="v3-emoji-picker">
-    <Header />
-    <Body />
-    <Footer />
-  </div>
+  <picker-root :type="type" :text="input" @update:text="onChangeText" />
 </template>
 
 <script lang="ts">
-import { defineComponent, provide } from 'vue'
-import Body from './Body.vue'
-import Header from './Header.vue'
-import Footer from './Footer.vue'
+/**
+ * External dependencies
+ */
+import { defineComponent, provide, ref } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import { GROUP_NAMES, STATIC_TEXTS } from '../constant'
 import Store from '../store'
+import PickerRoot from './Root.vue'
 
 export default defineComponent({
   name: 'Picker',
   components: {
-    Body,
-    Header,
-    Footer,
+    PickerRoot,
   },
   props: {
     native: {
@@ -58,8 +57,36 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    text: {
+      type: String,
+      default: '',
+    },
+    mode: {
+      type: String,
+      default: 'insert', // or append, prepend
+    },
+    offset: {
+      type: Number,
+      default: 6,
+    },
+    pickerType: {
+      type: String,
+      default: '',
+    },
   },
-  setup(props) {
+  emits: ['update:text'],
+  setup(props, { emit }) {
+    const input = ref(props.text)
+
+    /**
+     * Handle text change event
+     * @param text - text value
+     */
+    function onChangeText(text: string | undefined) {
+      input.value = text || ''
+      emit('update:text', input.value)
+    }
+
     /**
      * Create a brand new store and
      * (provide) make available for entire app.
@@ -67,24 +94,32 @@ export default defineComponent({
     const store = Store()
     provide('store', store)
 
-    // set-up initial props
+    /**
+     * Initializing initial props
+     */
     store.updateOptions({
       native: props.native,
       hideSearch: props.hideSearch,
       hideGroupIcons: props.hideGroupIcons,
       hideGroupNames: props.hideGroupNames,
-      staticTexts: {
-        ...STATIC_TEXTS,
-        ...props.staticTexts,
-      },
+      staticTexts: { ...STATIC_TEXTS, ...props.staticTexts },
       disableStickyGroupNames: props.disableStickyGroupNames,
       disabledGroups: props.disabledGroups,
-      groupNames: {
-        ...GROUP_NAMES,
-        ...props.groupNames,
-      },
+      groupNames: { ...GROUP_NAMES, ...props.groupNames },
       disableSkinTones: props.disableSkinTones,
+      mode: props.mode,
+      offset: props.offset,
     })
+
+    /**
+     * Return vars
+     */
+
+    return {
+      type: props.pickerType,
+      input,
+      onChangeText,
+    }
   },
 })
 </script>

@@ -1,13 +1,23 @@
 <template>
-  <div class="input-wrap">
-    <input v-model="inputValue" type="text" placeholder="Hello world" />
-  </div>
+  <h2>Default</h2>
+  <picker />
 
-  <Picker :native="false" @select="updateEmoji" />
+  <h2>With input</h2>
+  <picker :text="text" picker-type="input" @update:text="onChangeText" />
+
+  <h2>With textarea</h2>
+  <picker :text="text" picker-type="textarea" @update:text="onChangeText" />
 </template>
 
 <script lang="ts">
+/**
+ * External dependencies
+ */
 import { defineComponent, ref } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import Picker from './components/Picker.vue'
 
 export default defineComponent({
@@ -16,29 +26,39 @@ export default defineComponent({
     Picker,
   },
   setup() {
-    const inputValue = ref('')
+    const text = ref('input')
 
-    function updateEmoji(emoji: any) {
-      console.log(emoji)
-      inputValue.value += emoji.i
+    /**
+     * Handle text change
+     * @param new_text
+     */
+    function onChangeText(new_text: string | undefined) {
+      text.value = new_text || ''
     }
 
+    /**
+     * Return vars
+     */
     return {
-      inputValue,
-      updateEmoji,
+      onChangeText,
+      text,
     }
   },
 })
 </script>
 
 <style lang="scss">
+h2 {
+  margin-top: 60px;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 60px auto 0;
+  max-width: 560px;
 }
 .input-wrap {
   input {

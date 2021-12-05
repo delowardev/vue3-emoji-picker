@@ -20,7 +20,14 @@
 </template>
 
 <script lang="ts">
+/**
+ * External dependencies
+ */
 import { computed, defineComponent, inject } from 'vue'
+
+/**
+ * Internal dependencies
+ */
 import { GroupKeys, Store } from '../types'
 
 /**

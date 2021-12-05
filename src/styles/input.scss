@@ -1,0 +1,52 @@
+.v3-input-emoji-picker {
+  * {
+    box-sizing: border-box;
+  }
+  .v3-input-picker-root {
+    position: relative;
+    .v3-emoji-picker-input {
+      width: 100%;
+      height: 40px;
+      border: 1px solid #999;
+      padding-left: 15px;
+    }
+    .v3-emoji-picker-textarea {
+      @extend .v3-emoji-picker-input;
+      min-height: 80px;
+      resize: vertical;
+      + .v3-input-picker-wrap .v3-input-picker-icon {
+        top: auto;
+        bottom: 5px;
+      }
+    }
+    .v3-input-picker-wrap {
+      .v3-input-picker-icon {
+        display: inline-flex;
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        border: none;
+        background: none;
+        padding: 0 5px;
+        cursor: pointer;
+        img {
+          display: block;
+          width: 1em;
+          height: 1em;
+        }
+      }
+      .v3-emoji-picker {
+        opacity: 0;
+        visibility: hidden;
+        transition: 200ms;
+      }
+      &.v3-picker-is-open .v3-emoji-picker {
+        opacity: 1;
+        visibility: visible;
+        z-index: 999;
+      }
+    }
+  }
+}

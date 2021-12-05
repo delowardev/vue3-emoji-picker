@@ -4,7 +4,7 @@
 
 Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
 
-### Installation:
+## Installation:
 
 ```
 npm install vue3-emoji-picker
@@ -13,7 +13,7 @@ npm install vue3-emoji-picker
 yarn add vue3-emoji-picker
 ```
 
-### Usage:
+## Usage:
 
 ```javascript
 // import picker compopnent
@@ -45,57 +45,83 @@ function onSelectEmoji(emoji) {
 }
 ```
 
-### props
+## Options (`props`)
 
-| Prop                       | Type    | Default Value | Required | Description                                                            |
-| :------------------------- | :------ | :------------ | :------- | :--------------------------------------------------------------------- |
-| native                     | Boolean | false         | No       | Load native emoji instead of image.                                    |
-| hide-search                | Boolean | true          | No       | Show/hide search input.                                                |
-| hide-group-icons           | Boolean | false         | No       | Show/hide header group icons.                                          |
-| hide-group-names           | Boolean | false         | No       | Show/hide group names.                                                 |
-| disable-sticky-group-names | Boolean | false         | No       | Disable sticky for group names                                         |
-| disable-skin-tones         | Boolean | false         | No       | Disable skin tones.                                                    |
-| disabled-groups            | Array   | []            | No       | Disable any group/category. See [Available groups](#available-groups)  |
-| group-names                | Object  | {}            | No       | Change any group name. See [Default Group names](#default-group-names) |
-| static-texts               | Object  | Object        | No       | See [static-texts](#propsstatic-texts) table                           |
-| select                     | event   | N/A           | No       | callback function on emoji click/select                                |
+| Prop                       | Type    | Default Value | Description                                                                                 |
+| :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------ |
+| native                     | Boolean | false         | Load native emoji instead of image.                                                         |
+| hide-search                | Boolean | true          | Show/hide search input.                                                                     |
+| hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                               |
+| hide-group-names           | Boolean | false         | Show/hide group names.                                                                      |
+| disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                              |
+| disable-skin-tones         | Boolean | false         | Disable skin tones.                                                                         |
+| disabled-groups            | Array   | []            | Disable any group/category. See [Available groups](#available-groups)                       |
+| group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names)                      |
+| static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                                                |
+| pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''` |
+| mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
+| offset                     | Number  | '6'           | Choose emoji popup offset                                                                   |
 
-### props['static-texts']
+## Static text option (`props['static-texts']`)
 
-| Prop        | Type   | Default Value | Required | Description                           |
-| :---------- | :----- | :------------ | :------- | :------------------------------------ |
-| placeholder | String | Search emoji  | No       | Update search input placeholder text. |
-| skinTone    | String | Skin tone     | No       | Footer skin tone button text.         |
+| Prop        | Type   | Default Value | Description                           |
+| :---------- | :----- | :------------ | :------------------------------------ |
+| placeholder | String | Search emoji  | Update search input placeholder text. |
+| skinTone    | String | Skin tone     | Footer skin tone button text.         |
 
 Example:
 `:static-texts="{ placeholder: 'Search emoji'}" `<br/>
 
-### Available groups
+## Events / Callbacks
 
-```javascript
-;[
-  'smileys_people',
-  'animals_nature',
-  'food_drink',
-  'activities',
-  'travel_places',
-  'objects',
-  'symbols',
-  'flags',
+### `@select`
+
+This event fires when an emoji gets selected/clicked.<br/>
+Event callback will receive selected emoji in the first argument.
+
+```
+<EmojiPicker @select="onSelectEmoji" />
+
+function onSelectEmoji(emoji) { /* do something */ }
+```
+
+### `@update:text`
+
+This event fires when input text gets changed.<br/>
+Event callback will receive the text in the first argument.
+
+```
+<EmojiPicker @update:text="onChangeText" />
+
+function onChangeText(text) { /* do something */ }
+```
+
+## Available groups
+
+```json
+[
+  "smileys_people",
+  "animals_nature",
+  "food_drink",
+  "activities",
+  "travel_places",
+  "objects",
+  "symbols",
+  "flags"
 ]
 ```
 
-### Default Group names
+## Default group names
 
-```javascript
+```json
 {
-  smileys_people: "Smiles & People",
-  animals_nature: "Animals & Nature",
-  food_drink: "Food & Drink",
-  activities: "Activities",
-  travel_places: "Travel places",
-  objects: "Objects",
-  symbols: "Symbols",
-  flags: "Flags",
+  "smileys_people": "Smiles & People",
+  "animals_nature": "Animals & Nature",
+  "food_drink": "Food & Drink",
+  "activities": "Activities",
+  "travel_places": "Travel places",
+  "objects": "Objects",
+  "symbols": "Symbols",
+  "flags": "Flags"
 }
 ```
