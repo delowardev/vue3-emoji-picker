@@ -4,6 +4,9 @@
 
   <h2>With input</h2>
   <picker :text="text" picker-type="input" @update:text="onChangeText" />
+
+  <h2>With textarea</h2>
+  <picker :text="text" picker-type="textarea" @update:text="onChangeText" />
 </template>
 
 <script lang="ts">

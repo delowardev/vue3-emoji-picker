@@ -2,10 +2,19 @@
   <div v-if="isInputType" class="v3-input-emoji-picker">
     <div class="v3-input-picker-root">
       <input
+        v-if="type === 'input'"
         ref="elem"
         :value="input"
         type="text"
         class="v3-emoji-picker-input"
+        @input="onChangeText"
+        @blur="updateCursor"
+      />
+      <textarea
+        v-else
+        ref="elem"
+        :value="input"
+        class="v3-emoji-picker-textarea"
         @input="onChangeText"
         @blur="updateCursor"
       />
@@ -72,7 +81,7 @@ export default defineComponent({
     const picker = ref<any>()
     const open = ref(false)
     const input = ref(props.text)
-    const isInputType = props.type === 'input'
+    const isInputType = props.type === 'input' || props.type === 'textarea'
     let cursor = -1
     const { state } = inject('store') as Store
 

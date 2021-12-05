@@ -10,6 +10,15 @@
       border: 1px solid #999;
       padding-left: 15px;
     }
+    .v3-emoji-picker-textarea {
+      @extend .v3-emoji-picker-input;
+      min-height: 80px;
+      resize: vertical;
+      + .v3-input-picker-wrap .v3-input-picker-icon {
+        top: auto;
+        bottom: 5px;
+      }
+    }
     .v3-input-picker-wrap {
       .v3-input-picker-icon {
         display: inline-flex;
@@ -36,6 +45,7 @@
       &.v3-picker-is-open .v3-emoji-picker {
         opacity: 1;
         visibility: visible;
+        z-index: 999;
       }
     }
   }

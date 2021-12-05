@@ -47,20 +47,20 @@ function onSelectEmoji(emoji) {
 
 ## Options (`props`)
 
-| Prop                       | Type    | Default Value | Description                                                            |
-| :------------------------- | :------ | :------------ | :--------------------------------------------------------------------- |
-| native                     | Boolean | false         | Load native emoji instead of image.                                    |
-| hide-search                | Boolean | true          | Show/hide search input.                                                |
-| hide-group-icons           | Boolean | false         | Show/hide header group icons.                                          |
-| hide-group-names           | Boolean | false         | Show/hide group names.                                                 |
-| disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                         |
-| disable-skin-tones         | Boolean | false         | Disable skin tones.                                                    |
-| disabled-groups            | Array   | []            | Disable any group/category. See [Available groups](#available-groups)  |
-| group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names) |
-| static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                           |
-| pickerType                 | string  | ''            | Choose picker type, possible options: `input` (Popup with input), `''` |
-| mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`    |
-| offset                     | Number  | '6'           | Choose emoji popup offset                                              |
+| Prop                       | Type    | Default Value | Description                                                                                 |
+| :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------ |
+| native                     | Boolean | false         | Load native emoji instead of image.                                                         |
+| hide-search                | Boolean | true          | Show/hide search input.                                                                     |
+| hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                               |
+| hide-group-names           | Boolean | false         | Show/hide group names.                                                                      |
+| disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                              |
+| disable-skin-tones         | Boolean | false         | Disable skin tones.                                                                         |
+| disabled-groups            | Array   | []            | Disable any group/category. See [Available groups](#available-groups)                       |
+| group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names)                      |
+| static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                                                |
+| pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''` |
+| mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
+| offset                     | Number  | '6'           | Choose emoji popup offset                                                                   |
 
 ## Static text option (`props['static-texts']`)
 
