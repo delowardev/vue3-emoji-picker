@@ -1,12 +1,22 @@
 <template>
   <h2>Default</h2>
-  <picker />
+  <picker @select="onSelect" />
 
   <h2>With input</h2>
-  <picker :text="text" picker-type="input" @update:text="onChangeText" />
+  <picker
+    :text="text"
+    picker-type="input"
+    @select="onSelect"
+    @update:text="onChangeText"
+  />
 
   <h2>With textarea</h2>
-  <picker :text="text" picker-type="textarea" @update:text="onChangeText" />
+  <picker
+    :text="text"
+    picker-type="textarea"
+    @select="onSelect"
+    @update:text="onChangeText"
+  />
 </template>
 
 <script lang="ts">
@@ -36,12 +46,18 @@ export default defineComponent({
       text.value = new_text || ''
     }
 
+    function onSelect(emoji: any) {
+      alert(`${emoji.i} selected, check console log for emoji details.`)
+      console.log(emoji)
+    }
+
     /**
      * Return vars
      */
     return {
       onChangeText,
       text,
+      onSelect,
     }
   },
 })

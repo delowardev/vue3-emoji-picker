@@ -74,7 +74,7 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['update:text'],
+  emits: ['update:text', 'select'],
   setup(props, { emit }) {
     const elem = ref<HTMLInputElement>()
     const button = ref<HTMLButtonElement>()
@@ -89,19 +89,22 @@ export default defineComponent({
      * Functions
      */
     function onSelect(emoji: any) {
-      const mode = state.options.mode
-      if (mode === 'prepend') {
-        input.value = emoji.i + input.value
-      } else if (mode === 'insert' && cursor !== -1) {
-        input.value = `${input.value.slice(0, cursor)}${
-          emoji.i
-        }${input.value.slice(cursor)}`
-        cursor += emoji.i.length
-      } else {
-        input.value += emoji.i
+      if (isInputType) {
+        const mode = state.options.mode
+        if (mode === 'prepend') {
+          input.value = emoji.i + input.value
+        } else if (mode === 'insert' && cursor !== -1) {
+          input.value = `${input.value.slice(0, cursor)}${
+            emoji.i
+          }${input.value.slice(cursor)}`
+          cursor += emoji.i.length
+        } else {
+          input.value += emoji.i
+        }
+        emit('update:text', input.value)
       }
 
-      emit('update:text', input.value)
+      emit('select', emoji)
     }
 
     function updateCursor() {

@@ -1,5 +1,10 @@
 <template>
-  <picker-root :type="type" :text="input" @update:text="onChangeText" />
+  <picker-root
+    :type="type"
+    :text="input"
+    @select="$emit('select', $event)"
+    @update:text="onChangeText"
+  />
 </template>
 
 <script lang="ts">
@@ -74,7 +79,7 @@ export default defineComponent({
       default: '',
     },
   },
-  emits: ['update:text'],
+  emits: ['update:text', 'select'],
   setup(props, { emit }) {
     const input = ref(props.text)
 
