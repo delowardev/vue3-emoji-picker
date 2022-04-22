@@ -39,9 +39,6 @@
     "prettier:fix": "prettier -c --write --ignore-unknown ./",
     "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix"
   },
-  "peerDependencies": {
-    "vue": "^3.2.23"
-  },
   "devDependencies": {
     "@babel/types": "^7.15.6",
     "@types/node": "^16.11.7",
@@ -65,6 +62,7 @@
     "*.{js,ts,css,md,vue}": "npm run prettier:fix"
   },
   "dependencies": {
+    "vue": "^3.2.23",
     "@popperjs/core": "^2.11.0"
   }
 }
