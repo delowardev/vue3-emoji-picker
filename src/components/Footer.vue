@@ -11,7 +11,7 @@
     </div>
 
     <template v-if="hasSkinTones">
-      <button class="v3-tone" @click="toggleSkinToneState">
+      <button type="button" class="v3-tone" @click="toggleSkinToneState">
         <span class="v3-text">
           {{ skinToneText }}
         </span>
@@ -22,6 +22,7 @@
         <button
           v-for="tone in SKIN_TONES"
           :key="tone"
+          type="button"
           :class="['v3-skin-tone-' + tone, 'v3-skin-tone']"
           @click="selectSkinTone(tone)"
         />

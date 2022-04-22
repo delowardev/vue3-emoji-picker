@@ -2,6 +2,9 @@
   <h2>Default</h2>
   <picker @select="onSelect" />
 
+  <h2>Native</h2>
+  <picker :native="true" @select="onSelect" />
+
   <h2>With input</h2>
   <picker
     :text="text"

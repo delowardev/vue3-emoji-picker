@@ -22,7 +22,12 @@
         class="v3-input-picker-wrap"
         :class="open ? 'v3-picker-is-open' : ''"
       >
-        <button ref="button" class="v3-input-picker-icon" @click="open = !open">
+        <button
+          ref="button"
+          type="button"
+          class="v3-input-picker-icon"
+          @click="open = !open"
+        >
           <img :src="face" alt="" />
         </button>
 
