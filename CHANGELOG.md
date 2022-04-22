@@ -1,3 +1,7 @@
+v1.0.2 ( 22/04/22 )
+
+- Fix: Form gets submitted when clicking on any emoji
+
 v1.0.1 ( 06/12/21 )
 
 - Update: New input picker component added
