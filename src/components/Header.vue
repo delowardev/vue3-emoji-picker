@@ -4,6 +4,7 @@
       <button
         v-for="group in groups"
         :key="group.key"
+        type="button"
         class="v3-group"
         @click="updateActiveGroup(group.key)"
       >
