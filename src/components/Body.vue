@@ -20,9 +20,7 @@
               @click="handleClick(emoji)"
             >
               <!-- Native emoi -->
-              <span v-if="native">
-                {{ unicodeToEmoji(emoji.r) }}
-              </span>
+              <span v-if="native" v-html="unicodeToEmoji(emoji.r)" />
 
               <!-- Load from CDN when options.native = true -->
               <img
