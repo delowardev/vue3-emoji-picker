@@ -37,7 +37,7 @@
     "lint:fix": "eslint --fix --ext .ts,.js,.vue ./",
     "prettier": "prettier -c --ignore-unknown ./",
     "prettier:fix": "prettier -c --write --ignore-unknown ./",
-    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix"
+    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && vite build"
   },
   "devDependencies": {
     "@babel/types": "^7.15.6",
