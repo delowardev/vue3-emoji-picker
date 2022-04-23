@@ -1,6 +1,6 @@
 <template>
   <div class="v3-body">
-    <div ref="bodyInner" class="v3-body-inner">
+    <div ref="bodyInner" :class="platform" class="v3-body-inner">
       <template v-if="Object.keys(emojis).length">
         <div
           v-for="(group, key) in emojis"
@@ -19,8 +19,8 @@
               @mouseenter="handleMouseEnter(emoji)"
               @click="handleClick(emoji)"
             >
-              <!-- Native emoi -->
-              <span v-if="native" v-html="unicodeToEmoji(emoji.r)" />
+              <!-- Native emoji -->
+              <span v-if="native">{{ unicodeToEmoji(emoji.r) }}</span>
 
               <!-- Load from CDN when options.native = true -->
               <img
@@ -61,7 +61,7 @@ import {
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
 } from '../constant'
-import { filterEmojis, unicodeToEmoji } from '../helpers'
+import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
 
 export default defineComponent({
   name: 'Body',
@@ -81,6 +81,8 @@ export default defineComponent({
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
     const groupNames = computed(() => state.options.groupNames)
 
+    const platform = isMac() ? 'is-mac' : ''
+
     function handleMouseEnter(emoji: Emoji) {
       updateEmoji(emoji)
     }
@@ -93,9 +95,11 @@ export default defineComponent({
       })
     }
 
-    // @todo: handle error
     function handleError(event: Event, unicode: string) {
-      console.log(unicode)
+      const button = (event?.target as HTMLImageElement)?.closest('button')
+      if (button) {
+        button.innerHTML = unicodeToEmoji(unicode)
+      }
     }
 
     watch(
@@ -122,6 +126,7 @@ export default defineComponent({
       hasGroupNames,
       isSticky,
       groupNames,
+      platform,
     }
   },
 })

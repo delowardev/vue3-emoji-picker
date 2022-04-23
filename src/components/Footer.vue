@@ -1,9 +1,14 @@
 <template>
   <div class="v3-footer" @mouseleave="updateSkinToneState(false)">
     <div class="v3-foot-left">
-      <span class="v3-icon">
-        <!-- @todo: render native emoji when state.options.native = true -->
-        <img :src="emoji.src" />
+      <span :class="platform" class="v3-icon">
+        <span v-if="native || hasError">{{ unicodeToEmoji(emoji.r) }}</span>
+        <img
+          v-else
+          :alt="unicodeToEmoji(emoji.r)"
+          :src="emoji.src"
+          @error="hasError = true"
+        />
       </span>
       <span class="v3-text">
         :{{ emoji[EMOJI_NAME_KEY][1] || emoji[EMOJI_NAME_KEY][0] }}:
@@ -35,7 +40,7 @@
 /**
  * External dependencies
  */
-import { computed, defineComponent, inject, ref } from 'vue'
+import { computed, defineComponent, inject, ref, watch } from 'vue'
 
 /**
  * Internal dependencies
@@ -47,18 +52,20 @@ import {
   EMOJI_NAME_KEY,
 } from '../constant'
 import { Store } from '../types'
+import { unicodeToEmoji, isMac } from '../helpers'
 
 export default defineComponent({
   name: 'Header',
   setup() {
     const { state, updateSkinTone } = inject('store') as Store
     const skinTone = ref(false)
+    const hasError = ref(false)
     const skinToneText = computed(
       () => state.options.staticTexts.skinTone || 'Skin tone'
     )
     const hasSkinTones = computed(() => !state.options.disableSkinTones)
+    const platform = isMac() ? 'is-mac' : ''
 
-    // @todo: type shouldn't be 'any'
     const emoji = computed<any>(() => {
       return {
         ...state.emoji,
@@ -79,6 +86,13 @@ export default defineComponent({
       updateSkinToneState(false)
     }
 
+    watch(
+      () => state.emoji,
+      () => {
+        hasError.value = false
+      }
+    )
+
     return {
       emoji,
       SKIN_TONES,
@@ -90,6 +104,10 @@ export default defineComponent({
       EMOJI_NAME_KEY,
       skinToneText,
       hasSkinTones,
+      native: state.options.native,
+      unicodeToEmoji,
+      platform,
+      hasError,
     }
   },
 })

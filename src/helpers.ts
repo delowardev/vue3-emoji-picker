@@ -79,3 +79,15 @@ export function filterEmojis(
   })
   return _emojiData
 }
+
+/**
+ * Check if userAgent is mac.
+ *
+ * @return boolean;
+ */
+export function isMac() {
+  let platform =
+    // @ts-ignore
+    navigator?.userAgentData?.platform || navigator?.platform || 'unknown'
+  return platform.toUpperCase().indexOf('MAC') !== -1
+}
