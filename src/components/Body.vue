@@ -9,7 +9,7 @@
           class="v3-group"
         >
           <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
-            {{ GROUP_NAMES[key] }}
+            {{ groupNames[key] }}
           </h5>
           <div class="v3-emojis">
             <button
