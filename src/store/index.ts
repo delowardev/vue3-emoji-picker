@@ -11,6 +11,7 @@ const defaultOptions: Record<string, any> = {
   hideGroupNames: false,
   staticTexts: {},
   disabledGroups: [],
+  groupNames: {},
 }
 
 export default function Store(): Store {

@@ -9,7 +9,7 @@
           class="v3-group"
         >
           <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
-            {{ GROUP_NAMES[key] }}
+            {{ groupNames[key] }}
           </h5>
           <div class="v3-emojis">
             <button
@@ -79,7 +79,7 @@ export default defineComponent({
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
-    const groupNames = computed(() => state.options.groupNames)
+    const groupNames = state.options.groupNames
 
     const platform = isMac() ? 'is-mac' : ''
 
@@ -125,8 +125,8 @@ export default defineComponent({
       EMOJI_NAME_KEY,
       hasGroupNames,
       isSticky,
-      groupNames,
       platform,
+      groupNames,
     }
   },
 })
