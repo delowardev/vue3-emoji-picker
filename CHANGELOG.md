@@ -1,3 +1,7 @@
+v1.1.3 (16/06/22)
+
+- Fix: Unable to change group names #25
+
 v1.1.0 (24/04/22)
 
 - Fix: Missing emoji on Mac. See: #20
