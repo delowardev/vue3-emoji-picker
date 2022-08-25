@@ -107,7 +107,11 @@ export default defineComponent({
       () => {
         bodyInner.value
           ?.querySelector('#' + state.activeGroup)
-          ?.scrollIntoView({ behavior: 'smooth' })
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'start',
+          })
       }
     )
 

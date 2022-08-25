@@ -1,3 +1,7 @@
+v1.1.4 (25/08/22)
+
+- Fix: Unexpected whole page scroll. See #28
+
 v1.1.3 (16/06/22)
 
 - Fix: Unable to change group names #25
