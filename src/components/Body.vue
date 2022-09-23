@@ -55,6 +55,7 @@ import {
  * Internal dependencies
  */
 import { EmojiRecord, Emoji, Store } from '../types'
+
 import {
   EMOJI_REMOTE_SRC,
   GROUP_NAMES,
@@ -66,7 +67,7 @@ import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
 export default defineComponent({
   name: 'Body',
   setup() {
-    const { state, updateEmoji } = inject('store') as Store
+    const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
     const emojis = computed<EmojiRecord>(() =>
       filterEmojis(
@@ -76,6 +77,7 @@ export default defineComponent({
         state.options.disabledGroups
       )
     )
+
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
@@ -88,6 +90,7 @@ export default defineComponent({
     }
 
     function handleClick(emoji: Emoji) {
+      updateSelect(emoji)
       _this?.emit('select', {
         ...emoji,
         t: state.skinTone,
@@ -105,13 +108,12 @@ export default defineComponent({
     watch(
       () => state.activeGroup,
       () => {
-        bodyInner.value
-          ?.querySelector('#' + state.activeGroup)
-          ?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start',
-          })
+        const target = bodyInner.value?.querySelector('#' + state.activeGroup)
+        if (target) {
+          // @ts-ignore
+          target.parentNode.scrollTop =
+            target.offsetTop - target.parentNode.offsetTop
+        }
       }
     )
 

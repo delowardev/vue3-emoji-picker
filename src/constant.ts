@@ -5,6 +5,7 @@ export const EMOJI_REMOTE_SRC =
 
 // ./data/groups.json
 export const GROUP_NAMES: GroupNames = {
+  recent: 'Recently used',
   smileys_people: 'Smiles & People',
   animals_nature: 'Animals & Nature',
   food_drink: 'Food & Drink',

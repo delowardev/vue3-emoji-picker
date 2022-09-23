@@ -74,9 +74,17 @@ export default defineComponent({
       type: Number,
       default: 6,
     },
+    additionalGroups: {
+      type: Array,
+      default: () => [],
+    },
     pickerType: {
       type: String,
       default: '',
+    },
+    disableRecent: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:text', 'select'],
