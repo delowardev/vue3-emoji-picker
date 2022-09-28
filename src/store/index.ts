@@ -1,10 +1,12 @@
 import { reactive, readonly, toRaw } from 'vue'
 import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from '../constant'
-import { Emoji, EmojiRecord, Group, State, Store } from '../types'
+import { Emoji, EmojiRecord, Group, GroupKeys, State, Store } from '../types'
 import emojis from '../data/emojis.json'
 import _groups from '../data/groups.json'
 import initialize, { DB_KEY, DB_VERSION, STORE_KEY } from './db'
 import { openDB } from 'idb'
+
+const groupKeys = _groups.map((group) => group.key)
 
 // init db
 initialize()
@@ -34,6 +36,7 @@ export default function Store(): Store {
     activeGroup: '',
     skinTone: SKIN_TONE_NEUTRAL,
     options: defaultOptions,
+    additionalGroups: {} as EmojiRecord,
     recent: [],
     get emojis() {
       return {
@@ -53,6 +56,63 @@ export default function Store(): Store {
       return _groups.filter((group) => !disabled.includes(group.key)) as Group[]
     },
   })
+
+  /**
+   * Setup necessary stuff once picker is ready.
+   */
+  function initialize() {
+    // Setup initial recent emojis.
+    if (!state.options.disableRecent) {
+      setInitialRecentEmojis()
+    }
+
+    // Setup additional groups
+    setupAdditionalGroups()
+  }
+
+  /**
+   * Setup user defined additional groups
+   */
+  function setupAdditionalGroups() {
+    const groups = state.options.additionalGroups
+    let finalGroups = {} as EmojiRecord
+
+    // exit if invalid groups.
+    if (!Array.isArray(groups) || !groups.length) return
+
+    for (let group of groups) {
+      // group key validation.
+      if (!group.key) {
+        console.error(`additionalGroups: Group key is required.`)
+        continue
+      }
+
+      if (groupKeys.includes(group.key)) {
+        console.error(
+          `additionalGroups: Please don't use reserved keys. Reserved keys are: ${groupKeys}`
+        )
+        continue
+      }
+
+      // group title validation
+      if (!group.title) {
+        console.error(`additionalGroups: Group title is required.`)
+        continue
+      }
+
+      // group emojis validation
+      if (!Array.isArray(group.emojis) || !group.emojis.length) {
+        console.error(`additionalGroups: Invalid or empty emojis.`)
+        continue
+      }
+
+      finalGroups = Object.assign({}, finalGroups, {
+        [group.key]: group.emojis as Emoji[],
+      })
+    }
+
+    state.additionalGroups = finalGroups
+  }
 
   async function getRecent() {
     let recent = await getRecentEmojis()
@@ -111,10 +171,8 @@ export default function Store(): Store {
   const updateOptions = (options: Record<string, any>) => {
     state.options = Object.assign(state.options, options)
 
-    // Setup initial recent emojis.
-    if (!state.options.disableRecent) {
-      setInitialRecentEmojis()
-    }
+    // Picker is ready 🎉
+    initialize()
   }
 
   /**

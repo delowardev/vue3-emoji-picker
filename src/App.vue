@@ -3,7 +3,10 @@
   <picker :disable-recent="true" @select="onSelect" />
 
   <h2>Native</h2>
-  <picker :disable-recent="false" :native="true" @select="onSelect" />
+  <picker :native="true" @select="onSelect" />
+
+  <h2>Additional groups</h2>
+  <picker :additional-groups="additionalGroups" @select="onSelect" />
 
   <h2>With input</h2>
   <picker
@@ -54,6 +57,37 @@ export default defineComponent({
       console.log(emoji)
     }
 
+    const additionalGroups = [
+      {
+        key: 'abc_group',
+        title: 'Abc Group',
+        emojis: [
+          {
+            n: ['grinning face', 'grinning'],
+            u: '1f600',
+          },
+          {
+            n: ['grinning face with smiling eyes', 'grin'],
+            u: '1f601',
+          },
+        ],
+      },
+      {
+        key: 'bbc_group',
+        title: 'BBC Group',
+        emojis: [
+          {
+            n: ['grinning face', 'grinning'],
+            u: '1f600',
+          },
+          {
+            n: ['grinning face with smiling eyes', 'grin'],
+            u: '1f601',
+          },
+        ],
+      },
+    ]
+
     /**
      * Return vars
      */
@@ -61,6 +95,7 @@ export default defineComponent({
       onChangeText,
       text,
       onSelect,
+      additionalGroups,
     }
   },
 })

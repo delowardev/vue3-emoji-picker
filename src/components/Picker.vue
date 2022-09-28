@@ -102,10 +102,8 @@ export default defineComponent({
 
     /**
      * Create a brand new store and
-     * (provide) make available for entire app.
      */
     const store = Store()
-    provide('store', store)
 
     /**
      * Initializing initial props
@@ -121,9 +119,15 @@ export default defineComponent({
       groupNames: { ...GROUP_NAMES, ...props.groupNames },
       disableSkinTones: props.disableSkinTones,
       disableRecent: props.disableRecent,
+      additionalGroups: props.additionalGroups,
       mode: props.mode,
       offset: props.offset,
     })
+
+    /**
+     * (provide) make available for entire app.
+     */
+    provide('store', store)
 
     /**
      * Return vars
