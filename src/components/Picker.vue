@@ -120,6 +120,7 @@ export default defineComponent({
       disabledGroups: props.disabledGroups,
       groupNames: { ...GROUP_NAMES, ...props.groupNames },
       disableSkinTones: props.disableSkinTones,
+      disableRecent: props.disableRecent,
       mode: props.mode,
       offset: props.offset,
     })

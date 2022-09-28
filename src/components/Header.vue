@@ -42,6 +42,7 @@ import travel_places from '../svgs/groups/travel_places.svg'
 import objects from '../svgs/groups/objects.svg'
 import symbols from '../svgs/groups/symbols.svg'
 import flags from '../svgs/groups/flags.svg'
+import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
   name: 'Header',
@@ -59,8 +60,16 @@ export default defineComponent({
       set: (value: string) => updateSearch(value),
     })
 
+    const groups = computed(() => {
+      if (state.recent.length && !state.options.disableRecent) {
+        return state.groups
+      }
+
+      return state.groups.filter((group) => group.key !== 'recent')
+    })
+
     return {
-      groups: state.groups,
+      groups,
       searchValue,
       updateActiveGroup,
       hasSearch,
@@ -75,6 +84,7 @@ export default defineComponent({
         objects,
         symbols,
         flags,
+        recent,
       } as Record<GroupKeys, string>,
     }
   },

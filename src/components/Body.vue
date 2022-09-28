@@ -112,6 +112,7 @@ export default defineComponent({
         if (target) {
           // @ts-ignore
           target.parentNode.scrollTop =
+            // @ts-ignore
             target.offsetTop - target.parentNode.offsetTop
         }
       }

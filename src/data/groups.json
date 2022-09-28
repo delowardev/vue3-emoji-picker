@@ -1,5 +1,10 @@
 [
   {
+    "key": "recent",
+    "title": "Recently Used",
+    "u": "1f551"
+  },
+  {
     "key": "smileys_people",
     "title": "Smiles & People",
     "u": "1f600"

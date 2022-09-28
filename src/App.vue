@@ -1,9 +1,9 @@
 <template>
   <h2>Default</h2>
-  <picker @select="onSelect" />
+  <picker :disable-recent="true" @select="onSelect" />
 
   <h2>Native</h2>
-  <picker :native="true" @select="onSelect" />
+  <picker :disable-recent="false" :native="true" @select="onSelect" />
 
   <h2>With input</h2>
   <picker

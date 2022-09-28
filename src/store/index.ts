@@ -42,9 +42,14 @@ export default function Store(): Store {
       } as EmojiRecord
     },
     get groups(): Group[] {
-      const disabled = Array.isArray(this.options.disabledGroups)
+      let disabled = Array.isArray(this.options.disabledGroups)
         ? this.options.disabledGroups
         : []
+
+      if (this.options.disableRecent) {
+        disabled = ['recent', ...disabled]
+      }
+
       return _groups.filter((group) => !disabled.includes(group.key)) as Group[]
     },
   })
@@ -59,10 +64,13 @@ export default function Store(): Store {
     return recent
   }
 
-  getRecent().then((recent) => {
-    state.recent = recent
-    updateLocalStore()
-  })
+  function setInitialRecentEmojis() {
+    // set recent emojis once options is updated.
+    getRecent().then((recent) => {
+      state.recent = recent
+      updateLocalStore()
+    })
+  }
 
   /**
    * Update search text.
@@ -102,6 +110,11 @@ export default function Store(): Store {
    */
   const updateOptions = (options: Record<string, any>) => {
     state.options = Object.assign(state.options, options)
+
+    // Setup initial recent emojis.
+    if (!state.options.disableRecent) {
+      setInitialRecentEmojis()
+    }
   }
 
   /**
@@ -129,10 +142,7 @@ export default function Store(): Store {
     if (index > 0) state.recent.splice(index, 1) // remove duplicate
     if (index === 0) return // already in position
 
-    const _emoji = {
-      u: emoji.u,
-      n: toRaw(emoji.n),
-    } as Emoji
+    const _emoji = { u: emoji.u, n: toRaw(emoji.n) } as Emoji
 
     state.recent = [_emoji, ...state.recent]
     // Maximum allowed recent items are 24
