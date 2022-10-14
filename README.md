@@ -61,6 +61,10 @@ function onSelectEmoji(emoji) {
 | pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''` |
 | mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
 | offset                     | Number  | '6'           | Choose emoji popup offset                                                                   |
+| additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case       |
+| group-names                | Object  | {}            | Override group names by providing the translation on the key                                |
+| group-order                | Array   | []            | Override ordering of groups                                                                 |
+| group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |
 
 ## Static text option (`props['static-texts']`)
 
@@ -124,4 +128,44 @@ function onChangeText(text) { /* do something */ }
   "symbols": "Symbols",
   "flags": "Flags"
 }
+```
+
+## Overriding group names
+
+```vue
+<picker :group-names="{ smileys_people: 'My customized group name' }" />
+```
+
+## Overriding group icons
+
+```vue
+<template>
+  <picker :group-icons="{ smileys_people: customSVG }" />
+</template>
+
+<script setup>
+import customSVG from './path/to/svg'
+</script>
+```
+
+## Override group order
+
+This will make it so flags is first and then any other non-defined group will follow.
+
+```vue
+<picker :group-order="['flags']" />
+```
+
+## Add additional groups
+
+```vue
+<picker
+  :additional-groups="{
+    my_custom_group: [
+      { n: ['grinning face', 'grinning'], u: '1f600' },
+      { n: ['grinning face with smiling eyes', 'grin'], u: '1f601' },
+    ],
+  }"
+  :group-names="{ my_custom_group: 'Frequently used' }"
+/>
 ```
