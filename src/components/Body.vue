@@ -67,6 +67,7 @@ import {
   unicodeToEmoji,
   isMac,
   sortGroupOrdening,
+  snakeToCapitalizedCase,
 } from '../helpers'
 
 export default defineComponent({
@@ -119,9 +120,7 @@ export default defineComponent({
           groupNames[k] = state.options.groupNames[k]
         } else {
           // Name group name from snake case to capitalized wording, e.g. my_custom_group to My Custom Group
-          groupNames[k] = k.replace(/^_*(.)|_+(.)/g, (s, c, d) =>
-            c ? c.toUpperCase() : ' ' + d.toUpperCase()
-          )
+          groupNames[k] = snakeToCapitalizedCase(k)
         }
       })
     }

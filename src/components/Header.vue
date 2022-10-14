@@ -30,7 +30,7 @@ import { computed, defineComponent, inject } from 'vue'
  * Internal dependencies
  */
 import { Store } from '../types'
-import { sortGroupOrdening } from '../helpers'
+import { snakeToCapitalizedCase, sortGroupOrdening } from '../helpers'
 
 /**
  * Group/Category Images
@@ -85,9 +85,7 @@ export default defineComponent({
         key: g,
         title: props.groupNames[g]
           ? props.groupNames[g]
-          : g.replace(/^_*(.)|_+(.)/g, (s, c, d) =>
-              c ? c.toUpperCase() : ' ' + d.toUpperCase()
-            ),
+          : snakeToCapitalizedCase(g),
       })),
     ]
 
