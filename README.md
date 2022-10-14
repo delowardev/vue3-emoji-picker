@@ -158,6 +158,8 @@ This will make it so flags is first and then any other non-defined group will fo
 
 ## Add additional groups
 
+To see any existing emoji's see `src/data/emojis.json`
+
 ```vue
 <picker
   :additional-groups="{
