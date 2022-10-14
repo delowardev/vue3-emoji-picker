@@ -62,7 +62,6 @@ function onSelectEmoji(emoji) {
 | mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
 | offset                     | Number  | '6'           | Choose emoji popup offset                                                                   |
 | additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case       |
-| group-names                | Object  | {}            | Override group names by providing the translation on the key                                |
 | group-order                | Array   | []            | Override ordering of groups                                                                 |
 | group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |
 
