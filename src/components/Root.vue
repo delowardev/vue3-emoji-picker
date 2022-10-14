@@ -89,7 +89,7 @@ export default defineComponent({
     },
     additionalGroups: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     groupOrder: {
       type: Array,
@@ -97,7 +97,7 @@ export default defineComponent({
     },
     groupIcons: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     groupNames: {
       type: Object,

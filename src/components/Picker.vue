@@ -80,7 +80,7 @@ export default defineComponent({
     },
     additionalGroups: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     groupOrder: {
       type: Array,
@@ -88,7 +88,7 @@ export default defineComponent({
     },
     groupIcons: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     pickerType: {
       type: String,

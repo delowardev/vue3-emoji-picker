@@ -75,7 +75,7 @@ export default defineComponent({
   props: {
     additionalGroups: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     groupOrder: {
       type: Array,
