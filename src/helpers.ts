@@ -91,3 +91,23 @@ export function isMac() {
     navigator?.userAgentData?.platform || navigator?.platform || 'unknown'
   return platform.toUpperCase().indexOf('MAC') !== -1
 }
+
+/**
+ * Sort ordening groups
+ *
+ * @return Array
+ */
+export function sortGroupOrdening(
+  a: string,
+  b: string,
+  groupOrderArray: string[]
+) {
+  const aIdx = groupOrderArray.findIndex((g) => g === a)
+  const bIdx = groupOrderArray.findIndex((g) => g === b)
+
+  if (aIdx === -1) return 1
+  if (bIdx === -1) return -1
+  if (aIdx > bIdx) return 1
+  if (aIdx < bIdx) return -1
+  return 0
+}

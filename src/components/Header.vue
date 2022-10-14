@@ -29,7 +29,8 @@ import { computed, defineComponent, inject } from 'vue'
 /**
  * Internal dependencies
  */
-import { GroupKeys, Store } from '../types'
+import { Store } from '../types'
+import { sortGroupOrdening } from '../helpers'
 
 /**
  * Group/Category Images
@@ -45,7 +46,25 @@ import flags from '../svgs/groups/flags.svg'
 
 export default defineComponent({
   name: 'Header',
-  setup() {
+  props: {
+    additionalGroups: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupOrder: {
+      type: Array,
+      default: () => [],
+    },
+    groupIcons: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupNames: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
     const hasSearch = computed(() => !state.options.hideSearch)
@@ -59,8 +78,26 @@ export default defineComponent({
       set: (value: string) => updateSearch(value),
     })
 
+    let groups = [
+      ...state.groups,
+      ...Object.keys(props.additionalGroups).map((g) => ({
+        key: g,
+        title: props.groupNames[g]
+          ? props.groupNames[g]
+          : g.replace(/^_*(.)|_+(.)/g, (s, c, d) =>
+              c ? c.toUpperCase() : ' ' + d.toUpperCase()
+            ),
+      })),
+    ]
+
+    if (props.groupOrder.length) {
+      groups = groups.sort((a, b) =>
+        sortGroupOrdening(a.key, b.key, props.groupOrder as string[])
+      )
+    }
+
     return {
-      groups: state.groups,
+      groups,
       searchValue,
       updateActiveGroup,
       hasSearch,
@@ -75,7 +112,8 @@ export default defineComponent({
         objects,
         symbols,
         flags,
-      } as Record<GroupKeys, string>,
+        ...props.groupIcons,
+      } as Record<string, string>,
     }
   },
 })

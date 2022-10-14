@@ -20,6 +20,15 @@
     @select="onSelect"
     @update:text="onChangeText"
   />
+
+  <h2>With group ordering and additional groups</h2>
+  <picker
+    :additional-groups="additionalGroups"
+    :group-names="{ my_custom_group: 'Frequently used' }"
+    :group-order="['my_custom_group', 'smileys_people', 'flags']"
+    :group-icons="{ my_custom_group: custom }"
+    @select="onSelect"
+  />
 </template>
 
 <script lang="ts">
@@ -32,6 +41,11 @@ import { defineComponent, ref } from 'vue'
  * Internal dependencies
  */
 import Picker from './components/Picker.vue'
+
+/**
+ * SVGs
+ */
+import custom from './svgs/groups/custom.svg'
 
 export default defineComponent({
   name: 'App',
@@ -54,6 +68,13 @@ export default defineComponent({
       console.log(emoji)
     }
 
+    const additionalGroups = {
+      my_custom_group: [
+        { n: ['grinning face', 'grinning'], u: '1f600' },
+        { n: ['grinning face with smiling eyes', 'grin'], u: '1f601' },
+      ],
+    }
+
     /**
      * Return vars
      */
@@ -61,6 +82,8 @@ export default defineComponent({
       onChangeText,
       text,
       onSelect,
+      additionalGroups,
+      custom,
     }
   },
 })
