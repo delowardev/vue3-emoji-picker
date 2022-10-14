@@ -30,7 +30,7 @@ import { computed, defineComponent, inject } from 'vue'
  * Internal dependencies
  */
 import { Store } from '../types'
-import { snakeToCapitalizedCase, sortGroupOrdening } from '../helpers'
+import { snakeToCapitalizedCase, sortGroupOrder } from '../helpers'
 
 /**
  * Group/Category Images
@@ -91,7 +91,7 @@ export default defineComponent({
 
     if (props.groupOrder.length) {
       groups = groups.sort((a, b) =>
-        sortGroupOrdening(a.key, b.key, props.groupOrder as string[])
+        sortGroupOrder(a.key, b.key, props.groupOrder as string[])
       )
     }
 

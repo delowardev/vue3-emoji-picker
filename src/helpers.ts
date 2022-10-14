@@ -97,7 +97,7 @@ export function isMac() {
  *
  * @return Array
  */
-export function sortGroupOrdening(
+export function sortGroupOrder(
   a: string,
   b: string,
   groupOrderArray: string[]

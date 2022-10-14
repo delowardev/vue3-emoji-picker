@@ -66,7 +66,7 @@ import {
   filterEmojis,
   unicodeToEmoji,
   isMac,
-  sortGroupOrdening,
+  sortGroupOrder,
   snakeToCapitalizedCase,
 } from '../helpers'
 
@@ -98,7 +98,7 @@ export default defineComponent({
       if (props.groupOrder.length) {
         return Object.fromEntries(
           filteredEmojis.sort(([a], [b]) =>
-            sortGroupOrdening(a, b, props.groupOrder as string[])
+            sortGroupOrder(a, b, props.groupOrder as string[])
           )
         )
       }
