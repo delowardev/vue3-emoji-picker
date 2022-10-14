@@ -43,6 +43,7 @@ import travel_places from '../svgs/groups/travel_places.svg'
 import objects from '../svgs/groups/objects.svg'
 import symbols from '../svgs/groups/symbols.svg'
 import flags from '../svgs/groups/flags.svg'
+import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
   name: 'Header',
@@ -113,6 +114,7 @@ export default defineComponent({
         symbols,
         flags,
         ...props.groupIcons,
+        recent,
       } as Record<string, string>,
     }
   },
