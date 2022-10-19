@@ -105,10 +105,8 @@ export function sortGroupOrder(
   const aIdx = groupOrderArray.findIndex((g) => g === a)
   const bIdx = groupOrderArray.findIndex((g) => g === b)
 
-  if (aIdx === -1) return 1
-  if (bIdx === -1) return -1
-  if (aIdx > bIdx) return 1
-  if (aIdx < bIdx) return -1
+  if (aIdx === -1 || aIdx > bIdx) return 1
+  if (bIdx === -1 || aIdx < bIdx) return -1
   return 0
 }
 
