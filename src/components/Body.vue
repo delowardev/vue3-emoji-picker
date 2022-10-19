@@ -49,6 +49,7 @@ import {
   computed,
   getCurrentInstance,
   inject,
+  toRaw,
 } from 'vue'
 
 /**
@@ -109,7 +110,7 @@ export default defineComponent({
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
-    const groupNames = state.options.groupNames
+    const groupNames = toRaw(state.options.groupNames)
 
     if (state.options.additionalGroups) {
       Object.keys(state.options.additionalGroups).map((k) => {
