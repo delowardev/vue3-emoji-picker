@@ -20,7 +20,7 @@ const defaultOptions: Record<string, any> = {
   disabledGroups: [],
   groupNames: {},
   disableRecent: false,
-  additionalGroups: [],
+  additionalGroups: {},
 }
 
 async function getRecentEmojis() {
@@ -41,6 +41,7 @@ export default function Store(): Store {
     get emojis() {
       return {
         recent: this.recent,
+        ...this.options.additionalGroups,
         ...emojis,
       } as EmojiRecord
     },

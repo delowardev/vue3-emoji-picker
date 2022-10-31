@@ -29,7 +29,8 @@ import { computed, defineComponent, inject } from 'vue'
 /**
  * Internal dependencies
  */
-import { GroupKeys, Store } from '../types'
+import { Store } from '../types'
+import { snakeToCapitalizedCase, sortGroupOrder } from '../helpers'
 
 /**
  * Group/Category Images
@@ -46,7 +47,25 @@ import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
   name: 'Header',
-  setup() {
+  props: {
+    additionalGroups: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupOrder: {
+      type: Array,
+      default: () => [],
+    },
+    groupIcons: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupNames: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  setup(props) {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
     const hasSearch = computed(() => !state.options.hideSearch)
@@ -60,13 +79,21 @@ export default defineComponent({
       set: (value: string) => updateSearch(value),
     })
 
-    const groups = computed(() => {
-      if (state.recent.length && !state.options.disableRecent) {
-        return state.groups
-      }
+    let groups = [
+      ...state.groups,
+      ...Object.keys(props.additionalGroups).map((g) => ({
+        key: g,
+        title: props.groupNames[g]
+          ? props.groupNames[g]
+          : snakeToCapitalizedCase(g),
+      })),
+    ]
 
-      return state.groups.filter((group) => group.key !== 'recent')
-    })
+    if (props.groupOrder.length) {
+      groups = groups.sort((a, b) =>
+        sortGroupOrder(a.key, b.key, props.groupOrder as string[])
+      )
+    }
 
     return {
       groups,
@@ -84,8 +111,9 @@ export default defineComponent({
         objects,
         symbols,
         flags,
+        ...props.groupIcons,
         recent,
-      } as Record<GroupKeys, string>,
+      } as Record<string, string>,
     }
   },
 })

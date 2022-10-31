@@ -49,6 +49,7 @@ import {
   computed,
   getCurrentInstance,
   inject,
+  toRaw,
 } from 'vue'
 
 /**
@@ -62,26 +63,66 @@ import {
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
 } from '../constant'
-import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
+import {
+  filterEmojis,
+  unicodeToEmoji,
+  isMac,
+  sortGroupOrder,
+  snakeToCapitalizedCase,
+} from '../helpers'
 
 export default defineComponent({
   name: 'Body',
-  setup() {
+  props: {
+    additionalGroups: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupOrder: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  setup(props) {
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
-    const emojis = computed<EmojiRecord>(() =>
-      filterEmojis(
-        state.emojis,
-        state.search,
-        state.skinTone,
-        state.options.disabledGroups
+    const emojis = computed<EmojiRecord>(() => {
+      const filteredEmojis = Object.entries(
+        filterEmojis(
+          { ...state.emojis, ...props.additionalGroups },
+          state.search,
+          state.skinTone,
+          state.options.disabledGroups
+        )
       )
-    )
+
+      if (props.groupOrder.length) {
+        return Object.fromEntries(
+          filteredEmojis.sort(([a], [b]) =>
+            sortGroupOrder(a, b, props.groupOrder as string[])
+          )
+        )
+      }
+
+      return Object.fromEntries(filteredEmojis)
+    })
 
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
-    const groupNames = state.options.groupNames
+    const groupNames = toRaw(state.options.groupNames)
+
+    if (state.options.additionalGroups) {
+      Object.keys(state.options.additionalGroups).map((k) => {
+        if (state.options.groupNames[k]) {
+          // Custom name is defined use that one
+          groupNames[k] = state.options.groupNames[k]
+        } else {
+          // Name group name from snake case to capitalized wording, e.g. my_custom_group to My Custom Group
+          groupNames[k] = snakeToCapitalizedCase(k)
+        }
+      })
+    }
 
     const platform = isMac() ? 'is-mac' : ''
 

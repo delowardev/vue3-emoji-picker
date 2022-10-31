@@ -32,7 +32,7 @@ export interface Emoji {
   src?: string
 }
 
-export type EmojiRecord = Record<GroupKeys, Emoji[]>
+export type EmojiRecord = Record<string, Emoji[]>
 
 export interface State {
   groups: Group[]
