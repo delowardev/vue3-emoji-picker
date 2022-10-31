@@ -1,6 +1,6 @@
 <template>
   <h2>Default</h2>
-  <picker :disable-recent="true" @select="onSelect" />
+  <picker :display-recent="true" @select="onSelect" />
 
   <h2>Native</h2>
   <picker :native="true" @select="onSelect" />
@@ -28,10 +28,8 @@
   <picker
     :additional-groups="additionalGroups"
     :group-names="{
-      my_custom_group: 'Booom',
       smileys_people: 'Smileys!!!',
     }"
-    :group-order="['my_custom_group', 'smileys_people', 'flags']"
     :group-icons="{ my_custom_group: custom }"
     @select="onSelect"
   />

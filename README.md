@@ -64,6 +64,7 @@ function onSelectEmoji(emoji) {
 | additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case       |
 | group-order                | Array   | []            | Override ordering of groups                                                                 |
 | group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |
+| display-recent             | Boolean | false         | Display Recently used emojis                                                                |
 
 ## Static text option (`props['static-texts']`)
 

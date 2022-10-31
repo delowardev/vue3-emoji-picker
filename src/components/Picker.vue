@@ -90,7 +90,7 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    disableRecent: {
+    displayRecent: {
       type: Boolean,
       default: false,
     },
@@ -126,7 +126,7 @@ export default defineComponent({
       disabledGroups: props.disabledGroups,
       groupNames: { ...GROUP_NAMES, ...props.groupNames },
       disableSkinTones: props.disableSkinTones,
-      disableRecent: props.disableRecent,
+      displayRecent: props.displayRecent,
       additionalGroups: props.additionalGroups,
       mode: props.mode,
       offset: props.offset,

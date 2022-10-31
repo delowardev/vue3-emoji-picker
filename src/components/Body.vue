@@ -73,7 +73,7 @@ import {
 
 export default defineComponent({
   name: 'Body',
-  setup(props) {
+  setup() {
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
     const emojis = computed<EmojiRecord>(() => {

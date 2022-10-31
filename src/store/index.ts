@@ -6,8 +6,6 @@ import _groups from '../data/groups.json'
 import initialize, { DB_KEY, DB_VERSION, STORE_KEY } from './db'
 import { openDB } from 'idb'
 
-const groupKeys = _groups.map((group) => group.key)
-
 // init db
 initialize()
 
@@ -19,7 +17,7 @@ const defaultOptions: Record<string, any> = {
   staticTexts: {},
   disabledGroups: [],
   groupNames: {},
-  disableRecent: false,
+  displayRecent: false,
   additionalGroups: {},
   groupOrder: [],
   groupIcons: {},
@@ -52,7 +50,7 @@ export default function Store(): Store {
         ? this.options.disabledGroups
         : []
 
-      if (this.options.disableRecent) {
+      if (!this.options.displayRecent) {
         disabled = ['recent', ...disabled]
       }
 
@@ -65,56 +63,11 @@ export default function Store(): Store {
    */
   function initialize() {
     // Setup initial recent emojis.
-    if (!state.options.disableRecent) {
+    if (state.options.displayRecent) {
       setInitialRecentEmojis()
     }
 
     // Setup additional groups
-    setupAdditionalGroups()
-  }
-
-  /**
-   * Setup user defined additional groups
-   */
-  function setupAdditionalGroups() {
-    const groups = state.options.additionalGroups
-    let finalGroups = {} as EmojiRecord
-
-    // exit if invalid groups.
-    if (!Array.isArray(groups) || !groups.length) return
-
-    for (let group of groups) {
-      // group key validation.
-      if (!group.key) {
-        console.error(`additionalGroups: Group key is required.`)
-        continue
-      }
-
-      if (groupKeys.includes(group.key)) {
-        console.error(
-          `additionalGroups: Please don't use reserved keys. Reserved keys are: ${groupKeys}`
-        )
-        continue
-      }
-
-      // group title validation
-      if (!group.title) {
-        console.error(`additionalGroups: Group title is required.`)
-        continue
-      }
-
-      // group emojis validation
-      if (!Array.isArray(group.emojis) || !group.emojis.length) {
-        console.error(`additionalGroups: Invalid or empty emojis.`)
-        continue
-      }
-
-      finalGroups = Object.assign({}, finalGroups, {
-        [group.key]: group.emojis as Emoji[],
-      })
-    }
-
-    state.additionalGroups = finalGroups
   }
 
   async function getRecent() {
@@ -197,7 +150,7 @@ export default function Store(): Store {
    * @param emoji
    */
   const updateSelect = (emoji: Emoji) => {
-    if (state.options.disableRecent === true) return
+    if (state.options.displayRecent !== true) return
     const index = state.recent.findIndex((item) => item.u === emoji.u)
 
     if (index > 0) state.recent.splice(index, 1) // remove duplicate
