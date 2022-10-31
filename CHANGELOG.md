@@ -1,3 +1,11 @@
+v1.1.5-beta (31/10/22)
+
+- Feature: Recently Added Emoji Group
+- Additional Group Support
+- Group Sort Support
+- Custom Group Icons Support
+- Fix: Store Reactivity Issue
+
 v1.1.4 (25/08/22)
 
 - Fix: Unexpected whole page scroll. See #28
