@@ -2,10 +2,6 @@
   <picker-root
     :type="type"
     :text="input"
-    :additional-groups="additionalGroups"
-    :group-order="groupOrder"
-    :group-icons="groupIcons"
-    :group-names="groupNames"
     @select="$emit('select', $event)"
     @update:text="onChangeText"
   />
@@ -134,6 +130,8 @@ export default defineComponent({
       additionalGroups: props.additionalGroups,
       mode: props.mode,
       offset: props.offset,
+      groupOrder: props.groupOrder,
+      groupIcons: props.groupIcons,
     })
 
     /**

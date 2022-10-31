@@ -73,33 +73,23 @@ import {
 
 export default defineComponent({
   name: 'Body',
-  props: {
-    additionalGroups: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupOrder: {
-      type: Array,
-      default: () => [],
-    },
-  },
   setup(props) {
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
     const emojis = computed<EmojiRecord>(() => {
       const filteredEmojis = Object.entries(
         filterEmojis(
-          { ...state.emojis, ...props.additionalGroups },
+          { ...state.emojis, ...state.options.additionalGroups },
           state.search,
           state.skinTone,
           state.options.disabledGroups
         )
       )
 
-      if (props.groupOrder.length) {
+      if (state.options.groupOrder.length) {
         return Object.fromEntries(
           filteredEmojis.sort(([a], [b]) =>
-            sortGroupOrder(a, b, props.groupOrder as string[])
+            sortGroupOrder(a, b, state.options.groupOrder as string[])
           )
         )
       }

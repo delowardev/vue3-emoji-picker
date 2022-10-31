@@ -1,6 +1,6 @@
 import { reactive, readonly, toRaw } from 'vue'
 import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from '../constant'
-import { Emoji, EmojiRecord, Group, GroupKeys, State, Store } from '../types'
+import { Emoji, EmojiRecord, Group, State, Store } from '../types'
 import emojis from '../data/emojis.json'
 import _groups from '../data/groups.json'
 import initialize, { DB_KEY, DB_VERSION, STORE_KEY } from './db'
@@ -21,6 +21,8 @@ const defaultOptions: Record<string, any> = {
   groupNames: {},
   disableRecent: false,
   additionalGroups: {},
+  groupOrder: [],
+  groupIcons: {},
 }
 
 async function getRecentEmojis() {
@@ -170,7 +172,7 @@ export default function Store(): Store {
    * @param options
    */
   const updateOptions = (options: Record<string, any>) => {
-    state.options = Object.assign(state.options, options)
+    state.options = Object.assign({}, state.options, options)
 
     // Picker is ready 🎉
     initialize()
