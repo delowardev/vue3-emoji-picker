@@ -1,19 +1,14 @@
 <template>
   <div class="v3-body">
     <div ref="bodyInner" :class="platform" class="v3-body-inner">
-      <template v-if="Object.keys(emojis).length">
-        <div
-          v-for="(group, key) in emojis"
-          :id="key"
-          :key="key"
-          class="v3-group"
-        >
+      <template v-if="orderedKeys.length">
+        <div v-for="key of orderedKeys" :id="key" :key="key" class="v3-group">
           <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
             {{ groupNames[key] }}
           </h5>
           <div class="v3-emojis">
             <button
-              v-for="emoji in group"
+              v-for="emoji in emojis[key]"
               :key="emoji.r"
               type="button"
               @mouseenter="handleMouseEnter(emoji)"
@@ -67,7 +62,6 @@ import {
   filterEmojis,
   unicodeToEmoji,
   isMac,
-  sortGroupOrder,
   snakeToCapitalizedCase,
 } from '../helpers'
 
@@ -77,30 +71,19 @@ export default defineComponent({
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
     const emojis = computed<EmojiRecord>(() => {
-      const filteredEmojis = Object.entries(
-        filterEmojis(
-          { ...state.emojis, ...state.options.additionalGroups },
-          state.search,
-          state.skinTone,
-          state.options.disabledGroups
-        )
+      return filterEmojis(
+        state.emojis,
+        state.search,
+        state.skinTone,
+        state.options.disabledGroups
       )
-
-      if (state.options.groupOrder.length) {
-        return Object.fromEntries(
-          filteredEmojis.sort(([a], [b]) =>
-            sortGroupOrder(a, b, state.options.groupOrder as string[])
-          )
-        )
-      }
-
-      return Object.fromEntries(filteredEmojis)
     })
 
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
     const groupNames = toRaw(state.options.groupNames)
+    const orderedKeys = state.orderedGroupKeys
 
     if (state.options.additionalGroups) {
       Object.keys(state.options.additionalGroups).map((k) => {
@@ -149,6 +132,8 @@ export default defineComponent({
       }
     )
 
+    console.log(state.orderedGroupKeys)
+
     return {
       emojis,
       bodyInner,
@@ -165,6 +150,7 @@ export default defineComponent({
       isSticky,
       platform,
       groupNames,
+      orderedKeys,
     }
   },
 })

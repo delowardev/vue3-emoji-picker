@@ -28,8 +28,10 @@
   <picker
     :additional-groups="additionalGroups"
     :group-names="{
-      smileys_people: 'Smileys!!!',
+      smileys_people: 'Smileys!',
+      my_custom_group: 'Custom Group',
     }"
+    :group-order="['flags', 'my_custom_group', 'smileys_people']"
     :group-icons="{ my_custom_group: custom }"
     @select="onSelect"
   />

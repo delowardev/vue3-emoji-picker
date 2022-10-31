@@ -44,6 +44,8 @@ export interface State {
   skinTone: string
   options: Record<string, any>
   recent: Emoji[]
+  orderedGroupKeys: string[]
+  disabled: string[]
 }
 
 export interface Store {

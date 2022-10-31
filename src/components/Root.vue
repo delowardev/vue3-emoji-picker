@@ -40,17 +40,8 @@
     </div>
   </div>
   <div v-else class="v3-emoji-picker">
-    <Header
-      :group-names="groupNames"
-      :additional-groups="additionalGroups"
-      :group-icons="groupIcons"
-      :group-order="groupOrder"
-    />
-    <Body
-      :additional-groups="additionalGroups"
-      :group-order="groupOrder"
-      @select="onSelect"
-    />
+    <Header />
+    <Body @select="onSelect" />
     <Footer />
   </div>
 </template>

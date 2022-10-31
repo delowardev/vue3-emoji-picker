@@ -2,10 +2,13 @@
   <div v-if="hasGroupIcons || hasSearch" class="v3-header">
     <div v-if="hasGroupIcons" class="v3-groups">
       <button
-        v-for="group in groups"
+        v-for="group of orderedGroups"
         :key="group.key"
         type="button"
         class="v3-group"
+        :class="{
+          'v3-is-hidden': !icons[group.key],
+        }"
         @click="updateActiveGroup(group.key)"
       >
         <span :title="group.title" class="v3-icon">
@@ -29,8 +32,8 @@ import { computed, defineComponent, inject } from 'vue'
 /**
  * Internal dependencies
  */
-import { Store } from '../types'
-import { snakeToCapitalizedCase, sortGroupOrder } from '../helpers'
+import { Group, Store } from '../types'
+import { snakeToCapitalizedCase } from '../helpers'
 
 /**
  * Group/Category Images
@@ -47,29 +50,12 @@ import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
   name: 'Header',
-  props: {
-    additionalGroups: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupOrder: {
-      type: Array,
-      default: () => [],
-    },
-    groupIcons: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupNames: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
   setup(props) {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
     const hasSearch = computed(() => !state.options.hideSearch)
     const hasGroupIcons = computed(() => !state.options.hideGroupIcons)
+    const orderedKeys = JSON.parse(JSON.stringify(state.orderedGroupKeys))
     const placeholder = computed(
       () => state.options.staticTexts.placeholder || ''
     )
@@ -79,24 +65,28 @@ export default defineComponent({
       set: (value: string) => updateSearch(value),
     })
 
-    let groups = [
+    const groups: Group[] = [
       ...state.groups,
-      ...Object.keys(props.additionalGroups).map((g) => ({
+      ...Object.keys(state.options.additionalGroups).map((g) => ({
         key: g,
-        title: props.groupNames[g]
-          ? props.groupNames[g]
+        title: state.options.groupNames[g]
+          ? state.options.groupNames[g]
           : snakeToCapitalizedCase(g),
       })),
-    ]
+    ] as Group[]
 
-    if (props.groupOrder.length) {
-      groups = groups.sort((a, b) =>
-        sortGroupOrder(a.key, b.key, props.groupOrder as string[])
-      )
-    }
+    const orderedGroups: Group[] = []
+
+    orderedKeys.forEach((key: string) => {
+      const index = groups.findIndex((group) => group.key === key)
+      if (index === -1) return
+      orderedGroups.push(groups[index])
+      groups.splice(index, 1)
+    })
 
     return {
-      groups,
+      orderedGroups,
+      orderedKeys,
       searchValue,
       updateActiveGroup,
       hasSearch,
@@ -111,7 +101,7 @@ export default defineComponent({
         objects,
         symbols,
         flags,
-        ...props.groupIcons,
+        ...state.options.groupIcons,
         recent,
       } as Record<string, string>,
     }

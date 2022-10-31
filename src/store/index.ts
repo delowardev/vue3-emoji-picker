@@ -45,7 +45,7 @@ export default function Store(): Store {
         ...emojis,
       } as EmojiRecord
     },
-    get groups(): Group[] {
+    get disabled() {
       let disabled = Array.isArray(this.options.disabledGroups)
         ? this.options.disabledGroups
         : []
@@ -54,7 +54,20 @@ export default function Store(): Store {
         disabled = ['recent', ...disabled]
       }
 
-      return _groups.filter((group) => !disabled.includes(group.key)) as Group[]
+      return disabled
+    },
+    get groups(): Group[] {
+      return _groups.filter(
+        (group) => !this.disabled.includes(group.key)
+      ) as Group[]
+    },
+    get orderedGroupKeys() {
+      const keys = [
+        ...this.options.groupOrder,
+        Object.keys(this.options.additionalGroups),
+        ..._groups.map((group) => group.key),
+      ]
+      return [...new Set(keys)].filter((key) => !this.disabled.includes(key))
     },
   })
 
@@ -66,8 +79,6 @@ export default function Store(): Store {
     if (state.options.displayRecent) {
       setInitialRecentEmojis()
     }
-
-    // Setup additional groups
   }
 
   async function getRecent() {
