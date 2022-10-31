@@ -10,12 +10,17 @@
         margin: 0;
         border: none;
         background: none;
-        font-size: 24px;
+        font-size: 23px;
         cursor: pointer;
         position: relative;
         display: block;
         opacity: 0.7;
         transition: 200ms;
+
+        &.v3-is-hidden {
+          display: none;
+        }
+
         &:first-child,
         &:last-child {
           flex-grow: 0;

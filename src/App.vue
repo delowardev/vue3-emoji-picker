@@ -1,9 +1,12 @@
 <template>
   <h2>Default</h2>
-  <picker @select="onSelect" />
+  <picker :display-recent="true" @select="onSelect" />
 
   <h2>Native</h2>
   <picker :native="true" @select="onSelect" />
+
+  <h2>Additional groups</h2>
+  <picker :additional-groups="additionalGroups" @select="onSelect" />
 
   <h2>With input</h2>
   <picker
@@ -20,6 +23,18 @@
     @select="onSelect"
     @update:text="onChangeText"
   />
+
+  <h2>With group ordering and additional groups</h2>
+  <picker
+    :additional-groups="additionalGroups"
+    :group-names="{
+      smileys_people: 'Smileys!',
+      my_custom_group: 'Custom Group',
+    }"
+    :group-order="['flags', 'my_custom_group', 'smileys_people']"
+    :group-icons="{ my_custom_group: custom }"
+    @select="onSelect"
+  />
 </template>
 
 <script lang="ts">
@@ -32,6 +47,11 @@ import { defineComponent, ref } from 'vue'
  * Internal dependencies
  */
 import Picker from './components/Picker.vue'
+
+/**
+ * SVGs
+ */
+import custom from './svgs/groups/custom.svg'
 
 export default defineComponent({
   name: 'App',
@@ -54,6 +74,13 @@ export default defineComponent({
       console.log(emoji)
     }
 
+    const additionalGroups = {
+      my_custom_group: [
+        { n: ['grinning face', 'grinning'], u: '1f600' },
+        { n: ['grinning face with smiling eyes', 'grin'], u: '1f601' },
+      ],
+    }
+
     /**
      * Return vars
      */
@@ -61,6 +88,8 @@ export default defineComponent({
       onChangeText,
       text,
       onSelect,
+      additionalGroups,
+      custom,
     }
   },
 })

@@ -62,7 +62,8 @@
     "*.{js,ts,css,md,vue}": "npm run prettier:fix"
   },
   "dependencies": {
-    "vue": "^3.2.23",
-    "@popperjs/core": "^2.11.0"
+    "@popperjs/core": "^2.11.0",
+    "idb": "^7.1.0",
+    "vue": "^3.2.23"
   }
 }

@@ -14,6 +14,7 @@ export type GroupKeys =
   | 'objects'
   | 'symbols'
   | 'flags'
+  | 'recent'
 
 export type GroupNames = Record<GroupKeys, string>
 
@@ -31,22 +32,27 @@ export interface Emoji {
   src?: string
 }
 
-export type EmojiRecord = Record<GroupKeys, Emoji[]>
+export type EmojiRecord = Record<string, Emoji[]>
 
 export interface State {
   groups: Group[]
   emojis: EmojiRecord
+  additionalGroups: EmojiRecord
   search: string
   emoji: Emoji
   activeGroup: string
   skinTone: string
   options: Record<string, any>
+  recent: Emoji[]
+  orderedGroupKeys: string[]
+  disabled: string[]
 }
 
 export interface Store {
   state: State
   updateSearch: (v: string) => void
   updateEmoji: (v: Emoji) => void
+  updateSelect: (v: Emoji) => void
   updateActiveGroup: (v: string) => void
   updateSkinTone: (v: string) => void
   updateOptions: (v: Record<string, any>) => void

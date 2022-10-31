@@ -74,9 +74,25 @@ export default defineComponent({
       type: Number,
       default: 6,
     },
+    additionalGroups: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupOrder: {
+      type: Array,
+      default: () => [],
+    },
+    groupIcons: {
+      type: Object,
+      default: () => ({}),
+    },
     pickerType: {
       type: String,
       default: '',
+    },
+    displayRecent: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ['update:text', 'select'],
@@ -94,10 +110,8 @@ export default defineComponent({
 
     /**
      * Create a brand new store and
-     * (provide) make available for entire app.
      */
     const store = Store()
-    provide('store', store)
 
     /**
      * Initializing initial props
@@ -112,9 +126,18 @@ export default defineComponent({
       disabledGroups: props.disabledGroups,
       groupNames: { ...GROUP_NAMES, ...props.groupNames },
       disableSkinTones: props.disableSkinTones,
+      displayRecent: props.displayRecent,
+      additionalGroups: props.additionalGroups,
       mode: props.mode,
       offset: props.offset,
+      groupOrder: props.groupOrder,
+      groupIcons: props.groupIcons,
     })
+
+    /**
+     * (provide) make available for entire app.
+     */
+    provide('store', store)
 
     /**
      * Return vars

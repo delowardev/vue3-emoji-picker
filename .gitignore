@@ -147,3 +147,4 @@ npm-debug.log
 yarn-error.log
 dist-ssr
 *.local
+.yarn

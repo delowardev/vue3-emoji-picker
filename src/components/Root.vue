@@ -78,6 +78,22 @@ export default defineComponent({
       type: String,
       default: '',
     },
+    additionalGroups: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupOrder: {
+      type: Array,
+      default: () => [],
+    },
+    groupIcons: {
+      type: Object,
+      default: () => ({}),
+    },
+    groupNames: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   emits: ['update:text', 'select'],
   setup(props, { emit }) {
