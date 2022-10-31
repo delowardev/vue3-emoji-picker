@@ -64,7 +64,7 @@ export default function Store(): Store {
     get orderedGroupKeys() {
       const keys = [
         ...this.options.groupOrder,
-        Object.keys(this.options.additionalGroups),
+        ...Object.keys(this.options.additionalGroups),
         ..._groups.map((group) => group.key),
       ]
       return [...new Set(keys)].filter((key) => !this.disabled.includes(key))
