@@ -132,8 +132,6 @@ export default defineComponent({
       }
     )
 
-    console.log(state.orderedGroupKeys)
-
     return {
       emojis,
       bodyInner,
