@@ -7,15 +7,18 @@ on:
     branches:
       - main
 jobs:
-  test:
+  build:
+    name: Build and Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [ 16.16.0, 18.12.0 ]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: borales/actions-yarn@v3.0.0
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-version }}
       - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn build
       - run: yarn test
