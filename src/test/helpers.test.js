@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { unicodeToEmoji, filterEmojis } from '../helpers'
+import {
+  unicodeToEmoji,
+  filterEmojis,
+  snakeToCapitalizedCase,
+} from '../helpers'
 import emojis from '../data/emojis.json'
 
 describe('helpers', () => {
@@ -25,5 +29,10 @@ describe('helpers', () => {
         },
       ],
     })
+  })
+
+  // Test snakeToCapitalizedCase
+  it('snakeToCapitalizedCase: Test valid input', () => {
+    expect(snakeToCapitalizedCase('hello_world_a')).toBe('Hello World A')
   })
 })
