@@ -19,6 +19,7 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - run: yarn install --immutable --immutable-cache --check-cache
       - run: yarn build
       - run: yarn test
