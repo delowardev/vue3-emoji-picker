@@ -148,3 +148,4 @@ yarn-error.log
 dist-ssr
 *.local
 .yarn
+coverage/
