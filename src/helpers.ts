@@ -6,6 +6,7 @@ import {
   EMOJI_NAME_KEY,
   EMOJI_RESULT_KEY,
 } from './constant'
+import { toRaw } from 'vue'
 
 /**
  * Convert unicode to native emoji

@@ -35,15 +35,19 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint --ext .ts,.js,.vue ./",
     "lint:fix": "eslint --fix --ext .ts,.js,.vue ./",
-    "prettier": "prettier -c --ignore-unknown ./",
-    "prettier:fix": "prettier -c --write --ignore-unknown ./",
-    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && vite build"
+    "prettier": "prettier -c --ignore-unknown ./src",
+    "prettier:fix": "prettier -c --write --ignore-unknown ./src",
+    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && vite build",
+    "test": "vitest",
+    "test:once": "vitest run",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@babel/types": "^7.15.6",
     "@types/node": "^16.11.7",
     "@typescript-eslint/parser": "^5.5.0",
     "@vitejs/plugin-vue": "^1.2.5",
+    "@vitest/coverage-c8": "^0.24.5",
     "@vue/compiler-sfc": "^3.0.5",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
@@ -54,6 +58,7 @@
     "sass": "^1.43.2",
     "typescript": "^4.3.2",
     "vite": "^2.4.2",
+    "vitest": "^0.24.5",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.0.24"
   },
