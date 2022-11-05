@@ -1,4 +1,4 @@
-v1.1.5-beta (31/10/22)
+v1.1.5 (05/11/22)
 
 - Feature: Recently Added Emoji Group
 - Additional Group Support
