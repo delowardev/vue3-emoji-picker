@@ -1,3 +1,12 @@
+$skin-tones: (
+  'neutral': #ffd225,
+  '1f3fb': #ffdfbd,
+  '1f3fc': #e9c197,
+  '1f3fd': #c88e62,
+  '1f3fe': #a86637,
+  '1f3ff': #60463a,
+);
+
 // picker footer
 .v3-emoji-picker .v3-footer {
   font-size: 14px;
@@ -32,6 +41,8 @@
     padding: 0;
     background: none;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
     > span {
       display: inline-flex;
       vertical-align: top;
@@ -40,7 +51,18 @@
       font-size: 13px;
     }
     .v3-icon {
-      padding-bottom: 3px;
+      display: inline-flex;
+      height: 15px;
+      width: 15px;
+      vertical-align: middle;
+      align-self: center;
+      border: 2px solid rgba(#000, 0.2);
+
+      @each $key, $val in $skin-tones {
+        &.v3-tone-#{$key} {
+          background-color: #{$val};
+        }
+      }
     }
     .is-mac span {
       font-family: 'Apple Color Emoji';
@@ -81,29 +103,11 @@
     }
   }
   .v3-skin- {
-    &tone-neutral {
-      color: #ffd225;
-      background-color: #ffd225;
-    }
-    &tone-1f3fb {
-      color: #ffdfbd;
-      background-color: #ffdfbd;
-    }
-    &tone-1f3fc {
-      color: #e9c197;
-      background-color: #e9c197;
-    }
-    &tone-1f3fd {
-      color: #c88e62;
-      background-color: #c88e62;
-    }
-    &tone-1f3fe {
-      color: #a86637;
-      background-color: #a86637;
-    }
-    &tone-1f3ff {
-      color: #60463a;
-      background-color: #60463a;
+    @each $key, $val in $skin-tones {
+      &tone-#{$key} {
+        color: #{$val};
+        background-color: #{$val};
+      }
     }
   }
 }

@@ -18,6 +18,7 @@
           top: 0;
           background: white;
           padding: 7px 0 3px 4px;
+          z-index: 2;
           &.v3-sticky {
             position: sticky;
           }
@@ -41,16 +42,32 @@
             flex-grow: 1;
             padding: 0;
             font-size: 22px;
-            span {
-              display: inline-block;
-              padding-left: 1px;
+            position: relative;
+            &::after {
+              content: '';
+              width: 100%;
+              padding-bottom: 100%;
             }
-            &:hover {
-              background: #f7f7f7;
+            span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
             }
             img {
               max-width: 100%;
               padding: 4px;
+            }
+
+            span,
+            img {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+            }
+            &:hover {
+              background: #f7f7f7;
             }
           }
         }
