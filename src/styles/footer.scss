@@ -58,7 +58,7 @@ $skin-tones: (
       align-self: center;
       border: 2px solid rgba(#000, 0.2);
 
-      @each $key,$val in $skin-tones{
+      @each $key, $val in $skin-tones {
         &.v3-tone-#{$key} {
           background-color: #{$val};
         }
@@ -103,7 +103,7 @@ $skin-tones: (
     }
   }
   .v3-skin- {
-    @each $key,$val in $skin-tones{
+    @each $key, $val in $skin-tones {
       &tone-#{$key} {
         color: #{$val};
         background-color: #{$val};
