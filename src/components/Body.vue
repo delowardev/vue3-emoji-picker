@@ -3,10 +3,14 @@
     <div ref="bodyInner" :class="platform" class="v3-body-inner">
       <template v-if="orderedKeys.length">
         <div v-for="key of orderedKeys" :id="key" :key="key" class="v3-group">
-          <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
+          <h5
+            v-show="emojis[key]"
+            v-if="hasGroupNames"
+            :class="isSticky ? `v3-sticky` : ``"
+          >
             {{ groupNames[key] }}
           </h5>
-          <div class="v3-emojis">
+          <div v-show="emojis[key]" class="v3-emojis">
             <button
               v-for="emoji in emojis[key]"
               :key="emoji.r"
@@ -115,7 +119,7 @@ export default defineComponent({
     function handleError(event: Event, unicode: string) {
       const button = (event?.target as HTMLImageElement)?.closest('button')
       if (button) {
-        button.innerHTML = unicodeToEmoji(unicode)
+        button.innerHTML = `<span>${unicodeToEmoji(unicode)}</span>`
       }
     }
 

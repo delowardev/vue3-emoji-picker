@@ -1,6 +1,6 @@
 <template>
   <h2>Default</h2>
-  <picker :display-recent="true" @select="onSelect" />
+  <picker :native="false" :display-recent="true" @select="onSelect" />
 
   <h2>Native</h2>
   <picker :native="true" @select="onSelect" />

@@ -20,7 +20,7 @@
         <span class="v3-text">
           {{ skinToneText }}
         </span>
-        <span class="v3-icon">👍</span>
+        <span :class="`v3-icon v3-tone-${stateSkinTone}`" />
       </button>
 
       <div :class="skinTone ? 'v3-is-open' : ''" class="v3-skin-tones">
@@ -60,6 +60,7 @@ export default defineComponent({
     const { state, updateSkinTone } = inject('store') as Store
     const skinTone = ref(false)
     const hasError = ref(false)
+    const stateSkinTone = computed(() => state.skinTone)
     const skinToneText = computed(
       () => state.options.staticTexts.skinTone || 'Skin tone'
     )
@@ -98,6 +99,7 @@ export default defineComponent({
       SKIN_TONES,
       updateSkinToneState,
       skinTone,
+      stateSkinTone,
       selectSkinTone,
       toggleSkinToneState,
       EMOJI_RESULT_KEY,
