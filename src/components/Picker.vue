@@ -11,14 +11,15 @@
 /**
  * External dependencies
  */
-import { defineComponent, provide, ref } from 'vue'
+import { defineComponent, provide, ref, PropType, toRaw } from 'vue'
 
 /**
  * Internal dependencies
  */
-import { GROUP_NAMES, STATIC_TEXTS } from '../constant'
+import { COLOR_THEMES, GROUP_NAMES, STATIC_TEXTS } from '../constant'
 import Store from '../store'
 import PickerRoot from './Root.vue'
+import { ColorTheme } from '../types'
 
 export default defineComponent({
   name: 'Picker',
@@ -94,6 +95,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    theme: {
+      type: String as PropType<ColorTheme>,
+      default: 'light',
+    },
   },
   emits: ['update:text', 'select'],
   setup(props, { emit }) {
@@ -132,12 +137,18 @@ export default defineComponent({
       offset: props.offset,
       groupOrder: props.groupOrder,
       groupIcons: props.groupIcons,
+      colorTheme: COLOR_THEMES.includes(props.theme) ? props.theme : 'light',
     })
 
     /**
      * (provide) make available for entire app.
      */
     provide('store', store)
+
+    // Dev helper
+    if (import.meta.env.MODE === 'development') {
+      console.log(JSON.parse(JSON.stringify(store)))
+    }
 
     /**
      * Return vars

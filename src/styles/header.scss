@@ -1,7 +1,7 @@
 .v3-emoji-picker {
   .v3-header {
     padding: 15px 15px 13px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid;
     .v3-groups {
       display: flex;
       .v3-group {
@@ -49,13 +49,12 @@
     display: block;
     height: 26px;
     padding: 0 10px;
-    border: 1px solid #ccc;
+    border: 1px solid;
     border-radius: 3px;
     font-size: 12px;
     transition: 200ms;
     &:focus {
       outline: none;
-      border-color: #000;
     }
   }
 }

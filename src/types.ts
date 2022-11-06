@@ -16,6 +16,8 @@ export type GroupKeys =
   | 'flags'
   | 'recent'
 
+export type ColorTheme = 'dark' | 'light' | 'auto'
+
 export type GroupNames = Record<GroupKeys, string>
 
 export interface Group {

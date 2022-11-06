@@ -31,7 +31,11 @@
           <img :src="face" alt="" />
         </button>
 
-        <div ref="picker" class="v3-emoji-picker">
+        <div
+          ref="picker"
+          class="v3-emoji-picker"
+          :class="'v3-color-theme-' + colorTheme"
+        >
           <Header />
           <Body @select="onSelect" />
           <Footer />
@@ -39,7 +43,7 @@
       </div>
     </div>
   </div>
-  <div v-else class="v3-emoji-picker">
+  <div v-else class="v3-emoji-picker" :class="'v3-color-theme-' + colorTheme">
     <Header />
     <Body @select="onSelect" />
     <Footer />
@@ -50,7 +54,14 @@
 /**
  * External dependencies
  */
-import { defineComponent, ref, onMounted, onBeforeUnmount, inject } from 'vue'
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onBeforeUnmount,
+  inject,
+  computed,
+} from 'vue'
 import { createPopper } from '@popperjs/core'
 
 /**
@@ -105,6 +116,7 @@ export default defineComponent({
     const isInputType = props.type === 'input' || props.type === 'textarea'
     let cursor = -1
     const { state } = inject('store') as Store
+    const colorTheme = computed(() => state.options.colorTheme)
 
     /**
      * Functions
@@ -198,6 +210,7 @@ export default defineComponent({
       picker,
       isInputType,
       onChangeText,
+      colorTheme,
     }
   },
 })
