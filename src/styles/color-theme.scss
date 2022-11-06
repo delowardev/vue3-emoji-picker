@@ -17,7 +17,6 @@
     border-color: var(--v3-picker-border);
   }
 
-
   .v3-groups {
     filter: var(--v3-group-image-filter);
   }
@@ -40,11 +39,9 @@
     background: var(--v3-picker-bg);
   }
 
-
   .v3-body .v3-body-inner .v3-group .v3-emojis button:hover {
     background: var(--v3-picker-emoji-hover, #f7f7f7);
   }
-
 }
 
 // Theme Auto
