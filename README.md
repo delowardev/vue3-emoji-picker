@@ -1,8 +1,9 @@
-# Vue3 Emoji Picker Component
+# Vue3 Emoji Picker. [Live preview](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
+
+[![Test Automation](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml/badge.svg)](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml)
 
 <img src="https://i.imgur.com/CQc1nCF.png" width="280" />
-
-Live preview: [codesandbox](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
+<img src="https://i.imgur.com/RGGRQSk.png" width="280" />
 
 ## Installation:
 
@@ -65,6 +66,7 @@ function onSelectEmoji(emoji) {
 | group-order                | Array   | []            | Override ordering of groups                                                                 |
 | group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |
 | display-recent             | Boolean | false         | Display Recently used emojis                                                                |
+| theme                      | String  | 'light'       | Available options, 'light', 'dark', and 'auto'                                              |
 
 ## Static text option (`props['static-texts']`)
 
