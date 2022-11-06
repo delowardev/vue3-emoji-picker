@@ -145,11 +145,6 @@ export default defineComponent({
      */
     provide('store', store)
 
-    // Dev helper
-    if (import.meta.env.MODE === 'development') {
-      console.log(JSON.parse(JSON.stringify(store)))
-    }
-
     /**
      * Return vars
      */
