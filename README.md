@@ -1,4 +1,4 @@
-# Vue3 Emoji Picker. [Live preview](https://codesandbox.io/s/heuristic-dewdney-kp971?file=/src/App.vue)
+# Vue3 Emoji Picker. [Live preview](https://codesandbox.io/p/github/delowardev/vue3-emoji-picker/main?file=%2FREADME.md)
 
 [![Test Automation](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml/badge.svg)](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml)
 
