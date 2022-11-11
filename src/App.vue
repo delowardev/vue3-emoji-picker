@@ -2,8 +2,8 @@
   <h2>Default</h2>
   <picker :native="false" :display-recent="true" @select="onSelect" />
 
-  <h2>Native</h2>
-  <picker :native="true" @select="onSelect" />
+  <h2>Native + Dark Theme</h2>
+  <picker theme="dark" :native="true" @select="onSelect" />
 
   <h2>Additional groups</h2>
   <picker :additional-groups="additionalGroups" @select="onSelect" />
@@ -16,8 +16,9 @@
     @update:text="onChangeText"
   />
 
-  <h2>With textarea</h2>
+  <h2>With textarea + Dark Theme</h2>
   <picker
+    theme="dark"
     :text="text"
     picker-type="textarea"
     @select="onSelect"

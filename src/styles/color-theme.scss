@@ -1,0 +1,71 @@
+// Default styles
+.v3-emoji-picker {
+  --v3-picker-bg: #ffffff;
+  --v3-picker-fg: #000000;
+  --v3-picker-border: #dddddd;
+  --v3-picker-input-bg: var(--v3-picker-bg);
+  --v3-picker-input-border: #cccccc;
+  --v3-picker-input-focus-border: #000000;
+  --v3-group-image-filter: none;
+  --v3-picker-emoji-hover: #f7f7f7;
+
+  background: var(--v3-picker-bg);
+  color: var(--v3-picker-fg);
+
+  .v3-footer,
+  .v3-header {
+    border-color: var(--v3-picker-border);
+  }
+
+  .v3-groups {
+    filter: var(--v3-group-image-filter);
+  }
+
+  .v3-tone {
+    color: var(--v3-picker-fg);
+  }
+
+  .v3-search input {
+    background: var(--v3-picker-input-bg);
+    border-color: var(--v3-picker-input-border);
+    color: inherit;
+    &:focus {
+      border-color: var(--v3-picker-input-focus-border);
+    }
+  }
+
+  .v3-body .v3-body-inner .v3-group h5,
+  .v3-skin-tones {
+    background: var(--v3-picker-bg);
+  }
+
+  .v3-body .v3-body-inner .v3-group .v3-emojis button:hover {
+    background: var(--v3-picker-emoji-hover, #f7f7f7);
+  }
+}
+
+// Theme Auto
+.v3-emoji-picker.v3-color-theme-auto {
+  @media (prefers-color-scheme: dark) {
+    --v3-picker-bg: #000000;
+    --v3-picker-fg: #ffffff;
+    --v3-picker-border: #333333;
+    --v3-picker-input-bg: #222222;
+    --v3-picker-input-border: #444444;
+    --v3-picker-input-focus-border: #555555;
+    --v3-group-image-filter: invert(1);
+    --v3-picker-emoji-hover: #222222;
+  }
+}
+
+// Theme Default
+.v3-emoji-picker.v3-color-theme-dark {
+  --v3-picker-bg: #000000;
+  --v3-picker-fg: #ffffff;
+  --v3-picker-border: #333333;
+  --v3-picker-input-bg: #222222;
+  --v3-picker-input-border: #444444;
+  --v3-picker-input-focus-border: #555555;
+  --v3-group-image-filter: invert(1);
+  --v3-picker-emoji-hover: #222222;
+}
