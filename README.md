@@ -23,7 +23,7 @@ yarn add vue3-emoji-picker
 import EmojiPicker from 'vue3-emoji-picker'
 
 // import css
-import 'node_modules/vue3-emoji-picker/dist/style.css'
+import 'vue3-emoji-picker/css'
 ```
 
 ```vue

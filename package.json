@@ -1,6 +1,6 @@
 {
   "name": "vue3-emoji-picker",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "license": "MIT",
   "author": "delowardev",
   "repository": {
@@ -25,7 +25,8 @@
     ".": {
       "import": "./dist/emoji-picker.es.js",
       "require": "./dist/emoji-picker.umd.js"
-    }
+    },
+    "./css": "./dist/style.css"
   },
   "scripts": {
     "dev": "vite",

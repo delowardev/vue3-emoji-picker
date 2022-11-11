@@ -1,6 +1,7 @@
-v1.1.6 (11/11/22)
+v1.1.7 (11/11/22)
 
 - Add: Dark mode support
+- Update: Export CSS file
 
 v1.1.5 (05/11/22)
 
