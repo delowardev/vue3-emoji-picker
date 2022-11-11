@@ -1,9 +1,13 @@
+v1.1.6 (11/11/22)
+
+- Add: Dark mode support
+
 v1.1.5 (05/11/22)
 
-- Feature: Recently Added Emoji Group
-- Additional Group Support
-- Group Sort Support
-- Custom Group Icons Support
+- Add: Recently Added Emoji Group
+- Add: Additional Group Support
+- Add: Group Sort Support
+- Add: Custom Group Icons Support
 - Fix: Store Reactivity Issue
 
 v1.1.4 (25/08/22)
