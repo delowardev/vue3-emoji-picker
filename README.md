@@ -24,6 +24,8 @@ import EmojiPicker from 'vue3-emoji-picker'
 
 // import css
 import 'vue3-emoji-picker/css'
+// or import directly:
+// import'node_modules/vue3-emoji-picker/dist/style.css'
 ```
 
 ```vue
