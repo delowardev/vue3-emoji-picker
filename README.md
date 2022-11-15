@@ -16,6 +16,8 @@ npm install vue3-emoji-picker
 yarn add vue3-emoji-picker
 ```
 
+_Important note: If you're using TypeScript, don't forget to add `declare module 'vue3-emoji-picker'` in your `.d.ts` file_
+
 ## Usage:
 
 ```javascript
