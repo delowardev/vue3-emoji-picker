@@ -38,7 +38,8 @@ import { snakeToCapitalizedCase } from '../helpers'
 /**
  * Group/Category Images
  */
-import smileys_people from '../svgs/groups/smileys_people.svg'
+import smileys_emotion from '../svgs/groups/smileys_emotion.svg'
+import people_body from '../svgs/groups/people_body.svg'
 import animals_nature from '../svgs/groups/animals_nature.svg'
 import food_drink from '../svgs/groups/food_drink.svg'
 import activities from '../svgs/groups/activities.svg'
@@ -49,6 +50,7 @@ import flags from '../svgs/groups/flags.svg'
 import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
+  // eslint-disable-next-line vue/no-reserved-component-names
   name: 'Header',
   setup(props) {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
@@ -93,7 +95,8 @@ export default defineComponent({
       hasGroupIcons,
       placeholder,
       icons: {
-        smileys_people,
+        smileys_emotion,
+        people_body,
         animals_nature,
         food_drink,
         activities,

@@ -1,7 +1,8 @@
 module.exports = {
   extends: ['plugin:vue/vue3-recommended', 'prettier'],
   rules: {
-    'vue/multi-word-component-names': 0,
+    'vue/no-reserved-component-names': 'off',
+    'vue/multi-word-component-names': 'off',
   },
   parser: 'vue-eslint-parser',
   parserOptions: {
