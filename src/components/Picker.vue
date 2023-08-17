@@ -148,8 +148,6 @@ export default defineComponent({
       emojiList: props.emojiList,
     })
 
-    console.log(store)
-
     /**
      * (provide) make available for entire app.
      */
