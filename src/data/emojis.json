@@ -2152,26 +2152,19 @@
                 "1f9d1-1f3fd",
                 "1f9d1-1f3fe",
                 "1f9d1-1f3ff",
+                "1f471",
                 "1f471-1f3fb",
                 "1f471-1f3fc",
                 "1f471-1f3fd",
                 "1f471-1f3fe",
                 "1f471-1f3ff",
+                "1f9d4",
                 "1f9d4-1f3fb",
                 "1f9d4-1f3fc",
                 "1f9d4-1f3fd",
                 "1f9d4-1f3fe",
                 "1f9d4-1f3ff"
             ]
-        },
-        {
-            "n": [
-                "person: blond hair",
-                "blond_haired_person",
-                "person_with_blond_hair",
-                "person_blond_hair"
-            ],
-            "u": "1f471"
         },
         {
             "n": [
@@ -2186,14 +2179,6 @@
                 "1f468-1f3fe",
                 "1f468-1f3ff"
             ]
-        },
-        {
-            "n": [
-                "person: beard",
-                "bearded_person",
-                "person_beard"
-            ],
-            "u": "1f9d4"
         },
         {
             "n": [
@@ -2405,6 +2390,230 @@
                 "1f937-1f3fd",
                 "1f937-1f3fe",
                 "1f937-1f3ff"
+            ]
+        },
+        {
+            "n": [
+                "health worker",
+                "health_worker"
+            ],
+            "u": "1f9d1-200d-2695-fe0f",
+            "v": [
+                "1f9d1-1f3fb-200d-2695-fe0f",
+                "1f9d1-1f3fc-200d-2695-fe0f",
+                "1f9d1-1f3fd-200d-2695-fe0f",
+                "1f9d1-1f3fe-200d-2695-fe0f",
+                "1f9d1-1f3ff-200d-2695-fe0f"
+            ]
+        },
+        {
+            "n": [
+                "student",
+                "student"
+            ],
+            "u": "1f9d1-200d-1f393",
+            "v": [
+                "1f9d1-1f3fb-200d-1f393",
+                "1f9d1-1f3fc-200d-1f393",
+                "1f9d1-1f3fd-200d-1f393",
+                "1f9d1-1f3fe-200d-1f393",
+                "1f9d1-1f3ff-200d-1f393"
+            ]
+        },
+        {
+            "n": [
+                "teacher",
+                "teacher"
+            ],
+            "u": "1f9d1-200d-1f3eb",
+            "v": [
+                "1f9d1-1f3fb-200d-1f3eb",
+                "1f9d1-1f3fc-200d-1f3eb",
+                "1f9d1-1f3fd-200d-1f3eb",
+                "1f9d1-1f3fe-200d-1f3eb",
+                "1f9d1-1f3ff-200d-1f3eb"
+            ]
+        },
+        {
+            "n": [
+                "judge",
+                "judge"
+            ],
+            "u": "1f9d1-200d-2696-fe0f",
+            "v": [
+                "1f9d1-1f3fb-200d-2696-fe0f",
+                "1f9d1-1f3fc-200d-2696-fe0f",
+                "1f9d1-1f3fd-200d-2696-fe0f",
+                "1f9d1-1f3fe-200d-2696-fe0f",
+                "1f9d1-1f3ff-200d-2696-fe0f"
+            ]
+        },
+        {
+            "n": [
+                "farmer",
+                "farmer"
+            ],
+            "u": "1f9d1-200d-1f33e",
+            "v": [
+                "1f9d1-1f3fb-200d-1f33e",
+                "1f9d1-1f3fc-200d-1f33e",
+                "1f9d1-1f3fd-200d-1f33e",
+                "1f9d1-1f3fe-200d-1f33e",
+                "1f9d1-1f3ff-200d-1f33e"
+            ]
+        },
+        {
+            "n": [
+                "cook",
+                "cook"
+            ],
+            "u": "1f9d1-200d-1f373",
+            "v": [
+                "1f9d1-1f3fb-200d-1f373",
+                "1f9d1-1f3fc-200d-1f373",
+                "1f9d1-1f3fd-200d-1f373",
+                "1f9d1-1f3fe-200d-1f373",
+                "1f9d1-1f3ff-200d-1f373"
+            ]
+        },
+        {
+            "n": [
+                "mechanic",
+                "mechanic"
+            ],
+            "u": "1f9d1-200d-1f527",
+            "v": [
+                "1f9d1-1f3fb-200d-1f527",
+                "1f9d1-1f3fc-200d-1f527",
+                "1f9d1-1f3fd-200d-1f527",
+                "1f9d1-1f3fe-200d-1f527",
+                "1f9d1-1f3ff-200d-1f527"
+            ]
+        },
+        {
+            "n": [
+                "factory worker",
+                "factory_worker"
+            ],
+            "u": "1f9d1-200d-1f3ed",
+            "v": [
+                "1f9d1-1f3fb-200d-1f3ed",
+                "1f9d1-1f3fc-200d-1f3ed",
+                "1f9d1-1f3fd-200d-1f3ed",
+                "1f9d1-1f3fe-200d-1f3ed",
+                "1f9d1-1f3ff-200d-1f3ed"
+            ]
+        },
+        {
+            "n": [
+                "office worker",
+                "office_worker"
+            ],
+            "u": "1f9d1-200d-1f4bc",
+            "v": [
+                "1f9d1-1f3fb-200d-1f4bc",
+                "1f9d1-1f3fc-200d-1f4bc",
+                "1f9d1-1f3fd-200d-1f4bc",
+                "1f9d1-1f3fe-200d-1f4bc",
+                "1f9d1-1f3ff-200d-1f4bc"
+            ]
+        },
+        {
+            "n": [
+                "scientist",
+                "scientist"
+            ],
+            "u": "1f9d1-200d-1f52c",
+            "v": [
+                "1f9d1-1f3fb-200d-1f52c",
+                "1f9d1-1f3fc-200d-1f52c",
+                "1f9d1-1f3fd-200d-1f52c",
+                "1f9d1-1f3fe-200d-1f52c",
+                "1f9d1-1f3ff-200d-1f52c"
+            ]
+        },
+        {
+            "n": [
+                "technologist",
+                "technologist"
+            ],
+            "u": "1f9d1-200d-1f4bb",
+            "v": [
+                "1f9d1-1f3fb-200d-1f4bb",
+                "1f9d1-1f3fc-200d-1f4bb",
+                "1f9d1-1f3fd-200d-1f4bb",
+                "1f9d1-1f3fe-200d-1f4bb",
+                "1f9d1-1f3ff-200d-1f4bb"
+            ]
+        },
+        {
+            "n": [
+                "singer",
+                "singer"
+            ],
+            "u": "1f9d1-200d-1f3a4",
+            "v": [
+                "1f9d1-1f3fb-200d-1f3a4",
+                "1f9d1-1f3fc-200d-1f3a4",
+                "1f9d1-1f3fd-200d-1f3a4",
+                "1f9d1-1f3fe-200d-1f3a4",
+                "1f9d1-1f3ff-200d-1f3a4"
+            ]
+        },
+        {
+            "n": [
+                "artist",
+                "artist"
+            ],
+            "u": "1f9d1-200d-1f3a8",
+            "v": [
+                "1f9d1-1f3fb-200d-1f3a8",
+                "1f9d1-1f3fc-200d-1f3a8",
+                "1f9d1-1f3fd-200d-1f3a8",
+                "1f9d1-1f3fe-200d-1f3a8",
+                "1f9d1-1f3ff-200d-1f3a8"
+            ]
+        },
+        {
+            "n": [
+                "pilot",
+                "pilot"
+            ],
+            "u": "1f9d1-200d-2708-fe0f",
+            "v": [
+                "1f9d1-1f3fb-200d-2708-fe0f",
+                "1f9d1-1f3fc-200d-2708-fe0f",
+                "1f9d1-1f3fd-200d-2708-fe0f",
+                "1f9d1-1f3fe-200d-2708-fe0f",
+                "1f9d1-1f3ff-200d-2708-fe0f"
+            ]
+        },
+        {
+            "n": [
+                "astronaut",
+                "astronaut"
+            ],
+            "u": "1f9d1-200d-1f680",
+            "v": [
+                "1f9d1-1f3fb-200d-1f680",
+                "1f9d1-1f3fc-200d-1f680",
+                "1f9d1-1f3fd-200d-1f680",
+                "1f9d1-1f3fe-200d-1f680",
+                "1f9d1-1f3ff-200d-1f680"
+            ]
+        },
+        {
+            "n": [
+                "firefighter",
+                "firefighter"
+            ],
+            "u": "1f9d1-200d-1f692",
+            "v": [
+                "1f9d1-1f3fb-200d-1f692",
+                "1f9d1-1f3fc-200d-1f692",
+                "1f9d1-1f3fd-200d-1f692",
+                "1f9d1-1f3fe-200d-1f692",
+                "1f9d1-1f3ff-200d-1f692"
             ]
         },
         {
@@ -2652,6 +2861,20 @@
         },
         {
             "n": [
+                "person feeding baby",
+                "person_feeding_baby"
+            ],
+            "u": "1f9d1-200d-1f37c",
+            "v": [
+                "1f9d1-1f3fb-200d-1f37c",
+                "1f9d1-1f3fc-200d-1f37c",
+                "1f9d1-1f3fd-200d-1f37c",
+                "1f9d1-1f3fe-200d-1f37c",
+                "1f9d1-1f3ff-200d-1f37c"
+            ]
+        },
+        {
+            "n": [
                 "baby angel",
                 "angel",
                 "baby_angel"
@@ -2701,7 +2924,14 @@
                 "mx claus",
                 "mx_claus"
             ],
-            "u": "1f9d1-200d-1f384"
+            "u": "1f9d1-200d-1f384",
+            "v": [
+                "1f9d1-1f3fb-200d-1f384",
+                "1f9d1-1f3fc-200d-1f384",
+                "1f9d1-1f3fd-200d-1f384",
+                "1f9d1-1f3fe-200d-1f384",
+                "1f9d1-1f3ff-200d-1f384"
+            ]
         },
         {
             "n": [
@@ -2785,6 +3015,34 @@
                 "1f9dc-1f3fd",
                 "1f9dc-1f3fe",
                 "1f9dc-1f3ff"
+            ]
+        },
+        {
+            "n": [
+                "merman",
+                "merman"
+            ],
+            "u": "1f9dc-200d-2642-fe0f",
+            "v": [
+                "1f9dc-1f3fb-200d-2642-fe0f",
+                "1f9dc-1f3fc-200d-2642-fe0f",
+                "1f9dc-1f3fd-200d-2642-fe0f",
+                "1f9dc-1f3fe-200d-2642-fe0f",
+                "1f9dc-1f3ff-200d-2642-fe0f"
+            ]
+        },
+        {
+            "n": [
+                "mermaid",
+                "mermaid"
+            ],
+            "u": "1f9dc-200d-2640-fe0f",
+            "v": [
+                "1f9dc-1f3fb-200d-2640-fe0f",
+                "1f9dc-1f3fc-200d-2640-fe0f",
+                "1f9dc-1f3fd-200d-2640-fe0f",
+                "1f9dc-1f3fe-200d-2640-fe0f",
+                "1f9dc-1f3ff-200d-2640-fe0f"
             ]
         },
         {
@@ -2895,6 +3153,49 @@
                 "1f9ce-1f3fd",
                 "1f9ce-1f3fe",
                 "1f9ce-1f3ff"
+            ]
+        },
+        {
+            "n": [
+                "person with white cane",
+                "person_with_probing_cane",
+                "person_with_white_cane"
+            ],
+            "u": "1f9d1-200d-1f9af",
+            "v": [
+                "1f9d1-1f3fb-200d-1f9af",
+                "1f9d1-1f3fc-200d-1f9af",
+                "1f9d1-1f3fd-200d-1f9af",
+                "1f9d1-1f3fe-200d-1f9af",
+                "1f9d1-1f3ff-200d-1f9af"
+            ]
+        },
+        {
+            "n": [
+                "person in motorized wheelchair",
+                "person_in_motorized_wheelchair"
+            ],
+            "u": "1f9d1-200d-1f9bc",
+            "v": [
+                "1f9d1-1f3fb-200d-1f9bc",
+                "1f9d1-1f3fc-200d-1f9bc",
+                "1f9d1-1f3fd-200d-1f9bc",
+                "1f9d1-1f3fe-200d-1f9bc",
+                "1f9d1-1f3ff-200d-1f9bc"
+            ]
+        },
+        {
+            "n": [
+                "person in manual wheelchair",
+                "person_in_manual_wheelchair"
+            ],
+            "u": "1f9d1-200d-1f9bd",
+            "v": [
+                "1f9d1-1f3fb-200d-1f9bd",
+                "1f9d1-1f3fc-200d-1f9bd",
+                "1f9d1-1f3fd-200d-1f9bd",
+                "1f9d1-1f3fe-200d-1f9bd",
+                "1f9d1-1f3ff-200d-1f9bd"
             ]
         },
         {
