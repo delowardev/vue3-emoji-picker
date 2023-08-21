@@ -11,7 +11,7 @@
 /**
  * External dependencies
  */
-import { defineComponent, provide, ref, PropType, toRaw } from 'vue'
+import { defineComponent, provide, ref, PropType, type Ref } from 'vue'
 
 /**
  * Internal dependencies
@@ -20,6 +20,9 @@ import { COLOR_THEMES, GROUP_NAMES, STATIC_TEXTS } from '../constant'
 import Store from '../store'
 import PickerRoot from './Root.vue'
 import { ColorTheme } from '../types'
+
+//Def emoji list
+import Emojis from '../data/emojis.json'
 
 export default defineComponent({
   name: 'Picker',
@@ -99,17 +102,29 @@ export default defineComponent({
       type: String as PropType<ColorTheme>,
       default: 'light',
     },
+    emojiList: {
+      type: Object,
+      default: () => Emojis,
+    },
+    hideSelectedEmoji: {
+      type: Boolean,
+      default: false,
+    },
+    searchClass: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['update:text', 'select'],
   setup(props, { emit }) {
-    const input = ref(props.text)
+    const input = <Ref<string | undefined>>ref(props.text)
 
     /**
      * Handle text change event
      * @param text - text value
      */
     function onChangeText(text: string | undefined) {
-      input.value = text || ''
+      input.value = <string>text || ''
       emit('update:text', input.value)
     }
 
@@ -138,6 +153,9 @@ export default defineComponent({
       groupOrder: props.groupOrder,
       groupIcons: props.groupIcons,
       colorTheme: COLOR_THEMES.includes(props.theme) ? props.theme : 'light',
+      emojiList: props.emojiList,
+      hideSelectedEmoji: props.hideSelectedEmoji,
+      searchClass: props.searchClass,
     })
 
     /**
@@ -150,7 +168,7 @@ export default defineComponent({
      */
 
     return {
-      type: props.pickerType,
+      type: <string>props.pickerType,
       input,
       onChangeText,
     }

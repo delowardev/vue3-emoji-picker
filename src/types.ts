@@ -6,7 +6,8 @@ import {
 } from './constant'
 
 export type GroupKeys =
-  | 'smileys_people'
+  | 'smileys_emotion'
+  | 'people_body'
   | 'animals_nature'
   | 'food_drink'
   | 'activities'

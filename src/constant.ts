@@ -1,12 +1,14 @@
 import { ColorTheme, Emoji, GroupNames } from './types'
 
+// Use fastly.jsdelivr.net, because cdn.jsdelivr.net is blocked in China
 export const EMOJI_REMOTE_SRC =
-  'https://cdn.jsdelivr.net/npm/emoji-datasource-apple@6.0.1/img/apple/64'
+  'https://fastly.jsdelivr.net/npm/emoji-datasource-apple@15.0.1/img/apple/64/'
 
 // ./data/groups.json
 export const GROUP_NAMES: GroupNames = {
   recent: 'Recently used',
-  smileys_people: 'Smiles & People',
+  smileys_emotion: 'Smiles & Emotion',
+  people_body: 'People & Body',
   animals_nature: 'Animals & Nature',
   food_drink: 'Food & Drink',
   activities: 'Activities',

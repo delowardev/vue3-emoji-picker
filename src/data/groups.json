@@ -2,12 +2,17 @@
   {
     "key": "recent",
     "title": "Recently Used",
-    "u": "1f551"
+    "u": "1F551"
   },
   {
-    "key": "smileys_people",
-    "title": "Smiles & People",
-    "u": "1f600"
+    "key": "smileys_emotion",
+    "title": "Smiles & Emotion",
+    "u": "1F600"
+  },
+  {
+    "key": "people_body",
+    "title": "People & Body",
+    "u": "1F44B"
   },
   {
     "key": "animals_nature",
@@ -37,11 +42,11 @@
   {
     "key": "symbols",
     "title": "Symbols",
-    "u": "1f4af"
+    "u": "1F4AF"
   },
   {
     "key": "flags",
     "title": "Flags",
-    "u": "1f3f3-fe0f"
+    "u": "1F3F3-FE0F"
   }
 ]

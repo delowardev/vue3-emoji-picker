@@ -14,18 +14,40 @@ describe('helpers', () => {
 
   // Test filterEmojis
   it('filterEmojis: test search result', () => {
-    const result = filterEmojis(emojis, 'face with tears of joy', 'neutral', [])
+    const result = filterEmojis(emojis, 'grinning face', 'neutral', [])
     expect(result).toStrictEqual({
-      smileys_people: [
+      smileys_emotion: [
         {
-          n: ['face with tears of joy', 'joy'],
-          r: '1f602',
-          u: '1f602',
+          n: ['grinning face', 'grinning', 'grinning_face'],
+          r: '1f600',
+          u: '1f600',
         },
         {
-          n: ['cat face with tears of joy', 'joy_cat'],
-          r: '1f639',
-          u: '1f639',
+          n: [
+            'grinning face with big eyes',
+            'smiley',
+            'grinning_face_with_big_eyes',
+          ],
+          r: '1f603',
+          u: '1f603',
+        },
+        {
+          n: [
+            'grinning face with smiling eyes',
+            'smile',
+            'grinning_face_with_smiling_eyes',
+          ],
+          r: '1f604',
+          u: '1f604',
+        },
+        {
+          n: [
+            'grinning face with sweat',
+            'sweat_smile',
+            'grinning_face_with_sweat',
+          ],
+          r: '1f605',
+          u: '1f605',
         },
       ],
     })

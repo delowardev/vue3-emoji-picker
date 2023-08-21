@@ -67,7 +67,7 @@ import { createPopper } from '@popperjs/core'
 /**
  * Internal dependencies
  */
-import smileys_people from '../svgs/groups/smileys_people.svg'
+import smileys_emotion from '../svgs/groups/smileys_emotion.svg'
 import Body from './Body.vue'
 import Header from './Header.vue'
 import Footer from './Footer.vue'
@@ -200,7 +200,7 @@ export default defineComponent({
      * Return vars
      */
     return {
-      face: smileys_people,
+      face: smileys_emotion,
       open,
       onSelect,
       input,

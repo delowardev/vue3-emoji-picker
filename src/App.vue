@@ -1,4 +1,4 @@
-<template>
+<template id="app">
   <h2>Default</h2>
   <picker :native="false" :display-recent="true" @select="onSelect" />
 
