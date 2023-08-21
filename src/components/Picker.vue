@@ -106,6 +106,14 @@ export default defineComponent({
       type: Object,
       default: () => Emojis,
     },
+    hideSelectedEmoji: {
+      type: Boolean,
+      default: false,
+    },
+    searchClass: {
+      type: String,
+      default: '',
+    },
   },
   emits: ['update:text', 'select'],
   setup(props, { emit }) {
@@ -146,6 +154,8 @@ export default defineComponent({
       groupIcons: props.groupIcons,
       colorTheme: COLOR_THEMES.includes(props.theme) ? props.theme : 'light',
       emojiList: props.emojiList,
+      hideSelectedEmoji: props.hideSelectedEmoji,
+      searchClass: props.searchClass,
     })
 
     /**

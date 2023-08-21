@@ -18,7 +18,12 @@
     </div>
     <div v-if="hasGroupIcons && hasSearch" class="v3-spacing" />
     <div v-if="hasSearch" class="v3-search">
-      <input v-model="searchValue" type="text" :placeholder="placeholder" />
+      <input
+        v-model="searchValue"
+        type="text"
+        :placeholder="placeholder"
+        :class="searchClass"
+      />
     </div>
   </div>
 </template>
@@ -27,7 +32,7 @@
 /**
  * External dependencies
  */
-import { computed, defineComponent, inject } from 'vue'
+import { computed, type ComputedRef, defineComponent, inject } from 'vue'
 
 /**
  * Internal dependencies
@@ -93,6 +98,7 @@ export default defineComponent({
       updateActiveGroup,
       hasSearch,
       hasGroupIcons,
+      searchClass: state.options.searchClass,
       placeholder,
       icons: {
         smileys_emotion,

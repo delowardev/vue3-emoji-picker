@@ -74,6 +74,8 @@ function onSelectEmoji(emoji) {
 | display-recent             | Boolean | false              | Display Recently used emojis                                                                |
 | theme                      | String  | 'light'            | Available options, 'light', 'dark', and 'auto'                                              |
 | emoji-list                 | Object  | Default emoji list | Customize the emoji list to search for emoji in other languages                             |
+| hide-selected-emoji        | Boolean | false              | Hide the selected emoji displayed in the bottom left corner of the footer.                  |
+| search-class               | String  | ''                 | Add custom class to search input                                                            |
 
 ## Static text option (`props['static-texts']`)
 

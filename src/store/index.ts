@@ -21,6 +21,8 @@ const defaultOptions: Record<string, any> = {
   groupOrder: [],
   groupIcons: {},
   emojiList: {},
+  hideSelectedEmoji: false,
+  searchClass: '',
 }
 
 async function getRecentEmojis() {

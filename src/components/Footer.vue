@@ -1,6 +1,10 @@
 <template>
-  <div class="v3-footer" @mouseleave="updateSkinToneState(false)">
-    <div class="v3-foot-left">
+  <div
+    class="v3-footer"
+    :style="showSelectedEmoji ? '' : 'justify-content: flex-end'"
+    @mouseleave="updateSkinToneState(false)"
+  >
+    <div v-show="showSelectedEmoji" class="v3-foot-left">
       <span :class="platform" class="v3-icon">
         <span v-if="native || hasError">{{ unicodeToEmoji(emoji.r) }}</span>
         <img
@@ -66,6 +70,7 @@ export default defineComponent({
     )
     const hasSkinTones = computed(() => !state.options.disableSkinTones)
     const platform = isMac() ? 'is-mac' : ''
+    const showSelectedEmoji = computed(() => !state.options.hideSelectedEmoji)
 
     const emoji = computed<any>(() => {
       return {
@@ -107,6 +112,7 @@ export default defineComponent({
       skinToneText,
       hasSkinTones,
       native: state.options.native,
+      showSelectedEmoji,
       unicodeToEmoji,
       platform,
       hasError,
