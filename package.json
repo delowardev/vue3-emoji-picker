@@ -21,6 +21,7 @@
   ],
   "main": "./dist/emoji-picker.umd.js",
   "module": "./dist/emoji-picker.es.js",
+  "types": "./dist/emoji-picker.es.d.ts",
   "exports": {
     ".": {
       "import": "./dist/emoji-picker.es.js",
@@ -59,6 +60,7 @@
     "sass": "^1.43.2",
     "typescript": "^4.3.2",
     "vite": "^2.4.2",
+    "vite-plugin-dts": "^3.6.0",
     "vitest": "^0.24.5",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^0.0.24"

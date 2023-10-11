@@ -34,6 +34,15 @@ export interface Emoji {
   src?: string
 }
 
+export const EMOJI_SKIN_TONE_KEY = 't'
+
+export const EMOJI_EMOJI_KEY = 'i'
+
+export interface EmojiExt extends Emoji {
+  [EMOJI_SKIN_TONE_KEY]: string
+  [EMOJI_EMOJI_KEY]: string
+}
+
 export type EmojiRecord = Record<string, Emoji[]>
 
 export interface State {

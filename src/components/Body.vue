@@ -54,7 +54,7 @@ import {
 /**
  * Internal dependencies
  */
-import { EmojiRecord, Emoji, Store } from '../types'
+import {EmojiRecord, Emoji, Store, EmojiExt} from '../types'
 
 import {
   EMOJI_REMOTE_SRC,
@@ -71,6 +71,9 @@ import {
 
 export default defineComponent({
   name: 'Body',
+  emits: {
+    select: (emoji: EmojiExt) => true,
+  },
   setup() {
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
