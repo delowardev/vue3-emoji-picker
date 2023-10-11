@@ -19,7 +19,7 @@ import { defineComponent, provide, ref, PropType, toRaw } from 'vue'
 import { COLOR_THEMES, GROUP_NAMES, STATIC_TEXTS } from '../constant'
 import Store from '../store'
 import PickerRoot from './Root.vue'
-import { ColorTheme } from '../types'
+import { ColorTheme, EmojiExt } from '../types'
 
 export default defineComponent({
   name: 'Picker',
@@ -100,7 +100,10 @@ export default defineComponent({
       default: 'light',
     },
   },
-  emits: ['update:text', 'select'],
+  emits: {
+    'update:text': (text: string) => true,
+    select: (emoji: EmojiExt) => true,
+  },
   setup(props, { emit }) {
     const input = ref(props.text)
 

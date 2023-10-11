@@ -71,7 +71,7 @@ import smileys_people from '../svgs/groups/smileys_people.svg'
 import Body from './Body.vue'
 import Header from './Header.vue'
 import Footer from './Footer.vue'
-import { Store } from '../types'
+import { EmojiExt, Store } from '../types'
 
 export default defineComponent({
   name: 'PickerRoot',
@@ -106,7 +106,10 @@ export default defineComponent({
       default: () => ({}),
     },
   },
-  emits: ['update:text', 'select'],
+  emits: {
+    select: (emoji: EmojiExt) => true,
+    'update:text': (value: string) => true,
+  },
   setup(props, { emit }) {
     const elem = ref<HTMLInputElement>()
     const button = ref<HTMLButtonElement>()
@@ -121,7 +124,7 @@ export default defineComponent({
     /**
      * Functions
      */
-    function onSelect(emoji: any) {
+    function onSelect(emoji: EmojiExt) {
       if (isInputType) {
         const mode = state.options.mode
         if (mode === 'prepend') {
