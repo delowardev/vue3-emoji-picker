@@ -57,7 +57,7 @@ function onSelectEmoji(emoji) {
 | Prop                       | Type    | Default Value | Description                                                                                 |
 | :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------ |
 | native                     | Boolean | false         | Load native emoji instead of image.                                                         |
-| hide-search                | Boolean | true          | Show/hide search input.                                                                     |
+| hide-search                | Boolean | false          | Show/hide search input.                                                                     |
 | hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                               |
 | hide-group-names           | Boolean | false         | Show/hide group names.                                                                      |
 | disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                              |
