@@ -134,7 +134,8 @@ function onChangeText(text) { /* do something */ }
   "travel_places": "Travel places",
   "objects": "Objects",
   "symbols": "Symbols",
-  "flags": "Flags"
+  "flags": "Flags",
+  "recent": "Recently used"
 }
 ```
 
