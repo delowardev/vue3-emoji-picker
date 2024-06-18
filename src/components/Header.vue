@@ -101,8 +101,8 @@ export default defineComponent({
         objects,
         symbols,
         flags,
-        ...state.options.groupIcons,
         recent,
+        ...state.options.groupIcons,
       } as Record<string, string>,
     }
   },
