@@ -36,7 +36,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "prepare": "husky install",
+    "prepare": "if [ -d .git ]; then husky install; fi"
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint --ext .ts,.js,.vue ./",
     "lint:fix": "eslint --fix --ext .ts,.js,.vue ./",
