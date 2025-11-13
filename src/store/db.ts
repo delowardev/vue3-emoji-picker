@@ -48,26 +48,31 @@ async function initialize(): Promise<IDBPDatabase | []> {
     }
   }
 
-  const db = await openDB(DB_KEY, DB_VERSION, {
-    upgrade(db, oldVersion) {
-      if (!db?.objectStoreNames?.contains(STORE_KEY)) {
-        const store = db.createObjectStore(STORE_KEY, {
-          keyPath: 'id',
-          autoIncrement: true,
-        })
-        store.createIndex('id', 'id', {
-          unique: true,
-        })
-      }
-    },
-    async blocked() {
-      await db.close()
-    },
-    async blocking() {
-      await db.close()
-    },
-  })
-  return db
+  try {
+    const db = await openDB(DB_KEY, DB_VERSION, {
+      upgrade(db, oldVersion) {
+        if (!db?.objectStoreNames?.contains(STORE_KEY)) {
+          const store = db.createObjectStore(STORE_KEY, {
+            keyPath: 'id',
+            autoIncrement: true,
+          })
+          store.createIndex('id', 'id', {
+            unique: true,
+          })
+        }
+      },
+      async blocked() {
+        await db.close()
+      },
+      async blocking() {
+        await db.close()
+      },
+    })
+    return db
+  } catch (error) {
+    // Database errors are expected when db is deleted or not available
+    return []
+  }
 }
 
 export default initialize
