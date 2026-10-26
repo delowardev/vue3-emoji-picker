@@ -16,12 +16,19 @@ npm install vue3-emoji-picker
 yarn add vue3-emoji-picker
 ```
 
-_Important note: If you're using TypeScript, don't forget to add `declare module 'vue3-emoji-picker'` in your `.d.ts` file_
+_TypeScript types ship with the package — no `declare module 'vue3-emoji-picker'` shim is needed._
+
+### SSR / Nuxt
+
+The picker is safe to import on the server. Browser-only storage is initialised
+lazily and silently disabled when `indexedDB` is unavailable, so importing the
+component in Node or SSR no longer throws. If you only want it rendered on the
+client, wrap it in Nuxt's `<ClientOnly>` as usual.
 
 ## Usage:
 
 ```javascript
-// import picker compopnent
+// import picker component
 import EmojiPicker from 'vue3-emoji-picker'
 
 // import css
@@ -57,7 +64,7 @@ function onSelectEmoji(emoji) {
 | Prop                       | Type    | Default Value | Description                                                                                 |
 | :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------ |
 | native                     | Boolean | false         | Load native emoji instead of image.                                                         |
-| hide-search                | Boolean | false          | Show/hide search input.                                                                     |
+| hide-search                | Boolean | false         | Show/hide search input.                                                                     |
 | hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                               |
 | hide-group-names           | Boolean | false         | Show/hide group names.                                                                      |
 | disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                              |

@@ -50,7 +50,7 @@ import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
   name: 'Header',
-  setup(props) {
+  setup() {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
     const hasSearch = computed(() => !state.options.hideSearch)
@@ -101,8 +101,10 @@ export default defineComponent({
         objects,
         symbols,
         flags,
-        ...state.options.groupIcons,
+        // `recent` must come before the user-provided icons so it can be
+        // overridden — the README documents that it can.
         recent,
+        ...state.options.groupIcons,
       } as Record<string, string>,
     }
   },

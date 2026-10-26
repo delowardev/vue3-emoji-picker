@@ -1,13 +1,29 @@
 import { reactive, readonly, toRaw } from 'vue'
+import { openDB } from 'idb'
 import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from '../constant'
 import { Emoji, EmojiRecord, Group, State, Store } from '../types'
 import emojis from '../data/emojis.json'
 import _groups from '../data/groups.json'
 import initialize, { DB_KEY, DB_VERSION, STORE_KEY } from './db'
-import { openDB } from 'idb'
 
-// init db
-initialize()
+/**
+ * Recent emojis are a progressive enhancement: everything here must work when
+ * IndexedDB is missing (SSR, Node, workers) instead of throwing at import time.
+ */
+function storageSupported(): boolean {
+  return typeof indexedDB !== 'undefined'
+}
+
+let dbReady: Promise<void> | null = null
+
+function ensureDb(): Promise<void> {
+  if (!dbReady) {
+    dbReady = storageSupported()
+      ? initialize().catch(() => undefined)
+      : Promise.resolve()
+  }
+  return dbReady
+}
 
 const defaultOptions: Record<string, any> = {
   native: false,
@@ -23,10 +39,22 @@ const defaultOptions: Record<string, any> = {
   groupIcons: {},
 }
 
-async function getRecentEmojis() {
-  const db = await openDB(DB_KEY, DB_VERSION)
-  const store = db.transaction(STORE_KEY, 'readonly').objectStore(STORE_KEY)
-  return await store.getAll()
+async function getRecentEmojis(): Promise<unknown[]> {
+  if (!storageSupported()) return []
+
+  await ensureDb()
+
+  try {
+    const db = await openDB(DB_KEY, DB_VERSION)
+    try {
+      const store = db.transaction(STORE_KEY, 'readonly').objectStore(STORE_KEY)
+      return await store.getAll()
+    } finally {
+      db.close()
+    }
+  } catch {
+    return []
+  }
 }
 
 export default function Store(): Store {
@@ -74,29 +102,36 @@ export default function Store(): Store {
   /**
    * Setup necessary stuff once picker is ready.
    */
-  function initialize() {
+  function initializeOptions() {
     // Setup initial recent emojis.
     if (state.options.displayRecent) {
       setInitialRecentEmojis()
     }
   }
 
-  async function getRecent() {
-    let recent = await getRecentEmojis()
-    if (Array.isArray(recent) && recent.length) {
-      recent = JSON.parse(recent[0]?.value || '')
-    } else {
-      recent = []
+  async function getRecent(): Promise<Emoji[]> {
+    const records = await getRecentEmojis()
+    const value = (records[0] as { value?: string } | undefined)?.value
+
+    if (!value) return []
+
+    try {
+      const parsed = JSON.parse(value)
+      return Array.isArray(parsed) ? parsed : []
+    } catch {
+      // Corrupt or legacy record: start fresh rather than break the picker.
+      return []
     }
-    return recent
   }
 
   function setInitialRecentEmojis() {
     // set recent emojis once options is updated.
-    getRecent().then((recent) => {
-      state.recent = recent
-      updateLocalStore()
-    })
+    getRecent()
+      .then((recent) => {
+        state.recent = recent
+        return updateLocalStore()
+      })
+      .catch(() => undefined)
   }
 
   /**
@@ -139,21 +174,32 @@ export default function Store(): Store {
     state.options = Object.assign({}, state.options, options)
 
     // Picker is ready 🎉
-    initialize()
+    initializeOptions()
   }
 
   /**
-   * Add emoji to idb.
-   * @return void;
+   * Persist recent emojis. Storage is best-effort: quota errors, private mode
+   * and a missing IndexedDB must never surface as unhandled rejections.
    */
-  async function updateLocalStore() {
-    const db = await openDB(DB_KEY, DB_VERSION)
-    const store = db.transaction(STORE_KEY, 'readwrite').objectStore(STORE_KEY)
-    store.put({
-      id: 0,
-      value: JSON.stringify(state.recent),
-    })
-    return
+  async function updateLocalStore(): Promise<void> {
+    if (!storageSupported()) return
+
+    await ensureDb()
+
+    try {
+      const db = await openDB(DB_KEY, DB_VERSION)
+      try {
+        const tx = db.transaction(STORE_KEY, 'readwrite')
+        await tx
+          .objectStore(STORE_KEY)
+          .put({ id: 0, value: JSON.stringify(state.recent) })
+        await tx.done
+      } finally {
+        db.close()
+      }
+    } catch {
+      // Ignore: recents are not critical.
+    }
   }
 
   /**
@@ -172,7 +218,7 @@ export default function Store(): Store {
     state.recent = [_emoji, ...state.recent]
     // Maximum allowed recent items are 24
     if (state.recent.length > 24) state.recent.length = 24
-    updateLocalStore()
+    void updateLocalStore()
   }
 
   return {

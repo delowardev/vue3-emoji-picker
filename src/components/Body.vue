@@ -21,13 +21,16 @@
               <!-- Native emoji -->
               <span v-if="native">{{ unicodeToEmoji(emoji.r) }}</span>
 
-              <!-- Load from CDN when options.native = true -->
+              <!-- Load from CDN when options.native = false -->
               <img
-                v-else
-                :src="EMOJI_REMOTE_SRC + `/${emoji.r}.png`"
+                v-else-if="!failed[emoji.r]"
+                :src="EMOJI_REMOTE_SRC + '/' + emoji.r + '.png'"
                 :alt="emoji.n[0]"
-                @error="handleError($event, emoji.r)"
+                @error="handleError(emoji.r)"
               />
+
+              <!-- Fallback for missing images (no innerHTML: keeps Vue's DOM) -->
+              <span v-else>{{ unicodeToEmoji(emoji.r) }}</span>
             </button>
           </div>
         </div>
@@ -54,7 +57,7 @@ import {
 /**
  * Internal dependencies
  */
-import {EmojiRecord, Emoji, Store, EmojiExt} from '../types'
+import { Emoji, Store, EmojiExt } from '../types'
 
 import {
   EMOJI_REMOTE_SRC,
@@ -72,25 +75,28 @@ import {
 export default defineComponent({
   name: 'Body',
   emits: {
-    select: (emoji: EmojiExt) => true,
+    select: (_emoji: EmojiExt) => true,
   },
   setup() {
     const { state, updateEmoji, updateSelect } = inject('store') as Store
     const bodyInner = ref<HTMLElement | null>(null)
-    const emojis = computed<EmojiRecord>(() => {
-      return filterEmojis(
-        state.emojis,
-        state.search,
-        state.skinTone,
-        state.options.disabledGroups
-      )
-    })
+    const emojis = computed<Record<string, EmojiExt[]>>(
+      () =>
+        filterEmojis(
+          state.emojis,
+          state.search,
+          state.skinTone,
+          state.options.disabledGroups
+        ) as Record<string, EmojiExt[]>
+    )
 
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
     const groupNames = toRaw(state.options.groupNames)
     const orderedKeys = state.orderedGroupKeys
+    /** Unicode values whose PNG failed to load. */
+    const failed = ref<Record<string, boolean>>({})
 
     if (state.options.additionalGroups) {
       Object.keys(state.options.additionalGroups).map((k) => {
@@ -110,7 +116,7 @@ export default defineComponent({
       updateEmoji(emoji)
     }
 
-    function handleClick(emoji: Emoji) {
+    function handleClick(emoji: EmojiExt) {
       updateSelect(emoji)
       _this?.emit('select', {
         ...emoji,
@@ -119,11 +125,8 @@ export default defineComponent({
       })
     }
 
-    function handleError(event: Event, unicode: string) {
-      const button = (event?.target as HTMLImageElement)?.closest('button')
-      if (button) {
-        button.innerHTML = `<span>${unicodeToEmoji(unicode)}</span>`
-      }
+    function handleError(unicode: string) {
+      failed.value[unicode] = true
     }
 
     watch(
@@ -156,6 +159,7 @@ export default defineComponent({
       platform,
       groupNames,
       orderedKeys,
+      failed,
     }
   },
 })

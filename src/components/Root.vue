@@ -107,8 +107,8 @@ export default defineComponent({
     },
   },
   emits: {
-    select: (emoji: EmojiExt) => true,
-    'update:text': (value: string) => true,
+    select: (_emoji: EmojiExt) => true,
+    'update:text': (_value: string) => true,
   },
   setup(props, { emit }) {
     const elem = ref<HTMLInputElement>()

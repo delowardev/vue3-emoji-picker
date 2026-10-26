@@ -11,7 +11,7 @@
 /**
  * External dependencies
  */
-import { defineComponent, provide, ref, PropType, toRaw } from 'vue'
+import { defineComponent, provide, ref, PropType } from 'vue'
 
 /**
  * Internal dependencies
@@ -101,8 +101,8 @@ export default defineComponent({
     },
   },
   emits: {
-    'update:text': (text: string) => true,
-    select: (emoji: EmojiExt) => true,
+    'update:text': (_text: string) => true,
+    select: (_emoji: EmojiExt) => true,
   },
   setup(props, { emit }) {
     const input = ref(props.text)

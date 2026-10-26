@@ -1,3 +1,33 @@
+v1.1.9 (26/10/26)
+
+- Fix: Every skin tone now applies, including the lightest one. The
+  `findIndex(...) || -1` check treated index `0` as "not found" and silently
+  dropped tone `1f3fb` for all 212 tone-capable emoji. See #76
+- Fix: Importing the picker in Node/SSR no longer throws
+  `ReferenceError: indexedDB is not defined`. Storage is initialised lazily and
+  becomes a no-op when unavailable. See #63, #56
+- Fix: `navigator` is no longer accessed unguarded, so the component does not
+  throw on server runtimes or in workers
+- Fix: `additionalGroups` images can no longer inject markup through
+  `innerHTML`; a failed image now renders the native glyph reactively
+- Fix: Search now matches every alias, so shortcodes such as `thumbsup`, `+1`
+  and `joy_cat` are findable. Results are ranked (exact alias first) and
+  memoised per emoji
+- Fix: `unicodeToEmoji` returns an empty string instead of throwing on
+  non-hex input; malformed `additionalGroups` entries are skipped
+- Fix: `recent` group icon can be overridden through `group-icons`, as the
+  README documents
+- Update: `vue` is a peer dependency instead of a direct dependency
+- Update: Dual ESM/CJS types (`.d.mts` / `.d.cts`) and `exports` conditions, so
+  `require()` consumers get types. `Emoji` no longer requires the computed `r`
+  key, making the documented `additionalGroups` shape valid
+- Update: More public types are exported (`Group`, `GroupKeys`, `GroupNames`,
+  `State`, `EmojiRecord`)
+- Update: The published package is ESM-first (`"type": "module"`) and no longer
+  ships the demo favicon
+- Update: CI now runs type-check, lint, tests, build, `publint`, `attw`, an SSR
+  import smoke test and a package-content check
+
 v1.1.7 (11/11/22)
 
 - Add: Dark mode support

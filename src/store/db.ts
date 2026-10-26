@@ -6,7 +6,7 @@ export const DB_VERSION = 3
 
 async function initialize() {
   const db = await openDB(DB_KEY, DB_VERSION, {
-    upgrade(db, oldVersion) {
+    upgrade(db, _oldVersion) {
       if (!db.objectStoreNames.contains(STORE_KEY)) {
         const store = db.createObjectStore(STORE_KEY, {
           keyPath: 'id',
