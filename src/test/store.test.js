@@ -131,3 +131,27 @@ describe('recent emojis', () => {
     expect(store.state.recent).toEqual([])
   })
 })
+
+describe('group names', () => {
+  it('merges custom names and derives additional group names', () => {
+    const store = Store()
+
+    store.updateOptions({
+      groupNames: { smileys_people: 'Faces' },
+      additionalGroups: { my_custom_group: [{ n: ['x'], u: 'x' }] },
+    })
+
+    expect(store.state.groupNames.smileys_people).toBe('Faces')
+    expect(store.state.groupNames.my_custom_group).toBe('My Custom Group')
+  })
+
+  it('reflects option updates after creation', () => {
+    const store = Store()
+
+    store.updateOptions({ native: false })
+    expect(store.state.options.native).toBe(false)
+
+    store.updateOptions({ native: true })
+    expect(store.state.options.native).toBe(true)
+  })
+})

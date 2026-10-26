@@ -55,7 +55,6 @@ export default defineComponent({
 
     const hasSearch = computed(() => !state.options.hideSearch)
     const hasGroupIcons = computed(() => !state.options.hideGroupIcons)
-    const orderedKeys = JSON.parse(JSON.stringify(state.orderedGroupKeys))
     const placeholder = computed(
       () => state.options.staticTexts.placeholder || ''
     )
@@ -65,47 +64,52 @@ export default defineComponent({
       set: (value: string) => updateSearch(value),
     })
 
-    const groups: Group[] = [
-      ...state.groups,
-      ...Object.keys(state.options.additionalGroups).map((g) => ({
-        key: g,
-        title: state.options.groupNames[g]
-          ? state.options.groupNames[g]
-          : snakeToCapitalizedCase(g),
-      })),
-    ] as Group[]
+    /**
+     * Recomputed whenever groups, names, order or disabled groups change.
+     * This used to be snapshotted in `setup()`, so none of those props could
+     * take effect after mount.
+     */
+    const orderedGroups = computed<Group[]>(() => {
+      const groups = [
+        ...state.groups.map((group) => ({
+          ...group,
+          title: state.groupNames[group.key] || group.title,
+        })),
+        ...Object.keys(state.options.additionalGroups || {}).map((key) => ({
+          key,
+          title: state.groupNames[key] || snakeToCapitalizedCase(key),
+          u: '',
+        })),
+      ] as Group[]
 
-    const orderedGroups: Group[] = []
-
-    orderedKeys.forEach((key: string) => {
-      const index = groups.findIndex((group) => group.key === key)
-      if (index === -1) return
-      orderedGroups.push(groups[index])
-      groups.splice(index, 1)
+      return state.orderedGroupKeys
+        .map((key) => groups.find((group) => group.key === key))
+        .filter((group): group is Group => Boolean(group))
     })
+
+    const icons = computed<Record<string, string>>(() => ({
+      smileys_people,
+      animals_nature,
+      food_drink,
+      activities,
+      travel_places,
+      objects,
+      symbols,
+      flags,
+      // `recent` must come before the user-provided icons so it can be
+      // overridden — the README documents that it can.
+      recent,
+      ...state.options.groupIcons,
+    }))
 
     return {
       orderedGroups,
-      orderedKeys,
       searchValue,
       updateActiveGroup,
       hasSearch,
       hasGroupIcons,
       placeholder,
-      icons: {
-        smileys_people,
-        animals_nature,
-        food_drink,
-        activities,
-        travel_places,
-        objects,
-        symbols,
-        flags,
-        // `recent` must come before the user-provided icons so it can be
-        // overridden — the README documents that it can.
-        recent,
-        ...state.options.groupIcons,
-      } as Record<string, string>,
+      icons,
     }
   },
 })

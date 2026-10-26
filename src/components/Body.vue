@@ -51,7 +51,6 @@ import {
   computed,
   getCurrentInstance,
   inject,
-  toRaw,
 } from 'vue'
 
 /**
@@ -65,12 +64,7 @@ import {
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
 } from '../constant'
-import {
-  filterEmojis,
-  unicodeToEmoji,
-  isMac,
-  snakeToCapitalizedCase,
-} from '../helpers'
+import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
 
 export default defineComponent({
   name: 'Body',
@@ -93,22 +87,11 @@ export default defineComponent({
     const _this = getCurrentInstance()
     const hasGroupNames = computed(() => !state.options.hideGroupNames)
     const isSticky = computed(() => !state.options.disableStickyGroupNames)
-    const groupNames = toRaw(state.options.groupNames)
-    const orderedKeys = state.orderedGroupKeys
+    const groupNames = computed(() => state.groupNames)
+    const orderedKeys = computed(() => state.orderedGroupKeys)
+    const native = computed(() => state.options.native)
     /** Unicode values whose PNG failed to load. */
     const failed = ref<Record<string, boolean>>({})
-
-    if (state.options.additionalGroups) {
-      Object.keys(state.options.additionalGroups).map((k) => {
-        if (state.options.groupNames[k]) {
-          // Custom name is defined use that one
-          groupNames[k] = state.options.groupNames[k]
-        } else {
-          // Name group name from snake case to capitalized wording, e.g. my_custom_group to My Custom Group
-          groupNames[k] = snakeToCapitalizedCase(k)
-        }
-      })
-    }
 
     const platform = isMac() ? 'is-mac' : ''
 
@@ -150,7 +133,7 @@ export default defineComponent({
       handleClick,
       handleError,
       handleMouseEnter,
-      native: state.options.native,
+      native,
       unicodeToEmoji,
       EMOJI_RESULT_KEY,
       EMOJI_NAME_KEY,

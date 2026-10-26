@@ -8,6 +8,15 @@ v1.2.0 (unreleased)
   a recent "thumbs up" no longer renders in the neutral tone.
 - Update: Selection counts are persisted, preparing a frequently-used
   ordering for a later release.
+- Fix: Props are now reactive after mount. `native`, `theme`,
+  `disabled-groups`, `group-order`, `group-names`, `group-icons`,
+  `picker-type`, `hide-*` and the rest previously only took effect at
+  mount time.
+- Fix: `:text` behaves as a controlled prop, so resetting the value from
+  the parent updates the input. See #65
+- Update: Group names resolve once in the store, so header tooltips and
+  body headings agree. They previously disagreed on two categories
+  ("Recently Used" vs "Recently used", "Travel & Places" vs "Travel places").
 
 v1.1.9 (26/10/26)
 

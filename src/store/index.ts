@@ -3,6 +3,7 @@ import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from '../constant'
 import { Emoji, EmojiRecord, Group, State, Store } from '../types'
 import emojis from '../data/emojis.json'
 import _groups from '../data/groups.json'
+import { snakeToCapitalizedCase } from '../helpers'
 import { readJson, writeJson } from './storage'
 
 const RECENT_STORAGE_KEY = 'recent'
@@ -103,6 +104,18 @@ export default function Store(): Store {
       return _groups.filter(
         (group) => !this.disabled.includes(group.key)
       ) as Group[]
+    },
+    get groupNames(): Record<string, string> {
+      const names: Record<string, string> = { ...this.options.groupNames }
+      const additional = this.options.additionalGroups
+
+      if (additional && typeof additional === 'object') {
+        for (const key of Object.keys(additional)) {
+          if (!names[key]) names[key] = snakeToCapitalizedCase(key)
+        }
+      }
+
+      return names
     },
     get orderedGroupKeys() {
       const keys = [

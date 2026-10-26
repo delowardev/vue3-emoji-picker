@@ -11,7 +11,7 @@
 /**
  * External dependencies
  */
-import { defineComponent, provide, ref, PropType } from 'vue'
+import { computed, defineComponent, provide, ref, PropType, watch } from 'vue'
 
 /**
  * Internal dependencies
@@ -117,6 +117,29 @@ export default defineComponent({
     }
 
     /**
+     * Map props to store options. Rebuilt when props change so the picker no
+     * longer freezes every prop at its mount-time value.
+     */
+    const toOptions = (values: typeof props) => ({
+      native: values.native,
+      hideSearch: values.hideSearch,
+      hideGroupIcons: values.hideGroupIcons,
+      hideGroupNames: values.hideGroupNames,
+      staticTexts: { ...STATIC_TEXTS, ...values.staticTexts },
+      disableStickyGroupNames: values.disableStickyGroupNames,
+      disabledGroups: values.disabledGroups,
+      groupNames: { ...GROUP_NAMES, ...values.groupNames },
+      disableSkinTones: values.disableSkinTones,
+      displayRecent: values.displayRecent,
+      additionalGroups: values.additionalGroups,
+      mode: values.mode,
+      offset: values.offset,
+      groupOrder: values.groupOrder,
+      groupIcons: values.groupIcons,
+      colorTheme: COLOR_THEMES.includes(values.theme) ? values.theme : 'light',
+    })
+
+    /**
      * Create a brand new store and
      */
     const store = Store()
@@ -124,24 +147,25 @@ export default defineComponent({
     /**
      * Initializing initial props
      */
-    store.updateOptions({
-      native: props.native,
-      hideSearch: props.hideSearch,
-      hideGroupIcons: props.hideGroupIcons,
-      hideGroupNames: props.hideGroupNames,
-      staticTexts: { ...STATIC_TEXTS, ...props.staticTexts },
-      disableStickyGroupNames: props.disableStickyGroupNames,
-      disabledGroups: props.disabledGroups,
-      groupNames: { ...GROUP_NAMES, ...props.groupNames },
-      disableSkinTones: props.disableSkinTones,
-      displayRecent: props.displayRecent,
-      additionalGroups: props.additionalGroups,
-      mode: props.mode,
-      offset: props.offset,
-      groupOrder: props.groupOrder,
-      groupIcons: props.groupIcons,
-      colorTheme: COLOR_THEMES.includes(props.theme) ? props.theme : 'light',
-    })
+    store.updateOptions(toOptions(props))
+
+    // Only push an update when a value actually changed: parents routinely
+    // pass fresh object literals on every render.
+    watch(
+      () => toOptions(props),
+      (next, previous) => {
+        if (JSON.stringify(next) === JSON.stringify(previous)) return
+        store.updateOptions(next)
+      }
+    )
+
+    // Treat `text` as a controlled prop (issue #65).
+    watch(
+      () => props.text,
+      (value) => {
+        if (value !== input.value) input.value = value || ''
+      }
+    )
 
     /**
      * (provide) make available for entire app.
@@ -153,7 +177,7 @@ export default defineComponent({
      */
 
     return {
-      type: props.pickerType,
+      type: computed(() => props.pickerType),
       input,
       onChangeText,
     }

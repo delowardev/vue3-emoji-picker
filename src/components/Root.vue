@@ -61,6 +61,7 @@ import {
   onBeforeUnmount,
   inject,
   computed,
+  watch,
 } from 'vue'
 import { createPopper } from '@popperjs/core'
 
@@ -116,16 +117,26 @@ export default defineComponent({
     const picker = ref<any>()
     const open = ref(false)
     const input = ref(props.text)
-    const isInputType = props.type === 'input' || props.type === 'textarea'
+    const isInputType = computed(
+      () => props.type === 'input' || props.type === 'textarea'
+    )
     let cursor = -1
     const { state } = inject('store') as Store
     const colorTheme = computed(() => state.options.colorTheme)
+
+    // Treat `text` as a controlled prop (issue #65).
+    watch(
+      () => props.text,
+      (value) => {
+        if (value !== input.value) input.value = value || ''
+      }
+    )
 
     /**
      * Functions
      */
     function onSelect(emoji: EmojiExt) {
-      if (isInputType) {
+      if (isInputType.value) {
         const mode = state.options.mode
         if (mode === 'prepend') {
           input.value = emoji.i + input.value
@@ -159,7 +170,7 @@ export default defineComponent({
     }
 
     function setupPopper() {
-      if (button.value && picker.value && isInputType) {
+      if (button.value && picker.value && isInputType.value) {
         let offset = state.options.offset
 
         if (typeof offset !== 'number') {

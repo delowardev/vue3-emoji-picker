@@ -67,6 +67,8 @@ export interface State {
   skinTone: string
   options: Record<string, any>
   recent: Emoji[]
+  /** Resolved display names, including additional groups. */
+  groupNames: Record<string, string>
   orderedGroupKeys: string[]
   disabled: string[]
 }
