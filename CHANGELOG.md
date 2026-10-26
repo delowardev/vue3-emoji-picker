@@ -1,3 +1,14 @@
+v1.2.0 (unreleased)
+
+- Update: Recent emoji are stored in `localStorage` instead of IndexedDB.
+  The `idb` dependency is gone and the store no longer touches a browser
+  API until it is actually used.
+- Fix: Recently used emoji keep the selected skin tone. Selections are
+  persisted as unicode ids and resolved against the current dataset, so
+  a recent "thumbs up" no longer renders in the neutral tone.
+- Update: Selection counts are persisted, preparing a frequently-used
+  ordering for a later release.
+
 v1.1.9 (26/10/26)
 
 - Fix: Every skin tone now applies, including the lightest one. The

@@ -1,6 +1,6 @@
 {
   "name": "vue3-emoji-picker",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "license": "MIT",
   "author": "delowardev",
   "type": "module",
@@ -102,7 +102,6 @@
     "vue-tsc": "^1.2.1"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.0",
-    "idb": "^7.1.0"
+    "@popperjs/core": "^2.11.0"
   }
 }
