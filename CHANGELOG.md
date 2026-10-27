@@ -1,5 +1,13 @@
 v1.2.0 (unreleased)
 
+- Add: `vue3-emoji-picker/core` — a framework-agnostic entry point with
+  `createPicker`, search, skin tones and recent storage. It has no Vue
+  import, so it can back a picker in another view layer.
+- Add: an interactive playground (`npm run dev`) with live prop controls,
+  generated usage code and a vanilla-core demo. `npm run demo:build`
+  produces a deployable static build.
+- Update: the Vue store is now a thin bridge over the core; `vue` is an
+  optional peer dependency so core-only consumers do not need it.
 - Update: Recent emoji are stored in `localStorage` instead of IndexedDB.
   The `idb` dependency is gone and the store no longer touches a browser
   API until it is actually used.

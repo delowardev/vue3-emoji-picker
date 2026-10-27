@@ -57,6 +57,11 @@ const required = [
   'dist/emoji-picker.d.ts',
   'dist/emoji-picker.d.mts',
   'dist/emoji-picker.d.cts',
+  'dist/core.mjs',
+  'dist/core.cjs',
+  'dist/core.d.ts',
+  'dist/core.d.mts',
+  'dist/core.d.cts',
   'dist/style.css',
   'package.json',
   'README.md',
@@ -68,6 +73,18 @@ if (absent.length > 0) {
   console.error('[test:pack] expected files are missing from the tarball:')
   for (const file of absent) console.error(`  - ${file}`)
   process.exit(1)
+}
+
+// The core entry must stay framework-agnostic: no Vue import anywhere in it.
+const vueImport = /\bfrom\s*['"]vue['"]|\brequire\(\s*['"]vue['"]\s*\)/
+for (const file of ['dist/core.mjs', 'dist/core.cjs']) {
+  const source = readFileSync(resolve(root, file), 'utf8')
+  if (vueImport.test(source)) {
+    console.error(
+      `[test:pack] ${file} imports Vue — the core entry must be framework-agnostic`
+    )
+    process.exit(1)
+  }
 }
 
 const forbidden = files.filter(

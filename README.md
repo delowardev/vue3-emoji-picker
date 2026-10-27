@@ -21,7 +21,7 @@ _TypeScript types ship with the package — no `declare module 'vue3-emoji-picke
 ### SSR / Nuxt
 
 The picker is safe to import on the server. Browser-only storage is initialised
-lazily and silently disabled when `indexedDB` is unavailable, so importing the
+lazily and silently disabled when `localStorage` is unavailable, so importing the
 component in Node or SSR no longer throws. If you only want it rendered on the
 client, wrap it in Nuxt's `<ClientOnly>` as usual.
 
@@ -59,6 +59,42 @@ function onSelectEmoji(emoji) {
 }
 ```
 
+## Playground
+
+`npm run dev` starts an interactive playground with live prop controls, the
+generated usage snippet and a vanilla-core demo. `npm run demo:build` emits a
+static build to `demo-dist/`.
+
+## Framework-agnostic core
+
+The picker logic is available without Vue from `vue3-emoji-picker/core`. It has
+no Vue import, so it can drive a picker in React, Svelte, a custom element or
+plain DOM.
+
+```javascript
+import { createPicker } from 'vue3-emoji-picker/core'
+
+const picker = createPicker({ displayRecent: true })
+
+picker.subscribe((state) => render(state))
+
+picker.setSearch('thumbsup')
+picker.setSkinTone('1f3fb')
+
+const results = picker.results() // { groupKey: Emoji[] }
+const payload = picker.select(results.smileys_people[0])
+// { ...emoji, r, t, i }
+```
+
+Exports include `createPicker`, `searchEmojis` / `filterEmojis`, `applySkinTone`,
+`unicodeToEmoji`, the bundled dataset (`defaultEmojis`, `defaultGroups`),
+storage adapters (`createMemoryStorage`, `getDefaultStorage`) and the public
+types. `createPicker` accepts a `storage` adapter, so persistence can be swapped
+out in tests or on the server.
+
+> The core ships from the same package as a second entry point. `vue` is an
+> optional peer dependency, so core-only consumers do not need Vue installed.
+
 ## Options (`props`)
 
 | Prop                       | Type    | Default Value | Description                                                                                 |
@@ -73,8 +109,9 @@ function onSelectEmoji(emoji) {
 | group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names)                      |
 | static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                                                |
 | pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''` |
+| text                       | String  | ''            | Initial value for the input/textarea picker types.                                          |
 | mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
-| offset                     | Number  | '6'           | Choose emoji popup offset                                                                   |
+| offset                     | Number  | 6             | Choose emoji popup offset                                                                   |
 | additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case       |
 | group-order                | Array   | []            | Override ordering of groups                                                                 |
 | group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |

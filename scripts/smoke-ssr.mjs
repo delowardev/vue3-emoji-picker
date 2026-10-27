@@ -37,6 +37,25 @@ if (!html || !html.includes('v3-emoji-picker')) {
   process.exit(1)
 }
 
+// The core entry must work in plain Node, with no DOM at all.
+try {
+  const { createPicker, createMemoryStorage } = await import(
+    '../dist/core.mjs'
+  )
+  const picker = createPicker({ storage: createMemoryStorage() })
+  picker.setSearch('thumbsup')
+
+  const results = Object.values(picker.results()).flat()
+  if (results.length !== 1 || results[0].u !== '1f44d') {
+    console.error('[test:ssr] core search returned unexpected results')
+    process.exit(1)
+  }
+} catch (error) {
+  console.error('[test:ssr] core entry failed in Node:')
+  console.error(error)
+  process.exit(1)
+}
+
 console.log(
-  `[test:ssr] ok — imported and server-rendered ${html.length} bytes with no unhandled rejections`
+  `[test:ssr] ok — server-rendered ${html.length} bytes and core ran in Node, no unhandled rejections`
 )
