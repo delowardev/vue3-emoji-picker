@@ -86,7 +86,18 @@ const payload = picker.select(results.smileys_people[0])
 // { ...emoji, r, t, i }
 ```
 
-Exports include `createPicker`, `searchEmojis` / `filterEmojis`, `applySkinTone`,
+### Shortcodes
+
+```javascript
+import { replaceShortcodes, shortcodeToEmoji } from 'vue3-emoji-picker/core'
+
+replaceShortcodes('Hello :wave::skin-tone-2: :+1:') // 'Hello 👋🏻 👍'
+shortcodeToEmoji('joy_cat') // '😹'
+```
+
+Unknown codes are left as-is. Both accept `{ skinTone, additionalGroups }`.
+
+Exports include `createPicker`, `replaceShortcodes` / `shortcodeToEmoji`, `searchEmojis` / `filterEmojis`, `applySkinTone`,
 `unicodeToEmoji`, the bundled dataset (`defaultEmojis`, `defaultGroups`),
 storage adapters (`createMemoryStorage`, `getDefaultStorage`) and the public
 types. `createPicker` accepts a `storage` adapter, so persistence can be swapped
@@ -97,26 +108,30 @@ out in tests or on the server.
 
 ## Options (`props`)
 
-| Prop                       | Type    | Default Value | Description                                                                                 |
-| :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------ |
-| native                     | Boolean | false         | Load native emoji instead of image.                                                         |
-| hide-search                | Boolean | false         | Show/hide search input.                                                                     |
-| hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                               |
-| hide-group-names           | Boolean | false         | Show/hide group names.                                                                      |
-| disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                              |
-| disable-skin-tones         | Boolean | false         | Disable skin tones.                                                                         |
-| disabled-groups            | Array   | []            | Disable any group/category. See [Available groups](#available-groups)                       |
-| group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names)                      |
-| static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                                                |
-| pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''` |
-| text                       | String  | ''            | Initial value for the input/textarea picker types.                                          |
-| mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                         |
-| offset                     | Number  | 6             | Choose emoji popup offset                                                                   |
-| additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case       |
-| group-order                | Array   | []            | Override ordering of groups                                                                 |
-| group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                               |
-| display-recent             | Boolean | false         | Display Recently used emojis                                                                |
-| theme                      | String  | 'light'       | Available options, 'light', 'dark', and 'auto'                                              |
+| Prop                       | Type    | Default Value | Description                                                                                  |
+| :------------------------- | :------ | :------------ | :------------------------------------------------------------------------------------------- |
+| native                     | Boolean | false         | Load native emoji instead of image.                                                          |
+| hide-search                | Boolean | false         | Show/hide search input.                                                                      |
+| hide-group-icons           | Boolean | false         | Show/hide header group icons.                                                                |
+| hide-group-names           | Boolean | false         | Show/hide group names.                                                                       |
+| hide-footer                | Boolean | false         | Show/hide the footer (preview and skin tones).                                               |
+| disable-sticky-group-names | Boolean | false         | Disable sticky for group names                                                               |
+| disable-skin-tones         | Boolean | false         | Disable skin tones.                                                                          |
+| disabled-groups            | Array   | []            | Disable any group/category. See [Available groups](#available-groups)                        |
+| disabled-emojis            | Array   | []            | Hide individual emoji by unicode, e.g. `['1f595']`.                                          |
+| group-names                | Object  | {}            | Change any group name. See [Default group names](#default-group-names)                       |
+| static-texts               | Object  | Object        | See [static-texts](#propsstatic-texts) table                                                 |
+| pickerType                 | string  | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''`  |
+| text                       | String  | ''            | Initial value for the input/textarea picker types.                                           |
+| mode                       | string  | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                          |
+| offset                     | Number  | 6             | Popup offset in px (only for `input`/`textarea` picker types)                                |
+| placement                  | string  | 'bottom-end'  | Popup placement for `input`/`textarea` picker types (any Popper placement, e.g. `top-start`) |
+| input-attrs                | Object  | {}            | Attributes for the `input`/`textarea`, e.g. `{ placeholder: 'Say hi', class: 'my-input' }`   |
+| additional-groups          | Object  | {}            | Add additional customized groups, keys are the group names translated from snake_case        |
+| group-order                | Array   | []            | Override ordering of groups                                                                  |
+| group-icons                | Object  | {}            | Override group icons by passing svg's on keys                                                |
+| display-recent             | Boolean | false         | Display Recently used emojis                                                                 |
+| theme                      | String  | 'light'       | Available options, 'light', 'dark', and 'auto'                                               |
 
 ## Static text option (`props['static-texts']`)
 
