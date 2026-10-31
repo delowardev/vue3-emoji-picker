@@ -30,9 +30,11 @@ export function createDefaultOptions(): EmojiOptions {
     hideSearch: false,
     hideGroupIcons: false,
     hideGroupNames: false,
+    hideFooter: false,
     staticTexts: { ...STATIC_TEXTS },
     disableStickyGroupNames: false,
     disabledGroups: [],
+    disabledEmojis: [],
     groupNames: {},
     disableSkinTones: false,
     displayRecent: false,
@@ -41,6 +43,8 @@ export function createDefaultOptions(): EmojiOptions {
     groupIcons: {},
     mode: 'insert',
     offset: 6,
+    placement: 'bottom-end',
+    inputAttrs: {},
     colorTheme: 'light',
   }
 }
@@ -112,7 +116,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       emit()
     },
 
-    select(emoji) {
+    select(emoji, { reorderRecent = true } = {}) {
       const resolved = applySkinTone(emoji, state.skinTone)
       const payload = {
         ...emoji,
@@ -122,11 +126,19 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       } as EmojiExt
 
       if (options.displayRecent) {
-        state.recent = recents.add(emoji)
+        const next = recents.add(emoji)
+        // Picking from the recent group itself must not move the emoji
+        // under the pointer (issue #75).
+        if (reorderRecent) state.recent = next
       }
 
       emit()
       return payload
+    },
+
+    refreshRecent() {
+      state.recent = recents.list()
+      emit()
     },
 
     results() {
@@ -134,7 +146,8 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
         mergeEmojis(options.additionalGroups, state.recent),
         state.search,
         state.skinTone,
-        disabledGroupsOf(options)
+        disabledGroupsOf(options),
+        options.disabledEmojis
       )
     },
 

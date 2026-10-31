@@ -43,6 +43,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    hideFooter: {
+      type: Boolean,
+      default: false,
+    },
     staticTexts: {
       type: Object,
       default: () => ({}),
@@ -53,6 +57,10 @@ export default defineComponent({
     },
     disabledGroups: {
       type: Array,
+      default: () => [],
+    },
+    disabledEmojis: {
+      type: Array as PropType<string[]>,
       default: () => [],
     },
     groupNames: {
@@ -74,6 +82,14 @@ export default defineComponent({
     offset: {
       type: Number,
       default: 6,
+    },
+    placement: {
+      type: String,
+      default: 'bottom-end',
+    },
+    inputAttrs: {
+      type: Object,
+      default: () => ({}),
     },
     additionalGroups: {
       type: Object,
@@ -125,15 +141,19 @@ export default defineComponent({
       hideSearch: values.hideSearch,
       hideGroupIcons: values.hideGroupIcons,
       hideGroupNames: values.hideGroupNames,
+      hideFooter: values.hideFooter,
       staticTexts: { ...STATIC_TEXTS, ...values.staticTexts },
       disableStickyGroupNames: values.disableStickyGroupNames,
       disabledGroups: values.disabledGroups,
+      disabledEmojis: values.disabledEmojis,
       groupNames: { ...GROUP_NAMES, ...values.groupNames },
       disableSkinTones: values.disableSkinTones,
       displayRecent: values.displayRecent,
       additionalGroups: values.additionalGroups,
       mode: values.mode,
       offset: values.offset,
+      placement: values.placement,
+      inputAttrs: { ...values.inputAttrs },
       groupOrder: values.groupOrder,
       groupIcons: values.groupIcons,
       colorTheme: COLOR_THEMES.includes(values.theme) ? values.theme : 'light',

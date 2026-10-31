@@ -69,3 +69,42 @@ describe('prop reactivity', () => {
     wrapper.unmount()
   })
 })
+
+describe('new props', () => {
+  it('hides the footer', () => {
+    const wrapper = mountPicker({ hideFooter: true })
+    expect(wrapper.find('.v3-footer').exists()).toBe(false)
+    wrapper.unmount()
+  })
+
+  it('hides individual emoji', () => {
+    const wrapper = mountPicker({ native: true, disabledEmojis: ['1f600'] })
+    const body = wrapper.find('.v3-body').text()
+    expect(body).not.toContain('\u{1f600}')
+    expect(body).toContain('\u{1f601}')
+    wrapper.unmount()
+  })
+
+  it('passes input attributes through to the input', () => {
+    const wrapper = mountPicker({
+      pickerType: 'textarea',
+      inputAttrs: { placeholder: 'Say hi', rows: 3, class: 'my-input' },
+    })
+    const textarea = wrapper.find('textarea')
+
+    expect(textarea.attributes('placeholder')).toBe('Say hi')
+    expect(textarea.attributes('rows')).toBe('3')
+    expect(textarea.classes()).toEqual(
+      expect.arrayContaining(['my-input', 'v3-emoji-picker-textarea'])
+    )
+    wrapper.unmount()
+  })
+
+  it('lazy-loads emoji images', () => {
+    const wrapper = mountPicker({ native: false })
+    const img = wrapper.find('.v3-emojis img')
+    // happy-dom may set it as a DOM property instead of an attribute.
+    expect(img.attributes('loading') || img.element.loading).toBe('lazy')
+    wrapper.unmount()
+  })
+})

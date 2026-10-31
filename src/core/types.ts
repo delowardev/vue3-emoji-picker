@@ -67,9 +67,12 @@ export interface EmojiOptions {
   hideSearch: boolean
   hideGroupIcons: boolean
   hideGroupNames: boolean
+  hideFooter: boolean
   staticTexts: Record<string, string>
   disableStickyGroupNames: boolean
   disabledGroups: string[]
+  /** Unicode ids (e.g. `1f595`) to leave out of every group and search. */
+  disabledEmojis: string[]
   groupNames: Record<string, string>
   disableSkinTones: boolean
   displayRecent: boolean
@@ -78,6 +81,8 @@ export interface EmojiOptions {
   groupIcons: Record<string, string>
   mode: 'insert' | 'append' | 'prepend'
   offset: number
+  placement: string
+  inputAttrs: Record<string, unknown>
   colorTheme: ColorTheme
   /** Defaults to localStorage, falling back to in-memory. */
   storage?: StorageAdapter
@@ -101,7 +106,15 @@ export interface EmojiPicker {
   setSkinTone(tone: string): void
   setActiveGroup(key: string): void
   hover(emoji: Emoji): void
-  select(emoji: Emoji): EmojiExt
+  /**
+   * Resolve the selection payload and record it as recent. Pass
+   * `{ reorderRecent: false }` when the pick comes from the recent group so
+   * the list does not shuffle under the pointer; the new order is persisted
+   * and shown on the next `setOptions` or `refreshRecent`.
+   */
+  select(emoji: Emoji, options?: { reorderRecent?: boolean }): EmojiExt
+  /** Re-read the recent list from storage into state. */
+  refreshRecent(): void
   /** Emoji filtered by search, skin tone and disabled groups. */
   results(): EmojiRecord
   groups(): Array<{ key: string; title: string; u: string }>
@@ -130,7 +143,8 @@ export interface Store {
   state: State
   updateSearch: (v: string) => void
   updateEmoji: (v: Emoji) => void
-  updateSelect: (v: Emoji) => void
+  updateSelect: (v: Emoji, fromRecent?: boolean) => void
+  refreshRecent: () => void
   updateActiveGroup: (v: string) => void
   updateSkinTone: (v: string) => void
   updateOptions: (v: Record<string, any>) => void

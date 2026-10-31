@@ -6,6 +6,8 @@ export { applySkinTone } from './skinTone'
 export { snakeToCapitalizedCase } from './names'
 export { filterEmojis, searchEmojis, normalizeKeyword } from './search'
 export { isMac, hasIndexedDB } from './environment'
+export { shortcodeToEmoji, replaceShortcodes } from './shortcodes'
+export type { ShortcodeOptions } from './shortcodes'
 
 export { createPicker, createDefaultOptions } from './createPicker'
 export { createRecents, RECENT_STORAGE_KEY, MAX_RECENT } from './recents'

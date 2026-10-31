@@ -16,7 +16,7 @@
               :key="emoji.r"
               type="button"
               @mouseenter="handleMouseEnter(emoji)"
-              @click="handleClick(emoji)"
+              @click="handleClick(emoji, key)"
             >
               <!-- Native emoji -->
               <span v-if="native">{{ unicodeToEmoji(emoji.r) }}</span>
@@ -26,6 +26,7 @@
                 v-else-if="!failed[emoji.r]"
                 :src="EMOJI_REMOTE_SRC + '/' + emoji.r + '.png'"
                 :alt="emoji.n[0]"
+                loading="lazy"
                 @error="handleError(emoji.r)"
               />
 
@@ -80,7 +81,8 @@ export default defineComponent({
           state.emojis,
           state.search,
           state.skinTone,
-          state.options.disabledGroups
+          state.options.disabledGroups,
+          state.options.disabledEmojis
         ) as Record<string, EmojiExt[]>
     )
 
@@ -99,8 +101,8 @@ export default defineComponent({
       updateEmoji(emoji)
     }
 
-    function handleClick(emoji: EmojiExt) {
-      updateSelect(emoji)
+    function handleClick(emoji: EmojiExt, group?: string) {
+      updateSelect(emoji, group === 'recent')
       _this?.emit('select', {
         ...emoji,
         t: state.skinTone,
