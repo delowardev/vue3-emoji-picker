@@ -25,8 +25,14 @@
         &:last-child {
           flex-grow: 0;
         }
-        &:hover {
+        &:hover,
+        &:focus-visible {
           opacity: 1;
+        }
+        &:focus-visible {
+          outline: 2px solid var(--v3-picker-focus, #2563eb);
+          outline-offset: 2px;
+          border-radius: 4px;
         }
         span {
           display: flex;
@@ -53,6 +59,8 @@
     border-radius: 3px;
     font-size: 12px;
     transition: 200ms;
+    -webkit-appearance: none;
+    appearance: none;
     &:focus {
       outline: none;
     }

@@ -82,8 +82,9 @@ export default function Store(): Store {
     updateSkinTone: (tone = 'neutral') => picker.setSkinTone(tone),
     updateOptions: (options: Record<string, any>) =>
       picker.setOptions(options as Partial<EmojiOptions>),
-    updateSelect: (emoji: Emoji) => {
-      picker.select(emoji)
+    updateSelect: (emoji: Emoji, fromRecent = false) => {
+      picker.select(emoji, { reorderRecent: !fromRecent })
     },
+    refreshRecent: () => picker.refreshRecent(),
   }
 }

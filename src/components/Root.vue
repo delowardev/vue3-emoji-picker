@@ -4,6 +4,7 @@
       <input
         v-if="type === 'input'"
         ref="elem"
+        v-bind="inputAttrs"
         :value="input"
         type="text"
         class="v3-emoji-picker-input"
@@ -13,6 +14,7 @@
       <textarea
         v-else
         ref="elem"
+        v-bind="inputAttrs"
         :value="input"
         class="v3-emoji-picker-textarea"
         @input="onChangeText"
@@ -26,7 +28,7 @@
           ref="button"
           type="button"
           class="v3-input-picker-icon"
-          @click="open = !open"
+          @click="toggle"
         >
           <img :src="face" alt="" />
         </button>
@@ -35,18 +37,26 @@
           ref="picker"
           class="v3-emoji-picker"
           :class="'v3-color-theme-' + colorTheme"
+          :style="cssVars"
+          @keydown.esc="close"
         >
           <Header />
           <Body @select="onSelect" />
-          <Footer />
+          <Footer v-if="hasFooter" />
         </div>
       </div>
     </div>
   </div>
-  <div v-else class="v3-emoji-picker" :class="'v3-color-theme-' + colorTheme">
+  <div
+    v-else
+    ref="inline"
+    class="v3-emoji-picker"
+    :class="'v3-color-theme-' + colorTheme"
+    :style="cssVars"
+  >
     <Header />
     <Body @select="onSelect" />
-    <Footer />
+    <Footer v-if="hasFooter" />
   </div>
 </template>
 
@@ -62,8 +72,9 @@ import {
   inject,
   computed,
   watch,
+  nextTick,
 } from 'vue'
-import { createPopper } from '@popperjs/core'
+import { createPopper, Instance, Placement } from '@popperjs/core'
 
 /**
  * Internal dependencies
@@ -121,8 +132,11 @@ export default defineComponent({
       () => props.type === 'input' || props.type === 'textarea'
     )
     let cursor = -1
-    const { state } = inject('store') as Store
+    const { state, refreshRecent } = inject('store') as Store
     const colorTheme = computed(() => state.options.colorTheme)
+    const hasFooter = computed(() => !state.options.hideFooter)
+    const inputAttrs = computed(() => state.options.inputAttrs || {})
+    let popper: Instance | null = null
 
     // Treat `text` as a controlled prop (issue #65).
     watch(
@@ -169,29 +183,70 @@ export default defineComponent({
       }
     }
 
+    const inline = ref<HTMLElement>()
+
+    /** Layout props exposed as CSS custom properties. */
+    const cssVars = computed(() => ({
+      '--v3-per-line': String(state.options.perLine || 8),
+      '--v3-emoji-size': `${state.options.emojiSize || 22}px`,
+    }))
+
+    function focusSearch(root?: HTMLElement) {
+      root?.querySelector<HTMLInputElement>('.v3-search input')?.focus()
+    }
+
+    function toggle() {
+      open.value = !open.value
+      // Show selections from the previous session in their new order.
+      if (open.value) {
+        refreshRecent()
+        if (state.options.autoFocus) nextTick(() => focusSearch(picker.value))
+      }
+    }
+
+    /** Escape closes the popup and returns focus to the field. */
+    function close() {
+      if (!open.value) return
+      open.value = false
+      elem.value?.focus()
+    }
+
+    function popperOptions() {
+      const offset =
+        typeof state.options.offset === 'number' ? state.options.offset : 6
+      const placement = (state.options.placement || 'bottom-end') as Placement
+
+      return {
+        placement,
+        modifiers: [{ name: 'offset', options: { offset: [0, offset] } }],
+      }
+    }
+
     function setupPopper() {
       if (button.value && picker.value && isInputType.value) {
-        let offset = state.options.offset
-
-        if (typeof offset !== 'number') {
-          offset = 6
-        }
-
-        createPopper(button.value, picker.value, {
-          placement: 'bottom-end',
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, offset],
-              },
-            },
-          ],
-        })
-
+        popper = createPopper(button.value, picker.value, popperOptions())
         document.body.addEventListener('click', clickListener)
       }
     }
+
+    function destroyPopper() {
+      popper?.destroy()
+      popper = null
+      document.body.removeEventListener('click', clickListener)
+    }
+
+    // `offset` and `placement` can change after mount.
+    watch(
+      () => [state.options.offset, state.options.placement],
+      () => popper?.setOptions(popperOptions())
+    )
+
+    // The input wrapper only exists for input/textarea picker types.
+    watch(isInputType, async () => {
+      await nextTick()
+      destroyPopper()
+      setupPopper()
+    })
 
     function onChangeText(event: any) {
       input.value = event.target.value || ''
@@ -203,11 +258,14 @@ export default defineComponent({
      */
     onMounted(() => {
       setupPopper()
+      if (state.options.autoFocus && !isInputType.value) {
+        focusSearch(inline.value)
+      }
     })
 
     // cleanup
     onBeforeUnmount(() => {
-      document.body.removeEventListener('click', clickListener)
+      destroyPopper()
     })
 
     /**
@@ -225,6 +283,12 @@ export default defineComponent({
       isInputType,
       onChangeText,
       colorTheme,
+      hasFooter,
+      inputAttrs,
+      toggle,
+      close,
+      cssVars,
+      inline,
     }
   },
 })

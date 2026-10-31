@@ -19,7 +19,9 @@ import {
   resolveGroups,
   resolveOrderedGroupKeys,
 } from './groups'
-import { createRecents } from './recents'
+import { createRecents, MAX_RECENT } from './recents'
+import { migrateLegacyRecents } from './legacy'
+import { getDefaultStorage } from './storage'
 import { filterEmojis } from './search'
 import { applySkinTone } from './skinTone'
 import { unicodeToEmoji } from './unicode'
@@ -30,9 +32,11 @@ export function createDefaultOptions(): EmojiOptions {
     hideSearch: false,
     hideGroupIcons: false,
     hideGroupNames: false,
+    hideFooter: false,
     staticTexts: { ...STATIC_TEXTS },
     disableStickyGroupNames: false,
     disabledGroups: [],
+    disabledEmojis: [],
     groupNames: {},
     disableSkinTones: false,
     displayRecent: false,
@@ -41,7 +45,16 @@ export function createDefaultOptions(): EmojiOptions {
     groupIcons: {},
     mode: 'insert',
     offset: 6,
+    placement: 'bottom-end',
+    inputAttrs: {},
     colorTheme: 'light',
+    set: 'apple',
+    imageUrl: null,
+    perLine: 8,
+    emojiSize: 22,
+    recentMode: 'recent',
+    maxRecent: MAX_RECENT,
+    autoFocus: false,
   }
 }
 
@@ -56,9 +69,15 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
   const listeners = new Set<(state: PickerState) => void>()
   let lookup = buildLookup(options.additionalGroups)
 
+  const storage = options.storage ?? getDefaultStorage()
   const recents = createRecents({
     resolve: (unicode) => lookup.get(unicode),
-    storage: options.storage,
+    storage,
+  })
+
+  const recentView = () => ({
+    mode: options.recentMode,
+    max: options.maxRecent,
   })
 
   const state: PickerState = {
@@ -66,12 +85,23 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     skinTone: SKIN_TONE_NEUTRAL,
     activeGroup: '',
     hovered: DEFAULT_EMOJI as Emoji,
-    recent: recents.list(),
+    recent: recents.list(recentView()),
     options,
   }
 
   const emit = () => {
     for (const listener of listeners) listener(state)
+  }
+
+  // A custom `storage` means the consumer owns persistence; otherwise pick
+  // up recents saved by 1.1.x in IndexedDB once.
+  if (!initial.storage) {
+    migrateLegacyRecents(storage).then((changed) => {
+      if (!changed) return
+      recents.reload()
+      state.recent = recents.list(recentView())
+      emit()
+    })
   }
 
   return {
@@ -88,7 +118,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       options = { ...options, ...partial }
       state.options = options
       lookup = buildLookup(options.additionalGroups)
-      state.recent = recents.list()
+      state.recent = recents.list(recentView())
       emit()
     },
 
@@ -112,7 +142,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       emit()
     },
 
-    select(emoji) {
+    select(emoji, { reorderRecent = true } = {}) {
       const resolved = applySkinTone(emoji, state.skinTone)
       const payload = {
         ...emoji,
@@ -122,11 +152,19 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       } as EmojiExt
 
       if (options.displayRecent) {
-        state.recent = recents.add(emoji)
+        const next = recents.add(emoji, recentView())
+        // Picking from the recent group itself must not move the emoji
+        // under the pointer (issue #75).
+        if (reorderRecent) state.recent = next
       }
 
       emit()
       return payload
+    },
+
+    refreshRecent() {
+      state.recent = recents.list(recentView())
+      emit()
     },
 
     results() {
@@ -134,7 +172,8 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
         mergeEmojis(options.additionalGroups, state.recent),
         state.search,
         state.skinTone,
-        disabledGroupsOf(options)
+        disabledGroupsOf(options),
+        options.disabledEmojis
       )
     },
 

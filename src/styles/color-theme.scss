@@ -39,7 +39,8 @@
     background: var(--v3-picker-bg);
   }
 
-  .v3-body .v3-body-inner .v3-group .v3-emojis button:hover {
+  .v3-body .v3-body-inner .v3-group .v3-emojis button:hover,
+  .v3-body .v3-body-inner .v3-group .v3-emojis button:focus-visible {
     background: var(--v3-picker-emoji-hover, #f7f7f7);
   }
 }
@@ -55,6 +56,7 @@
     --v3-picker-input-focus-border: #555555;
     --v3-group-image-filter: invert(1);
     --v3-picker-emoji-hover: #222222;
+    --v3-picker-focus: #60a5fa;
   }
 }
 
@@ -68,4 +70,5 @@
   --v3-picker-input-focus-border: #555555;
   --v3-group-image-filter: invert(1);
   --v3-picker-emoji-hover: #222222;
+  --v3-picker-focus: #60a5fa;
 }

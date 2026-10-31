@@ -6,10 +6,35 @@ export { applySkinTone } from './skinTone'
 export { snakeToCapitalizedCase } from './names'
 export { filterEmojis, searchEmojis, normalizeKeyword } from './search'
 export { isMac, hasIndexedDB } from './environment'
+export { shortcodeToEmoji, replaceShortcodes } from './shortcodes'
+export type { ShortcodeOptions } from './shortcodes'
 
 export { createPicker, createDefaultOptions } from './createPicker'
-export { createRecents, RECENT_STORAGE_KEY, MAX_RECENT } from './recents'
-export type { RecentEntry, Recents, RecentsOptions } from './recents'
+export {
+  createRecents,
+  RECENT_STORAGE_KEY,
+  MAX_RECENT,
+  MAX_STORED_RECENT,
+} from './recents'
+export type {
+  RecentEntry,
+  Recents,
+  RecentsOptions,
+  RecentView,
+} from './recents'
+export {
+  EMOJI_SETS,
+  EMOJI_DATASOURCE_VERSION,
+  getEmojiImageUrl,
+  resolveEmojiImage,
+} from './images'
+export type { ImageResolverOptions } from './images'
+export {
+  migrateLegacyRecents,
+  LEGACY_DB_NAME,
+  LEGACY_STORE_NAME,
+  LEGACY_MIGRATED_KEY,
+} from './legacy'
 export {
   createMemoryStorage,
   createLocalStorageAdapter,

@@ -104,9 +104,11 @@ export function filterEmojis(
   emojis: EmojiRecord,
   keyword: string,
   skinTone: string,
-  disabledGroups: string[] = []
+  disabledGroups: string[] = [],
+  disabledEmojis: string[] = []
 ): EmojiRecord {
   const result = {} as EmojiRecord
+  const hidden = new Set(disabledEmojis)
   const query = normalizeKeyword(keyword || '')
   const words = query ? [...new Set(query.split(' '))] : []
 
@@ -120,6 +122,7 @@ export function filterEmojis(
 
     for (const emoji of group) {
       if (!emoji || typeof emoji !== 'object') continue
+      if (hidden.has(emoji.u)) continue
       const score = query ? scoreEmoji(getSearchEntry(emoji), query, words) : 0
       if (score === null) continue
       matches.push({ emoji, score })

@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { copyFileSync, readFileSync, writeFileSync } from 'node:fs'
 
 /**
  * Orchestrates the two library builds.
@@ -31,6 +31,10 @@ try {
 
   run('node_modules/vite/bin/vite.js', ['build'])
   runScript(['scripts/postbuild-dts.mjs', '--target', 'vue'])
+
+  // 1.1.x file names, kept so CDN <script> / import URLs keep working.
+  copyFileSync('dist/emoji-picker.cjs', 'dist/emoji-picker.umd.js')
+  copyFileSync('dist/emoji-picker.mjs', 'dist/emoji-picker.es.js')
 
   writeTypesPath('./dist/core.d.ts')
   run('node_modules/vite/bin/vite.js', [

@@ -54,6 +54,9 @@ const files = (packed[0]?.files ?? []).map((file) => file.path)
 const required = [
   'dist/emoji-picker.mjs',
   'dist/emoji-picker.cjs',
+  // Legacy 1.1.x names for CDN users.
+  'dist/emoji-picker.umd.js',
+  'dist/emoji-picker.es.js',
   'dist/emoji-picker.d.ts',
   'dist/emoji-picker.d.mts',
   'dist/emoji-picker.d.cts',

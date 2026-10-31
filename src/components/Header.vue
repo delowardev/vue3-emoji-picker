@@ -1,6 +1,11 @@
 <template>
   <div v-if="hasGroupIcons || hasSearch" class="v3-header">
-    <div v-if="hasGroupIcons" class="v3-groups">
+    <div
+      v-if="hasGroupIcons"
+      class="v3-groups"
+      role="toolbar"
+      :aria-label="texts.categoriesLabel"
+    >
       <button
         v-for="group of orderedGroups"
         :key="group.key"
@@ -9,6 +14,7 @@
         :class="{
           'v3-is-hidden': !icons[group.key],
         }"
+        :aria-label="group.title"
         @click="updateActiveGroup(group.key)"
       >
         <span :title="group.title" class="v3-icon">
@@ -18,7 +24,14 @@
     </div>
     <div v-if="hasGroupIcons && hasSearch" class="v3-spacing" />
     <div v-if="hasSearch" class="v3-search">
-      <input v-model="searchValue" type="text" :placeholder="placeholder" />
+      <input
+        ref="searchInput"
+        v-model="searchValue"
+        type="search"
+        :placeholder="placeholder"
+        :aria-label="texts.searchLabel || placeholder"
+        @keydown="onSearchKeydown"
+      />
     </div>
   </div>
 </template>
@@ -27,13 +40,14 @@
 /**
  * External dependencies
  */
-import { computed, defineComponent, inject } from 'vue'
+import { computed, defineComponent, inject, ref } from 'vue'
 
 /**
  * Internal dependencies
  */
 import { Group, Store } from '../types'
 import { snakeToCapitalizedCase } from '../helpers'
+import { STATIC_TEXTS } from '../constant'
 
 /**
  * Group/Category Images
@@ -54,6 +68,37 @@ export default defineComponent({
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
     const hasSearch = computed(() => !state.options.hideSearch)
+    const searchInput = ref<HTMLInputElement | null>(null)
+    const texts = computed(() => ({
+      ...STATIC_TEXTS,
+      ...state.options.staticTexts,
+    }))
+
+    function emojiButtons(): HTMLButtonElement[] {
+      const root = searchInput.value?.closest('.v3-emoji-picker')
+      return Array.from(
+        root?.querySelectorAll<HTMLButtonElement>('.v3-emojis button') || []
+      )
+    }
+
+    /** ArrowDown moves into the grid; Enter picks the first result. */
+    function onSearchKeydown(event: KeyboardEvent) {
+      if (event.key === 'ArrowDown') {
+        const buttons = emojiButtons()
+        const current = buttons.find((button) => button.tabIndex === 0)
+        const target = current || buttons[0]
+        if (target) {
+          event.preventDefault()
+          target.focus()
+        }
+      } else if (event.key === 'Enter') {
+        const [first] = emojiButtons()
+        if (first) {
+          event.preventDefault()
+          first.click()
+        }
+      }
+    }
     const hasGroupIcons = computed(() => !state.options.hideGroupIcons)
     const placeholder = computed(
       () => state.options.staticTexts.placeholder || ''
@@ -105,6 +150,9 @@ export default defineComponent({
     return {
       orderedGroups,
       searchValue,
+      searchInput,
+      texts,
+      onSearchKeydown,
       updateActiveGroup,
       hasSearch,
       hasGroupIcons,

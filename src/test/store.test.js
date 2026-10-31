@@ -81,6 +81,27 @@ describe('recent emojis', () => {
     ])
   })
 
+  it('does not reorder when picking from the recent group (#75)', () => {
+    const store = Store()
+    store.updateOptions({ displayRecent: true })
+    store.updateSelect(findEmoji('1f600'))
+    store.updateSelect(findEmoji('1f601'))
+
+    store.updateSelect(findEmoji('1f600'), true)
+
+    expect(store.state.recent.map((emoji) => emoji.u)).toEqual([
+      '1f601',
+      '1f600',
+    ])
+
+    store.refreshRecent()
+
+    expect(store.state.recent.map((emoji) => emoji.u)).toEqual([
+      '1f600',
+      '1f601',
+    ])
+  })
+
   it('increments the stored selection count', () => {
     const store = Store()
     store.updateOptions({ displayRecent: true })

@@ -1,8 +1,16 @@
-import type { Emoji, StorageAdapter } from './types'
+import type { Emoji, RecentMode, StorageAdapter } from './types'
 import { getDefaultStorage } from './storage'
 
 export const RECENT_STORAGE_KEY = 'vue3-emoji-picker.recent'
 export const MAX_RECENT = 24
+
+/** Entries kept in storage, so `maxRecent` and `frequent` have history. */
+export const MAX_STORED_RECENT = 100
+
+export interface RecentView {
+  mode?: RecentMode
+  max?: number
+}
 
 /**
  * A persisted recent selection.
@@ -22,8 +30,10 @@ export interface RecentEntry {
 
 export interface Recents {
   entries(): RecentEntry[]
-  list(): Emoji[]
-  add(emoji: Emoji): Emoji[]
+  list(view?: RecentView): Emoji[]
+  add(emoji: Emoji, view?: RecentView): Emoji[]
+  /** Re-read entries from storage (e.g. after a migration wrote to it). */
+  reload(): void
   clear(): void
 }
 
@@ -82,13 +92,21 @@ function writeEntries(storage: StorageAdapter, entries: RecentEntry[]): void {
 
 export function createRecents(options: RecentsOptions): Recents {
   const storage = options.storage ?? getDefaultStorage()
-  const max = options.max ?? MAX_RECENT
+  const max = options.max ?? MAX_STORED_RECENT
   let entries = readEntries(storage, max)
 
-  const list = (): Emoji[] => {
+  const list = ({
+    mode = 'recent',
+    max: limit = MAX_RECENT,
+  }: RecentView = {}) => {
     const resolved: Emoji[] = []
+    const ordered =
+      mode === 'frequent'
+        ? [...entries].sort((a, b) => b.count - a.count || b.at - a.at)
+        : entries
 
-    for (const entry of entries) {
+    for (const entry of ordered) {
+      if (resolved.length >= limit) break
       const emoji = options.resolve(entry.u)
       if (emoji) resolved.push(emoji)
     }
@@ -99,8 +117,8 @@ export function createRecents(options: RecentsOptions): Recents {
   return {
     entries: () => entries,
     list,
-    add(emoji: Emoji): Emoji[] {
-      if (!emoji || typeof emoji.u !== 'string') return list()
+    add(emoji: Emoji, view?: RecentView): Emoji[] {
+      if (!emoji || typeof emoji.u !== 'string') return list(view)
 
       const existing = entries.find((entry) => entry.u === emoji.u)
       entries = [
@@ -113,7 +131,10 @@ export function createRecents(options: RecentsOptions): Recents {
       ].slice(0, max)
 
       writeEntries(storage, entries)
-      return list()
+      return list(view)
+    },
+    reload(): void {
+      entries = readEntries(storage, max)
     },
     clear(): void {
       entries = []

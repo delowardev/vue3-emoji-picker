@@ -26,6 +26,8 @@
   ],
   "main": "./dist/emoji-picker.cjs",
   "module": "./dist/emoji-picker.mjs",
+  "unpkg": "./dist/emoji-picker.umd.js",
+  "jsdelivr": "./dist/emoji-picker.umd.js",
   "types": "./dist/emoji-picker.d.cts",
   "sideEffects": [
     "./dist/style.css"

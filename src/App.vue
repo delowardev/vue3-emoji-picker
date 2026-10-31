@@ -1,31 +1,25 @@
 <template>
   <div class="demo">
     <header class="demo-header">
-      <div class="brand">
+      <a class="brand" href="#top">
         <span class="logo">🙂</span>
-        <span>vue3-emoji-picker</span>
-        <span class="version">v{{ version }}</span>
-      </div>
+        <span class="pixel">vue3-emoji-picker</span>
+      </a>
 
-      <nav class="tabs">
-        <button
-          type="button"
-          :class="{ active: tab === 'vue' }"
-          @click="tab = 'vue'"
+      <nav class="nav">
+        <a href="#playground" class="pixel">Playground</a>
+        <a href="#features" class="pixel">Features</a>
+        <a
+          class="pixel"
+          href="https://github.com/delowardev/vue3-emoji-picker#readme"
+          target="_blank"
+          rel="noreferrer"
+          >Docs</a
         >
-          Vue component
-        </button>
-        <button
-          type="button"
-          :class="{ active: tab === 'core' }"
-          @click="tab = 'core'"
-        >
-          Core (vanilla)
-        </button>
       </nav>
 
       <a
-        class="github"
+        class="btn btn-surface github"
         href="https://github.com/delowardev/vue3-emoji-picker"
         target="_blank"
         rel="noreferrer"
@@ -33,10 +27,77 @@
       >
     </header>
 
+    <section id="top" class="hero">
+      <span class="badge">v{{ version }} · MIT · Vue 3</span>
+      <h1 class="pixel">
+        The emoji picker<br />for <span class="accent">Vue 3</span>
+      </h1>
+      <p class="lead">
+        Lightweight, fully customizable and keyboard friendly — with a
+        framework-agnostic core you can use anywhere.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#playground">Try the playground</a>
+        <button
+          type="button"
+          class="btn btn-surface install"
+          @click="copyInstall"
+        >
+          <code>npm i vue3-emoji-picker</code>
+          <span class="install-copy">{{
+            installCopied ? 'Copied' : 'Copy'
+          }}</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div v-for="stat in stats" :key="stat.label" class="stat">
+        <span class="stat-icon">{{ stat.icon }}</span>
+        <strong class="pixel">{{ stat.value }}</strong>
+        <span>{{ stat.label }}</span>
+      </div>
+    </section>
+
+    <section id="playground" class="section-head">
+      <h2 class="pixel">Try it <span class="accent">live</span></h2>
+      <p>Every control maps to a prop. The usage snippet updates as you go.</p>
+      <nav class="tabs">
+        <button
+          type="button"
+          class="pixel"
+          :class="{ active: tab === 'vue' }"
+          @click="tab = 'vue'"
+        >
+          Vue component
+        </button>
+        <button
+          type="button"
+          class="pixel"
+          :class="{ active: tab === 'core' }"
+          @click="tab = 'core'"
+        >
+          Core (vanilla)
+        </button>
+      </nav>
+    </section>
+
     <main v-show="tab === 'vue'" class="layout">
       <aside class="controls">
         <h2>Options</h2>
 
+        <div class="presets">
+          <button
+            v-for="preset in PRESETS"
+            :key="preset.name"
+            type="button"
+            @click="applyPreset(preset.values)"
+          >
+            {{ preset.name }}
+          </button>
+        </div>
+
+        <h3>Appearance</h3>
         <label class="field">
           <span>Theme</span>
           <select v-model="theme">
@@ -47,49 +108,54 @@
         </label>
 
         <label class="field">
-          <span>Picker type</span>
-          <select v-model="pickerType">
-            <option value="">inline</option>
-            <option value="input">input</option>
-            <option value="textarea">textarea</option>
+          <span>Emoji set</span>
+          <select v-model="set">
+            <option v-for="name in EMOJI_SETS" :key="name" :value="name">
+              {{ name }}
+            </option>
           </select>
-        </label>
-
-        <label v-if="pickerType" class="field">
-          <span>Insert mode</span>
-          <select v-model="mode">
-            <option value="insert">insert at caret</option>
-            <option value="append">append</option>
-            <option value="prepend">prepend</option>
-          </select>
-        </label>
-
-        <label v-if="pickerType" class="field">
-          <span>Offset ({{ offset }}px)</span>
-          <input v-model.number="offset" type="range" min="0" max="40" />
         </label>
 
         <label class="field">
-          <span>Placeholder</span>
-          <input v-model="placeholder" type="text" />
+          <span>Emoji size ({{ emojiSize }}px)</span>
+          <input v-model.number="emojiSize" type="range" min="14" max="40" />
         </label>
 
+        <label class="field">
+          <span>Per line ({{ perLine }})</span>
+          <input v-model.number="perLine" type="range" min="5" max="12" />
+        </label>
+
+        <label class="field">
+          <span>Width ({{ width }}px)</span>
+          <input v-model.number="width" type="range" min="240" max="480" />
+        </label>
+
+        <label class="field">
+          <span>Height ({{ height }}px)</span>
+          <input v-model.number="height" type="range" min="240" max="520" />
+        </label>
+
+        <label class="field">
+          <span>Accent (focus ring)</span>
+          <input v-model="accent" type="color" />
+        </label>
+
+        <h3>Layout</h3>
         <div class="toggles">
-          <label><input v-model="native" type="checkbox" /> native emoji</label>
-          <label
-            ><input v-model="displayRecent" type="checkbox" /> recently
-            used</label
-          >
           <label
             ><input v-model="hideSearch" type="checkbox" /> hide search</label
+          >
+          <label
+            ><input v-model="hideGroupIcons" type="checkbox" /> hide group
+            icons</label
           >
           <label
             ><input v-model="hideGroupNames" type="checkbox" /> hide group
             names</label
           >
           <label
-            ><input v-model="hideGroupIcons" type="checkbox" /> hide group
-            icons</label
+            ><input v-model="hideFooter" type="checkbox" /> hide footer</label
           >
           <label
             ><input v-model="disableSkinTones" type="checkbox" /> disable skin
@@ -100,28 +166,126 @@
             sticky names</label
           >
           <label
+            ><input v-model="autoFocus" type="checkbox" /> auto focus
+            search</label
+          >
+        </div>
+
+        <h3>Input mode</h3>
+        <label class="field">
+          <span>Picker type</span>
+          <select v-model="pickerType">
+            <option value="">inline</option>
+            <option value="input">input</option>
+            <option value="textarea">textarea</option>
+          </select>
+        </label>
+
+        <template v-if="pickerType">
+          <label class="field">
+            <span>Insert mode</span>
+            <select v-model="mode">
+              <option value="insert">insert at caret</option>
+              <option value="append">append</option>
+              <option value="prepend">prepend</option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Placement</span>
+            <select v-model="placement">
+              <option v-for="name in PLACEMENTS" :key="name" :value="name">
+                {{ name }}
+              </option>
+            </select>
+          </label>
+
+          <label class="field">
+            <span>Offset ({{ offset }}px)</span>
+            <input v-model.number="offset" type="range" min="0" max="40" />
+          </label>
+
+          <label class="field">
+            <span>Input placeholder</span>
+            <input v-model="inputPlaceholder" type="text" />
+          </label>
+        </template>
+
+        <h3>Recently used</h3>
+        <div class="toggles">
+          <label
+            ><input v-model="displayRecent" type="checkbox" /> show recently
+            used</label
+          >
+        </div>
+        <template v-if="displayRecent">
+          <label class="field">
+            <span>Order</span>
+            <select v-model="recentMode">
+              <option value="recent">most recent</option>
+              <option value="frequent">most frequent</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Max recent ({{ maxRecent }})</span>
+            <input v-model.number="maxRecent" type="range" min="4" max="48" />
+          </label>
+        </template>
+
+        <h3>Content</h3>
+        <div class="toggles">
+          <label
+            ><input v-model="customGroup" type="checkbox" /> custom emoji group
+            (own images)</label
+          >
+          <label
             ><input v-model="flagsFirst" type="checkbox" /> flags group
             first</label
           >
         </div>
 
-        <h3>Disabled groups</h3>
+        <label class="field">
+          <span>Disabled emoji (unicode, comma separated)</span>
+          <input
+            v-model="disabledEmojisText"
+            type="text"
+            placeholder="1f595, 1f4a9"
+          />
+        </label>
+
         <div class="toggles compact">
           <label v-for="group in GROUPS" :key="group[0]">
             <input v-model="disabledGroups" type="checkbox" :value="group[0]" />
-            {{ group[1] }}
+            hide {{ group[1] }}
           </label>
         </div>
+
+        <h3>Language</h3>
+        <label class="field">
+          <span>Locale (via static-texts + group-names)</span>
+          <select v-model="locale">
+            <option v-for="(_, key) in LOCALES" :key="key" :value="key">
+              {{ key }}
+            </option>
+          </select>
+        </label>
       </aside>
 
       <section class="stage">
-        <div class="picker-wrap" :class="{ dark: theme === 'dark' }">
+        <div class="picker-wrap" :class="{ dark: isDark }" :style="stageVars">
           <picker
             v-bind="pickerProps"
             @select="onSelect"
             @update:text="onText"
           />
         </div>
+
+        <p class="hint">
+          <kbd>Tab</kbd> into the grid · <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd
+          ><kbd>↓</kbd> move · <kbd>Enter</kbd> select · in search,
+          <kbd>↓</kbd> enters the grid and <kbd>Enter</kbd> picks the first
+          result · <kbd>Esc</kbd> closes popups
+        </p>
 
         <div class="output">
           <div class="panel">
@@ -176,11 +340,40 @@
 
       <section class="stage">
         <div ref="coreRoot" class="core-root"></div>
+
+        <div class="panel">
+          <h3>Shortcodes → emoji</h3>
+          <p class="muted">
+            <code>replaceShortcodes()</code> from
+            <code>vue3-emoji-picker/core</code> — handy for text stored as
+            <code>:wave:</code>.
+          </p>
+          <textarea v-model="shortcodeInput" class="shortcode-input" rows="3" />
+          <p class="shortcode-output">{{ shortcodeOutput }}</p>
+        </div>
       </section>
     </main>
 
+    <section id="features" class="section-head">
+      <h2 class="pixel">Why <span class="accent">vue3-emoji-picker</span>?</h2>
+      <p>Everything you need, nothing you have to fight.</p>
+    </section>
+
+    <section class="features">
+      <div v-for="feature in FEATURES" :key="feature.title" class="feature">
+        <span class="feature-icon">{{ feature.icon }}</span>
+        <div>
+          <h3 class="pixel">{{ feature.title }}</h3>
+          <p>{{ feature.text }}</p>
+        </div>
+      </div>
+    </section>
+
     <footer class="demo-footer">
-      Core is framework-agnostic · Vue wrapper is a thin bridge · MIT
+      <span class="pixel">vue3-emoji-picker</span>
+      <span
+        >MIT licensed · built with Vue 3 · artwork from emoji-datasource</span
+      >
     </footer>
   </div>
 </template>
@@ -191,9 +384,13 @@ import Picker from './components/Picker.vue'
 import {
   createMemoryStorage,
   createPicker,
+  EMOJI_SETS,
+  replaceShortcodes,
   SKIN_TONES,
   unicodeToEmoji,
 } from './core'
+import type { EmojiSet, RecentMode } from './core'
+import { defaultEmojis } from './core'
 import pkg from '../package.json'
 
 const version = pkg.version
@@ -209,42 +406,314 @@ const GROUPS: Array<[string, string]> = [
   ['flags', 'Flags'],
 ]
 
+const PLACEMENTS = [
+  'bottom-end',
+  'bottom-start',
+  'bottom',
+  'top-end',
+  'top-start',
+  'top',
+  'left',
+  'right',
+]
+
+/** Example translations; any strings can be passed the same way. */
+const LOCALES: Record<
+  string,
+  { texts: Record<string, string>; groups: Record<string, string> }
+> = {
+  English: { texts: {}, groups: {} },
+  Español: {
+    texts: {
+      placeholder: 'Buscar emoji',
+      skinTone: 'Tono de piel',
+      noResults: 'No se encontraron emoji',
+      skinTones:
+        'Predeterminado, Claro, Medio claro, Medio, Medio oscuro, Oscuro',
+    },
+    groups: {
+      recent: 'Usados recientemente',
+      smileys_people: 'Caras y personas',
+      animals_nature: 'Animales y naturaleza',
+      food_drink: 'Comida y bebida',
+      activities: 'Actividades',
+      travel_places: 'Viajes y lugares',
+      objects: 'Objetos',
+      symbols: 'Símbolos',
+      flags: 'Banderas',
+    },
+  },
+  Français: {
+    texts: {
+      placeholder: 'Rechercher un emoji',
+      skinTone: 'Teint',
+      noResults: 'Aucun emoji trouvé',
+      skinTones:
+        'Par défaut, Clair, Moyennement clair, Moyen, Moyennement foncé, Foncé',
+    },
+    groups: {
+      recent: 'Utilisés récemment',
+      smileys_people: 'Smileys et personnes',
+      animals_nature: 'Animaux et nature',
+      food_drink: 'Nourriture et boissons',
+      activities: 'Activités',
+      travel_places: 'Voyages et lieux',
+      objects: 'Objets',
+      symbols: 'Symboles',
+      flags: 'Drapeaux',
+    },
+  },
+}
+
+/** Tiny inline SVG badges stand in for a team's custom emoji. */
+const badge = (label: string, color: string) =>
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${color}"/><text x="32" y="42" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">${label}</text></svg>`
+  )
+
+const CUSTOM_GROUP = {
+  team: [
+    { n: ['ship it', 'shipit'], u: 'x-shipit', src: badge('SHIP', '#16a34a') },
+    { n: ['lgtm', 'lgtm'], u: 'x-lgtm', src: badge('LGTM', '#2563eb') },
+    { n: ['wip', 'wip'], u: 'x-wip', src: badge('WIP', '#d97706') },
+    { n: ['vue', 'vue'], u: 'x-vue', src: badge('VUE', '#41b883') },
+  ],
+}
+
+const FEATURES = [
+  {
+    icon: '⌨️',
+    title: 'Keyboard first',
+    text: 'One tab stop, arrow-key grid, Enter to pick, Esc to close, labelled for screen readers.',
+  },
+  {
+    icon: '🎨',
+    title: 'Any artwork',
+    text: 'Native glyphs, Apple, Google, Twitter or Facebook sets, your own CDN, or custom images per emoji.',
+  },
+  {
+    icon: '🧩',
+    title: 'Framework-agnostic core',
+    text: 'Search, skin tones, recents and shortcodes ship in a Vue-free core entry for any view layer.',
+  },
+  {
+    icon: '🛠️',
+    title: 'Customize everything',
+    text: 'Sizes, columns, colors, texts, groups, ordering, hidden emoji and layout — all props or CSS variables.',
+  },
+  {
+    icon: '🌍',
+    title: 'Any language',
+    text: 'Every label, group name and message is configurable, so the picker speaks your users’ language.',
+  },
+  {
+    icon: '⚡',
+    title: 'Light and SSR-safe',
+    text: 'Lazy images, localStorage recents, no IndexedDB, and safe to import on the server.',
+  },
+]
+
+const stats = [
+  {
+    icon: '😀',
+    value: Object.values(defaultEmojis).flat().length.toLocaleString('en'),
+    label: 'Emoji included',
+  },
+  {
+    icon: '🖼️',
+    value: String(EMOJI_SETS.length),
+    label: 'Artwork sets',
+  },
+  {
+    icon: '🎛️',
+    value: String(Object.keys(Picker.props || {}).length),
+    label: 'Props to customize',
+  },
+]
+
+const installCopied = ref(false)
+
+async function copyInstall() {
+  try {
+    await navigator.clipboard.writeText('npm i vue3-emoji-picker')
+    installCopied.value = true
+    window.setTimeout(() => (installCopied.value = false), 1500)
+  } catch {
+    installCopied.value = false
+  }
+}
+
 const tab = ref<'vue' | 'core'>('vue')
 
-const native = ref(false)
-const theme = ref<'light' | 'dark' | 'auto'>('light')
-const displayRecent = ref(true)
-const hideSearch = ref(false)
-const hideGroupNames = ref(false)
-const hideGroupIcons = ref(false)
-const disableSkinTones = ref(false)
-const disableStickyGroupNames = ref(false)
+const defaults = {
+  native: false,
+  theme: 'light' as 'light' | 'dark' | 'auto',
+  set: 'apple' as EmojiSet,
+  emojiSize: 22,
+  perLine: 8,
+  width: 280,
+  height: 320,
+  accent: '#2563eb',
+  displayRecent: true,
+  recentMode: 'recent' as RecentMode,
+  maxRecent: 24,
+  hideSearch: false,
+  hideGroupNames: false,
+  hideGroupIcons: false,
+  hideFooter: false,
+  disableSkinTones: false,
+  disableStickyGroupNames: false,
+  autoFocus: false,
+  customGroup: false,
+  flagsFirst: false,
+}
+
+const theme = ref(defaults.theme)
+const set = ref(defaults.set)
+const emojiSize = ref(defaults.emojiSize)
+const perLine = ref(defaults.perLine)
+const width = ref(defaults.width)
+const height = ref(defaults.height)
+const accent = ref(defaults.accent)
+const displayRecent = ref(defaults.displayRecent)
+const recentMode = ref(defaults.recentMode)
+const maxRecent = ref(defaults.maxRecent)
+const hideSearch = ref(defaults.hideSearch)
+const hideGroupNames = ref(defaults.hideGroupNames)
+const hideGroupIcons = ref(defaults.hideGroupIcons)
+const hideFooter = ref(defaults.hideFooter)
+const disableSkinTones = ref(defaults.disableSkinTones)
+const disableStickyGroupNames = ref(defaults.disableStickyGroupNames)
+const autoFocus = ref(defaults.autoFocus)
+const customGroup = ref(defaults.customGroup)
+const flagsFirst = ref(defaults.flagsFirst)
 const pickerType = ref('')
 const mode = ref('insert')
+const placement = ref('bottom-end')
 const offset = ref(6)
-const placeholder = ref('Search emoji')
-const flagsFirst = ref(false)
+const inputPlaceholder = ref('Type a message…')
+const disabledEmojisText = ref('')
 const disabledGroups = reactive<string[]>([])
+const locale = ref('English')
+
+const refs: Record<string, { value: unknown }> = {
+  theme,
+  set,
+  emojiSize,
+  perLine,
+  width,
+  height,
+  accent,
+  displayRecent,
+  recentMode,
+  maxRecent,
+  hideSearch,
+  hideGroupNames,
+  hideGroupIcons,
+  hideFooter,
+  disableSkinTones,
+  disableStickyGroupNames,
+  autoFocus,
+  customGroup,
+  flagsFirst,
+}
+
+const PRESETS: Array<{ name: string; values: Partial<typeof defaults> }> = [
+  { name: 'Default', values: {} },
+  {
+    name: 'Compact',
+    values: {
+      emojiSize: 18,
+      perLine: 9,
+      width: 260,
+      height: 260,
+      hideGroupNames: true,
+      hideFooter: true,
+    },
+  },
+  {
+    name: 'Chat app',
+    values: {
+      theme: 'dark',
+      set: 'twitter',
+      perLine: 9,
+      width: 340,
+      height: 380,
+      recentMode: 'frequent',
+      customGroup: true,
+      accent: '#a78bfa',
+    },
+  },
+  {
+    name: 'Big & touch',
+    values: { emojiSize: 32, perLine: 6, width: 360, height: 440 },
+  },
+]
+
+function applyPreset(values: Partial<typeof defaults>) {
+  const next = { ...defaults, ...values }
+  for (const [key, target] of Object.entries(refs)) {
+    target.value = next[key as keyof typeof defaults]
+  }
+}
 
 const selected = ref<Record<string, any> | null>(null)
 const text = ref('')
 const copied = ref(false)
 
+const native = computed(() => set.value === 'native')
+const isDark = computed(() => theme.value === 'dark')
+
+const disabledEmojis = computed(() =>
+  disabledEmojisText.value
+    .split(',')
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean)
+)
+
+const localeData = computed(() => LOCALES[locale.value] || LOCALES.English)
+
+/** Width/height/accent are plain CSS variables set on a parent element. */
+const stageVars = computed(() => ({
+  '--v3-picker-width': `${width.value}px`,
+  '--v3-picker-height': `${height.value}px`,
+  '--v3-picker-focus': accent.value,
+}))
+
 const pickerProps = computed(() => ({
   native: native.value,
+  set: set.value,
   theme: theme.value,
+  emojiSize: emojiSize.value,
+  perLine: perLine.value,
   displayRecent: displayRecent.value,
+  recentMode: recentMode.value,
+  maxRecent: maxRecent.value,
   hideSearch: hideSearch.value,
   hideGroupNames: hideGroupNames.value,
   hideGroupIcons: hideGroupIcons.value,
+  hideFooter: hideFooter.value,
   disableSkinTones: disableSkinTones.value,
   disableStickyGroupNames: disableStickyGroupNames.value,
+  autoFocus: autoFocus.value,
   pickerType: pickerType.value,
   mode: mode.value,
   offset: offset.value,
-  groupOrder: flagsFirst.value ? ['flags'] : [],
+  placement: placement.value,
+  inputAttrs: { placeholder: inputPlaceholder.value },
+  groupOrder: [
+    ...(customGroup.value ? ['team'] : []),
+    ...(flagsFirst.value ? ['flags'] : []),
+  ],
+  additionalGroups: customGroup.value ? CUSTOM_GROUP : {},
+  groupNames: {
+    ...localeData.value.groups,
+    ...(customGroup.value ? { team: 'Team' } : {}),
+  },
   disabledGroups: [...disabledGroups],
-  staticTexts: { placeholder: placeholder.value },
+  disabledEmojis: disabledEmojis.value,
+  staticTexts: localeData.value.texts,
   ...(pickerType.value ? { text: text.value } : {}),
 }))
 
@@ -254,35 +723,66 @@ const selectedJson = computed(() =>
 
 const codeSnippet = computed(() => {
   const attrs: string[] = []
+  const d = defaults
 
+  if (theme.value !== d.theme) attrs.push(`theme="${theme.value}"`)
   if (native.value) attrs.push(':native="true"')
-  if (theme.value !== 'light') attrs.push(`theme="${theme.value}"`)
-  if (!displayRecent.value) attrs.push(':display-recent="false"')
+  else if (set.value !== d.set) attrs.push(`set="${set.value}"`)
+  if (emojiSize.value !== d.emojiSize)
+    attrs.push(`:emoji-size="${emojiSize.value}"`)
+  if (perLine.value !== d.perLine) attrs.push(`:per-line="${perLine.value}"`)
+  if (displayRecent.value) {
+    attrs.push(':display-recent="true"')
+    if (recentMode.value !== d.recentMode)
+      attrs.push(`recent-mode="${recentMode.value}"`)
+    if (maxRecent.value !== d.maxRecent)
+      attrs.push(`:max-recent="${maxRecent.value}"`)
+  }
   if (hideSearch.value) attrs.push(':hide-search="true"')
   if (hideGroupNames.value) attrs.push(':hide-group-names="true"')
   if (hideGroupIcons.value) attrs.push(':hide-group-icons="true"')
+  if (hideFooter.value) attrs.push(':hide-footer="true"')
   if (disableSkinTones.value) attrs.push(':disable-skin-tones="true"')
   if (disableStickyGroupNames.value)
     attrs.push(':disable-sticky-group-names="true"')
-  if (pickerType.value) attrs.push(`picker-type="${pickerType.value}"`)
-  if (mode.value !== 'insert' && pickerType.value)
-    attrs.push(`mode="${mode.value}"`)
-  if (offset.value !== 6 && pickerType.value)
-    attrs.push(`:offset="${offset.value}"`)
-  if (flagsFirst.value) attrs.push(`:group-order="['flags']"`)
+  if (autoFocus.value) attrs.push(':auto-focus="true"')
+  if (pickerType.value) {
+    attrs.push(`picker-type="${pickerType.value}"`)
+    attrs.push('v-model:text="text"')
+    if (mode.value !== 'insert') attrs.push(`mode="${mode.value}"`)
+    if (placement.value !== 'bottom-end')
+      attrs.push(`placement="${placement.value}"`)
+    if (offset.value !== 6) attrs.push(`:offset="${offset.value}"`)
+    if (inputPlaceholder.value)
+      attrs.push(`:input-attrs="{ placeholder: '${inputPlaceholder.value}' }"`)
+  }
+  if (customGroup.value) attrs.push(':additional-groups="customGroups"')
+  const order = pickerProps.value.groupOrder
+  if (order.length) attrs.push(`:group-order="${JSON.stringify(order)}"`)
   if (disabledGroups.length)
     attrs.push(`:disabled-groups="${JSON.stringify([...disabledGroups])}"`)
-  if (placeholder.value !== 'Search emoji')
-    attrs.push(`:static-texts="{ placeholder: '${placeholder.value}' }"`)
+  if (disabledEmojis.value.length)
+    attrs.push(`:disabled-emojis="${JSON.stringify(disabledEmojis.value)}"`)
+  if (locale.value !== 'English') {
+    attrs.push(':static-texts="texts"')
+    attrs.push(':group-names="groupNames"')
+  }
 
   const opening = attrs.length
     ? `<EmojiPicker\n  ${attrs.join('\n  ')}\n  @select="onSelect"\n/>`
     : `<EmojiPicker @select="onSelect" />`
 
+  const style =
+    width.value !== d.width ||
+    height.value !== d.height ||
+    accent.value !== d.accent
+      ? `\n\n<style>\n.v3-emoji-picker {\n  --v3-picker-width: ${width.value}px;\n  --v3-picker-height: ${height.value}px;\n  --v3-picker-focus: ${accent.value};\n}\n</style>`
+      : ''
+
   return `<script setup>\nimport EmojiPicker from 'vue3-emoji-picker'\nimport 'vue3-emoji-picker/css'\n<\/script>\n\n<template>\n${opening.replace(
     /^/gm,
     '  '
-  )}\n</template>`
+  )}\n</template>${style}`
 })
 
 function onSelect(emoji: Record<string, any>) {
@@ -311,6 +811,10 @@ const coreSearch = ref('')
 const coreTone = ref('neutral')
 const coreCount = ref(0)
 const coreJson = ref('')
+const shortcodeInput = ref(
+  'Shipped it :rocket: thanks team :raised_hands::skin-tone-3: :+1: :joy_cat:'
+)
+const shortcodeOutput = computed(() => replaceShortcodes(shortcodeInput.value))
 let corePicker: ReturnType<typeof createPicker> | null = null
 
 function renderCore() {
@@ -359,116 +863,332 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .demo {
-  --bg: #f6f7f9;
+  /* Warm stone neutrals with a single yellow accent. */
+  --bg: #fafaf9;
   --surface: #ffffff;
-  --border: #e3e6ea;
-  --text: #1d2129;
-  --muted: #6b7280;
-  --accent: #4f46e5;
+  --surface-2: #f5f5f4;
+  --header: #e7e5e4;
+  --border: #d6d3d1;
+  --border-soft: #e7e5e4;
+  --heading: #1c1917;
+  --text: #44403c;
+  --muted: #78716c;
+  --accent: #f0b100;
+  --accent-ink: #733e0a;
+  --accent-soft: #fef9c3;
+  --accent-wash: #fffbeb;
+  --pixel: 'Silkscreen', ui-monospace, monospace;
 
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
+.pixel {
+  font-family: var(--pixel);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  word-spacing: -0.15em;
+}
+
+.accent {
+  color: var(--accent);
+}
+
+h1,
+h2,
+h3 {
+  color: var(--heading);
+}
+
+/* Header */
 .demo-header {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 14px 24px;
-  background: var(--surface);
+  gap: 32px;
+  height: 68px;
+  padding: 0 max(24px, calc((100vw - 1240px) / 2));
+  background: var(--header);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  gap: 10px;
+  color: var(--heading);
+  text-decoration: none;
+  font-size: 16px;
+  white-space: nowrap;
 }
 
 .logo {
-  font-size: 20px;
+  font-size: 22px;
 }
 
-.version {
-  font-weight: 500;
+.nav {
+  display: flex;
+  gap: 28px;
+}
+
+.nav a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.nav a:hover {
+  color: var(--heading);
+}
+
+.github {
+  margin-left: auto;
+}
+
+/* Buttons: flat with a darker "pressed" bottom edge. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  border-bottom-width: 4px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 80ms, border-bottom-width 80ms;
+}
+
+.btn:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-surface {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--heading);
+}
+
+.btn-surface:hover {
+  background: var(--surface-2);
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  padding: 72px 24px 56px;
+  background: radial-gradient(
+      ellipse at top,
+      var(--accent-wash),
+      transparent 65%
+    ),
+    var(--bg);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.hero h1 {
+  font-size: clamp(34px, 6vw, 56px);
+  line-height: 1.05;
+  margin: 18px 0 14px;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 560px;
+  margin: 0 auto 28px;
+  font-size: 17px;
+  color: var(--muted);
+}
+
+.hero-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.install code {
+  font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.install-copy {
   font-size: 12px;
   color: var(--muted);
-  background: var(--bg);
-  border-radius: 999px;
-  padding: 2px 8px;
+  border-left: 1px solid var(--border);
+  padding-left: 10px;
+}
+
+/* Stats */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  max-width: 1080px;
+  margin: 48px auto 0;
+  padding: 0 24px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 24px;
+  border: 2px solid #fce7a2;
+  border-radius: 10px;
+  background: linear-gradient(var(--accent-wash), var(--surface));
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.stat-icon {
+  font-size: 24px;
+}
+
+.stat strong {
+  font-size: 34px;
+  line-height: 1.2;
+  color: var(--accent);
+}
+
+/* Section headings */
+.section-head {
+  text-align: center;
+  padding: 64px 24px 8px;
+  scroll-margin-top: 68px;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: clamp(26px, 4vw, 38px);
+  text-transform: uppercase;
+}
+
+.section-head p {
+  margin: 6px 0 0;
+  color: var(--muted);
 }
 
 .tabs {
-  display: flex;
+  display: inline-flex;
   gap: 4px;
-  background: var(--bg);
+  margin-top: 22px;
   padding: 4px;
-  border-radius: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-2);
 }
 
 .tabs button {
   border: 0;
   background: transparent;
-  font: inherit;
-  font-size: 13px;
-  padding: 6px 12px;
-  border-radius: 7px;
+  font-size: 12px;
+  padding: 8px 14px;
+  border-radius: 5px;
   cursor: pointer;
   color: var(--muted);
+  text-transform: uppercase;
 }
 
 .tabs button.active {
-  background: var(--surface);
-  color: var(--text);
-  box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
-.github {
-  margin-left: auto;
-  font-size: 13px;
-  color: var(--accent);
-  text-decoration: none;
-}
-
+/* Playground */
 .layout {
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr);
   gap: 24px;
   padding: 24px;
-  max-width: 1180px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 
 .controls {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
+  border: 2px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 20px;
   align-self: start;
   position: sticky;
-  top: 86px;
+  top: 88px;
   max-height: calc(100vh - 110px);
   overflow: auto;
 }
 
 .controls h2 {
   margin: 0 0 14px;
-  font-size: 15px;
+  font-family: var(--pixel);
+  font-size: 18px;
+  text-transform: uppercase;
 }
 
 .controls h3 {
-  margin: 18px 0 8px;
+  margin: 22px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+  font-family: var(--pixel);
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: var(--muted);
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.presets button {
+  border: 1px solid var(--border);
+  border-bottom-width: 3px;
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 3px 10px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--heading);
+  cursor: pointer;
+}
+
+.presets button:hover {
+  border-color: var(--accent-ink);
+  background: var(--accent);
+  color: var(--accent-ink);
 }
 
 .field {
@@ -481,21 +1201,39 @@ onBeforeUnmount(() => {
 
 .field > span {
   color: var(--muted);
+  font-weight: 500;
 }
 
 .field input[type='text'],
 .field select {
-  padding: 7px 9px;
+  height: 36px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
+  padding: 0 10px;
   font: inherit;
   font-size: 13px;
   background: var(--surface);
-  color: var(--text);
+  color: var(--heading);
+}
+
+.field input[type='text']:focus,
+.field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
 }
 
 .field input[type='range'] {
   width: 100%;
+  accent-color: var(--accent);
+}
+
+.field input[type='color'] {
+  width: 48px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
 }
 
 .toggles {
@@ -506,7 +1244,7 @@ onBeforeUnmount(() => {
 }
 
 .toggles.compact {
-  gap: 6px;
+  margin-top: 4px;
 }
 
 .toggles label {
@@ -514,6 +1252,12 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+}
+
+.toggles input {
+  accent-color: var(--accent);
+  width: 15px;
+  height: 15px;
 }
 
 .stage {
@@ -525,123 +1269,225 @@ onBeforeUnmount(() => {
 
 .picker-wrap {
   display: flex;
+  align-items: flex-start;
   justify-content: center;
-  padding: 40px;
+  min-height: 420px;
+  padding: 48px 24px;
+  border: 2px solid var(--accent);
+  border-radius: 10px;
   background: radial-gradient(
-      circle at 20% 20%,
-      rgb(79 70 229 / 8%),
-      transparent 45%
+      circle at 20% 0%,
+      var(--accent-wash),
+      transparent 55%
     ),
-    radial-gradient(circle at 80% 0%, rgb(16 185 129 / 8%), transparent 40%),
     var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
+  transition: background 200ms;
+}
+
+.picker-wrap.dark {
+  background: radial-gradient(circle at 20% 0%, #44403c, transparent 60%),
+    #1c1917;
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 2.2;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  min-width: 20px;
+  padding: 0 6px;
+  margin: 0 2px;
+  border-radius: 3px;
+  border-bottom: 3px solid #78716c;
+  background: rgb(120 113 108 / 25%);
+  color: var(--heading);
+  font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  justify-content: center;
 }
 
 .output {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .panel {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
+  border: 2px solid var(--border-soft);
+  border-radius: 10px;
+  padding: 18px;
   min-width: 0;
 }
 
 .panel h3 {
   margin: 0 0 10px;
-  font-size: 13px;
+  font-family: var(--pixel);
+  font-size: 14px;
+  text-transform: uppercase;
 }
 
 .panel-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
 .copy {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  border-radius: 7px;
-  padding: 3px 9px;
+  border: 1px solid var(--accent-ink);
+  border-bottom-width: 3px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 6px;
+  padding: 2px 10px;
   font: inherit;
   font-size: 12px;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .code {
   margin: 0;
-  padding: 12px;
-  background: #0f172a;
-  color: #e2e8f0;
-  border-radius: 9px;
-  font-family: 'SFMono-Regular', ui-monospace, Menlo, monospace;
-  font-size: 12px;
-  line-height: 1.55;
+  padding: 14px;
+  border-radius: 8px;
+  background: #1c1917;
+  color: #fafaf9;
+  font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
   overflow: auto;
-  max-height: 320px;
-  white-space: pre-wrap;
-  word-break: break-word;
+  max-height: 340px;
+  white-space: pre;
 }
 
 .muted {
   color: var(--muted);
   font-size: 13px;
-  line-height: 1.5;
 }
 
 .text-row {
   display: flex;
   gap: 8px;
-  align-items: baseline;
-  font-size: 13px;
+  align-items: center;
   margin: 12px 0 0;
+  font-size: 13px;
 }
 
 .label {
+  font-family: var(--pixel);
+  font-size: 11px;
+  text-transform: uppercase;
   color: var(--muted);
 }
 
+.shortcode-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+  resize: vertical;
+}
+
+.shortcode-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.shortcode-output {
+  font-size: 20px;
+  margin: 10px 0 0;
+}
+
 .core-root {
-  min-height: 320px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  padding: 16px;
 }
 
 .core-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
   gap: 4px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 16px;
 }
 
 .core-grid button {
   border: 0;
   background: transparent;
-  font-size: 22px;
-  line-height: 1;
-  padding: 8px 0;
-  border-radius: 8px;
+  font-size: 24px;
+  height: 40px;
+  border-radius: 6px;
   cursor: pointer;
 }
 
 .core-grid button:hover {
-  background: var(--bg);
+  background: var(--accent-soft);
+}
+
+/* Features */
+.features {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 48px;
+  max-width: 1080px;
+  margin: 32px auto 0;
+  padding: 0 24px 72px;
+}
+
+.feature {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.feature-icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--accent-wash);
+  font-size: 28px;
+}
+
+.feature h3 {
+  margin: 4px 0 4px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.feature p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .demo-footer {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 24px max(24px, calc((100vw - 1240px) / 2));
+  border-top: 1px solid var(--border);
+  background: var(--header);
   color: var(--muted);
-  font-size: 12px;
-  padding: 24px;
+  font-size: 13px;
 }
 
-@media (max-width: 800px) {
+.demo-footer .pixel {
+  color: var(--heading);
+}
+
+@media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
   }
@@ -651,8 +1497,18 @@ onBeforeUnmount(() => {
     max-height: none;
   }
 
-  .output {
+  .output,
+  .features,
+  .stats {
     grid-template-columns: 1fr;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .brand {
+    font-size: 13px;
   }
 }
 </style>

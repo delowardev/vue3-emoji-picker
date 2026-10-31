@@ -46,6 +46,10 @@ export const SKIN_TONES = [
 export const STATIC_TEXTS = {
   placeholder: 'Search emoji',
   skinTone: 'Skin tone',
+  noResults: 'No emoji has been found!',
+  searchLabel: 'Search emoji',
+  categoriesLabel: 'Emoji categories',
+  skinTones: 'Default, Light, Medium-light, Medium, Medium-dark, Dark',
 }
 
 export const COLOR_THEMES: Array<ColorTheme> = ['light', 'dark', 'auto']

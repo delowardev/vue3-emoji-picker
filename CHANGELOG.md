@@ -3,6 +3,37 @@ v1.2.0 (unreleased)
 - Add: `vue3-emoji-picker/core` — a framework-agnostic entry point with
   `createPicker`, search, skin tones and recent storage. It has no Vue
   import, so it can back a picker in another view layer.
+- Add: keyboard navigation — one tab stop, arrow keys across the grid,
+  ArrowDown/Enter from search, Escape closes popups — plus ARIA labels
+  for emoji, groups, the category bar and skin tones
+- Add: `set` (`native`, `apple`, `google`, `twitter`, `facebook`) and
+  `image-url` props; custom emoji render their own `src`. Image sets come
+  from emoji-datasource 15.1.2 (the default Apple set moves from 6.0.1)
+- Add: `per-line`, `emoji-size` and `auto-focus` props; picker size and
+  focus colour are CSS variables (`--v3-picker-width`, `--v3-picker-height`,
+  `--v3-picker-focus`)
+- Add: `recent-mode` (`recent` | `frequent`) and `max-recent` props
+- Add: `noResults`, `searchLabel`, `categoriesLabel` and `skinTones`
+  static texts, so every string can be localized
+- Fix: searches with no match now show the no-results message (it only
+  appeared when every group was disabled)
+- Fix: jumping to a category no longer uses `#id` selectors, which broke
+  with two pickers on a page or non-CSS-safe group keys
+- Update: the playground has presets, every new option, localization and
+  custom emoji examples, and a shortcode converter
+- Add: `disabled-emojis` prop to hide individual emoji by unicode.
+  See #77, #78
+- Add: `hide-footer` prop. See #73
+- Add: `placement` prop for input/textarea popups; `offset` and
+  `placement` now update after mount, and the Popper instance is destroyed
+  on unmount. See #71
+- Add: `input-attrs` prop, bound to the input/textarea (placeholder,
+  class, name, rows, ...). See #54, #64
+- Add: `replaceShortcodes` / `shortcodeToEmoji` in the core entry,
+  including Slack-style `:skin-tone-N:` suffixes. See #82
+- Fix: picking from the "Recently used" group no longer reshuffles it
+  under the pointer; the new order shows on next open/mount. See #75
+- Update: emoji images use `loading="lazy"`. See #17, #55
 - Add: an interactive playground (`npm run dev`) with live prop controls,
   generated usage code and a vanilla-core demo. `npm run demo:build`
   produces a deployable static build.
