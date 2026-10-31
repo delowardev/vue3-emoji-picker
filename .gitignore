@@ -149,3 +149,4 @@ dist-ssr
 *.local
 .yarn
 coverage/
+demo-dist/

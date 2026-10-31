@@ -1,9 +1,14 @@
 <template>
-  <div v-if="isInputType" class="v3-input-emoji-picker">
+  <div
+    v-if="isInputType"
+    class="v3-input-emoji-picker"
+    :class="'v3-color-theme-' + colorTheme"
+  >
     <div class="v3-input-picker-root">
       <input
         v-if="type === 'input'"
         ref="elem"
+        v-bind="inputAttrs"
         :value="input"
         type="text"
         class="v3-emoji-picker-input"
@@ -13,6 +18,7 @@
       <textarea
         v-else
         ref="elem"
+        v-bind="inputAttrs"
         :value="input"
         class="v3-emoji-picker-textarea"
         @input="onChangeText"
@@ -26,7 +32,7 @@
           ref="button"
           type="button"
           class="v3-input-picker-icon"
-          @click="open = !open"
+          @click="toggle"
         >
           <img :src="face" alt="" />
         </button>
@@ -35,18 +41,26 @@
           ref="picker"
           class="v3-emoji-picker"
           :class="'v3-color-theme-' + colorTheme"
+          :style="cssVars"
+          @keydown.esc="close"
         >
           <Header />
           <Body @select="onSelect" />
-          <Footer />
+          <Footer v-if="hasFooter" />
         </div>
       </div>
     </div>
   </div>
-  <div v-else class="v3-emoji-picker" :class="'v3-color-theme-' + colorTheme">
+  <div
+    v-else
+    ref="inline"
+    class="v3-emoji-picker"
+    :class="'v3-color-theme-' + colorTheme"
+    :style="cssVars"
+  >
     <Header />
     <Body @select="onSelect" />
-    <Footer />
+    <Footer v-if="hasFooter" />
   </div>
 </template>
 
@@ -61,8 +75,10 @@ import {
   onBeforeUnmount,
   inject,
   computed,
+  watch,
+  nextTick,
 } from 'vue'
-import { createPopper } from '@popperjs/core'
+import { createPopper, Instance, Placement } from '@popperjs/core'
 
 /**
  * Internal dependencies
@@ -89,26 +105,10 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    additionalGroups: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupOrder: {
-      type: Array,
-      default: () => [],
-    },
-    groupIcons: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupNames: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   emits: {
-    select: (emoji: EmojiExt) => true,
-    'update:text': (value: string) => true,
+    select: (_emoji: EmojiExt) => true,
+    'update:text': (_value: string) => true,
   },
   setup(props, { emit }) {
     const elem = ref<HTMLInputElement>()
@@ -116,20 +116,37 @@ export default defineComponent({
     const picker = ref<any>()
     const open = ref(false)
     const input = ref(props.text)
-    const isInputType = props.type === 'input' || props.type === 'textarea'
+    const isInputType = computed(
+      () => props.type === 'input' || props.type === 'textarea'
+    )
     let cursor = -1
-    const { state } = inject('store') as Store
-    const colorTheme = computed(() => state.options.colorTheme)
+    const { state, refreshRecent } = inject('store') as Store
+    const colorTheme = computed(() => state.options.theme)
+    const hasFooter = computed(
+      () =>
+        state.options.previewPosition !== 'none' ||
+        state.options.skinTonePosition !== 'none'
+    )
+    const inputAttrs = computed(() => state.options.inputAttrs || {})
+    let popper: Instance | null = null
+
+    // Treat `text` as a controlled prop (issue #65).
+    watch(
+      () => props.text,
+      (value) => {
+        if (value !== input.value) input.value = value || ''
+      }
+    )
 
     /**
      * Functions
      */
     function onSelect(emoji: EmojiExt) {
-      if (isInputType) {
-        const mode = state.options.mode
+      if (isInputType.value) {
+        const mode = state.options.insertMode
         if (mode === 'prepend') {
           input.value = emoji.i + input.value
-        } else if (mode === 'insert' && cursor !== -1) {
+        } else if (mode === 'caret' && cursor !== -1) {
           input.value = `${input.value.slice(0, cursor)}${
             emoji.i
           }${input.value.slice(cursor)}`
@@ -158,29 +175,76 @@ export default defineComponent({
       }
     }
 
+    const inline = ref<HTMLElement>()
+
+    /** Layout props exposed as CSS custom properties. */
+    const cssVars = computed(() => ({
+      '--v3-per-line': String(state.options.perLine || 8),
+      '--v3-emoji-size': `${state.options.emojiSize || 22}px`,
+      // Header, search, headings and footer scale with the emoji size.
+      '--v3-auto-scale': String(
+        Math.min(2, Math.max(0.75, (state.options.emojiSize || 22) / 22))
+      ),
+    }))
+
+    function focusSearch(root?: HTMLElement) {
+      root?.querySelector<HTMLInputElement>('.v3-search input')?.focus()
+    }
+
+    function toggle() {
+      open.value = !open.value
+      // Show selections from the previous session in their new order.
+      if (open.value) {
+        refreshRecent()
+        if (state.options.autoFocus) nextTick(() => focusSearch(picker.value))
+      }
+    }
+
+    /** Escape closes the popup and returns focus to the field. */
+    function close() {
+      if (!open.value) return
+      open.value = false
+      elem.value?.focus()
+    }
+
+    function popperOptions() {
+      const offset =
+        typeof state.options.offset === 'number' ? state.options.offset : 6
+      const placement = (state.options.placement || 'bottom-end') as Placement
+
+      return {
+        placement,
+        modifiers: [{ name: 'offset', options: { offset: [0, offset] } }],
+      }
+    }
+
     function setupPopper() {
-      if (button.value && picker.value && isInputType) {
-        let offset = state.options.offset
-
-        if (typeof offset !== 'number') {
-          offset = 6
-        }
-
-        createPopper(button.value, picker.value, {
-          placement: 'bottom-end',
-          modifiers: [
-            {
-              name: 'offset',
-              options: {
-                offset: [0, offset],
-              },
-            },
-          ],
-        })
-
+      // Anchor to the field, not the icon: `*-start` / `*-end` then align
+      // with the field's edges instead of the small icon at its right.
+      if (elem.value && picker.value && isInputType.value) {
+        popper = createPopper(elem.value, picker.value, popperOptions())
         document.body.addEventListener('click', clickListener)
       }
     }
+
+    function destroyPopper() {
+      popper?.destroy()
+      popper = null
+      document.body.removeEventListener('click', clickListener)
+    }
+
+    // `offset` and `placement` can change after mount.
+    watch(
+      () => [state.options.offset, state.options.placement],
+      () => popper?.setOptions(popperOptions())
+    )
+
+    // The input wrapper only exists for input/textarea picker types.
+    watch(isInputType, async () => {
+      await nextTick()
+      destroyPopper()
+      setupPopper()
+    })
 
     function onChangeText(event: any) {
       input.value = event.target.value || ''
@@ -192,11 +256,14 @@ export default defineComponent({
      */
     onMounted(() => {
       setupPopper()
+      if (state.options.autoFocus && !isInputType.value) {
+        focusSearch(inline.value)
+      }
     })
 
     // cleanup
     onBeforeUnmount(() => {
-      document.body.removeEventListener('click', clickListener)
+      destroyPopper()
     })
 
     /**
@@ -214,6 +281,12 @@ export default defineComponent({
       isInputType,
       onChangeText,
       colorTheme,
+      hasFooter,
+      inputAttrs,
+      toggle,
+      close,
+      cssVars,
+      inline,
     }
   },
 })

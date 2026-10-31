@@ -1,11 +1,12 @@
 {
   "name": "vue3-emoji-picker",
-  "version": "1.1.8",
+  "version": "2.0.0",
   "license": "MIT",
   "author": "delowardev",
+  "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/delowardev/vue3-emoji-picker"
+    "url": "git+https://github.com/delowardev/vue3-emoji-picker.git"
   },
   "bugs": {
     "url": "https://github.com/delowardev/vue3-emoji-picker/issues"
@@ -17,64 +18,112 @@
     "emoji"
   ],
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
+  "packageManager": "npm@11.19.0",
   "files": [
     "dist"
   ],
-  "main": "./dist/emoji-picker.umd.js",
-  "module": "./dist/emoji-picker.es.js",
-  "types": "./dist/emoji-picker.es.d.ts",
+  "main": "./dist/emoji-picker.cjs",
+  "module": "./dist/emoji-picker.mjs",
+  "unpkg": "./dist/emoji-picker.umd.js",
+  "jsdelivr": "./dist/emoji-picker.umd.js",
+  "types": "./dist/emoji-picker.d.cts",
+  "sideEffects": [
+    "./dist/style.css"
+  ],
   "exports": {
     ".": {
-      "import": "./dist/emoji-picker.es.js",
-      "require": "./dist/emoji-picker.umd.js"
+      "import": {
+        "types": "./dist/emoji-picker.d.mts",
+        "default": "./dist/emoji-picker.mjs"
+      },
+      "require": {
+        "types": "./dist/emoji-picker.d.cts",
+        "default": "./dist/emoji-picker.cjs"
+      },
+      "default": "./dist/emoji-picker.mjs"
     },
-    "./css": "./dist/style.css"
+    "./css": {
+      "types": "./dist/css.d.ts",
+      "default": "./dist/style.css"
+    },
+    "./package.json": "./package.json",
+    "./core": {
+      "import": {
+        "types": "./dist/core.d.mts",
+        "default": "./dist/core.mjs"
+      },
+      "require": {
+        "types": "./dist/core.d.cts",
+        "default": "./dist/core.cjs"
+      },
+      "default": "./dist/core.mjs"
+    }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "node scripts/build.mjs",
     "serve": "vite preview",
     "prepare": "husky install",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint --ext .ts,.js,.vue ./",
     "lint:fix": "eslint --fix --ext .ts,.js,.vue ./",
     "prettier": "prettier -c --ignore-unknown ./src",
-    "prettier:fix": "prettier -c --write --ignore-unknown ./src",
-    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && vite build",
+    "prettier:fix": "prettier --write --ignore-unknown ./src",
     "test": "vitest",
     "test:once": "vitest run",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "test:ssr": "node scripts/smoke-ssr.mjs",
+    "test:pack": "node scripts/check-package.mjs",
+    "check:publish": "publint && attw --pack . --entrypoints . && attw --pack . --entrypoints ./core --profile node16",
+    "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && npm run build",
+    "prepublishOnly": "npm run test:once && npm run build && npm run check:publish && npm run test:ssr && npm run test:pack",
+    "demo:build": "vite build --config vite.demo.config.ts",
+    "data:update": "node scripts/update-emoji-data.mjs"
+  },
+  "lint-staged": {
+    "*.{js,ts,vue}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,ts,css,md,vue}": "prettier --write"
+  },
+  "peerDependencies": {
+    "vue": "^3.2.23"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@babel/types": "^7.15.6",
     "@types/node": "^16.11.7",
     "@typescript-eslint/parser": "^5.5.0",
     "@vitejs/plugin-vue": "^1.2.5",
     "@vitest/coverage-c8": "^0.24.5",
     "@vue/compiler-sfc": "^3.0.5",
+    "@vue/test-utils": "^2.4.6",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-vue": "^8.1.1",
+    "happy-dom": "^12.10.3",
     "husky": "^7.0.4",
     "lint-staged": ">=10",
     "prettier": "^2.5.0",
+    "publint": "^0.3.25",
     "sass": "^1.43.2",
     "typescript": "^4.3.2",
     "vite": "^2.4.2",
     "vite-plugin-dts": "^3.6.0",
     "vitest": "^0.24.5",
+    "vue": "^3.2.23",
     "vue-eslint-parser": "^8.0.1",
     "vue-tsc": "^1.2.1"
   },
-  "lint-staged": {
-    "*.{js,ts,vue}": "npm run lint:fix",
-    "*.{js,ts,css,md,vue}": "npm run prettier:fix"
-  },
   "dependencies": {
-    "@popperjs/core": "^2.11.0",
-    "idb": "^7.1.0",
-    "vue": "^3.2.23"
+    "@popperjs/core": "^2.11.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
   }
 }

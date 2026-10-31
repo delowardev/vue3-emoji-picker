@@ -1,7 +1,7 @@
 .v3-emoji-picker {
   // picker body
   .v3-body {
-    padding: 0 0 15px 11px;
+    padding: 0 0 s(15px) s(11px);
     min-height: 0;
     flex-grow: 1;
     .v3-body-inner {
@@ -10,13 +10,14 @@
       overflow-y: auto;
       overflow-x: hidden;
       height: 100%;
-      padding-right: 11px;
+      padding-right: s(11px);
 
       .v3-group {
         h5 {
           margin: 0;
           top: 0;
-          padding: 7px 0 3px 4px;
+          padding: s(7px) 0 s(3px) s(4px);
+          font-size: t(13px);
           z-index: 2;
           &.v3-sticky {
             position: sticky;
@@ -36,12 +37,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-basis: 12.5%;
-            max-width: 12.5%;
+            flex-basis: calc(100% / var(--v3-per-line, 8));
+            max-width: calc(100% / var(--v3-per-line, 8));
             flex-grow: 1;
             padding: 0;
-            font-size: 22px;
+            font-size: var(--v3-emoji-size, 22px);
             position: relative;
+            border-radius: var(--v3-emoji-radius, 6px);
+            &:focus {
+              outline: none;
+            }
+            &:focus-visible {
+              outline: 2px solid var(--v3-picker-focus, #2563eb);
+              outline-offset: -2px;
+            }
             &::after {
               content: '';
               width: 100%;
@@ -54,7 +63,7 @@
             }
             img {
               max-width: 100%;
-              padding: 4px;
+              padding: s(4px);
             }
 
             span,
@@ -67,6 +76,14 @@
             }
           }
         }
+      }
+
+      .v3-no-result {
+        display: block;
+        padding: s(24px) 0;
+        text-align: center;
+        opacity: 0.7;
+        font-size: t(13px);
       }
 
       &.is-mac .v3-emojis button {
