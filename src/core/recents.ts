@@ -32,6 +32,8 @@ export interface Recents {
   entries(): RecentEntry[]
   list(view?: RecentView): Emoji[]
   add(emoji: Emoji, view?: RecentView): Emoji[]
+  /** Re-read entries from storage (e.g. after a migration wrote to it). */
+  reload(): void
   clear(): void
 }
 
@@ -130,6 +132,9 @@ export function createRecents(options: RecentsOptions): Recents {
 
       writeEntries(storage, entries)
       return list(view)
+    },
+    reload(): void {
+      entries = readEntries(storage, max)
     },
     clear(): void {
       entries = []

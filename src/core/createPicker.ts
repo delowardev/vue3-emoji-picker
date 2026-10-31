@@ -20,6 +20,8 @@ import {
   resolveOrderedGroupKeys,
 } from './groups'
 import { createRecents, MAX_RECENT } from './recents'
+import { migrateLegacyRecents } from './legacy'
+import { getDefaultStorage } from './storage'
 import { filterEmojis } from './search'
 import { applySkinTone } from './skinTone'
 import { unicodeToEmoji } from './unicode'
@@ -67,9 +69,10 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
   const listeners = new Set<(state: PickerState) => void>()
   let lookup = buildLookup(options.additionalGroups)
 
+  const storage = options.storage ?? getDefaultStorage()
   const recents = createRecents({
     resolve: (unicode) => lookup.get(unicode),
-    storage: options.storage,
+    storage,
   })
 
   const recentView = () => ({
@@ -88,6 +91,17 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
 
   const emit = () => {
     for (const listener of listeners) listener(state)
+  }
+
+  // A custom `storage` means the consumer owns persistence; otherwise pick
+  // up recents saved by 1.1.x in IndexedDB once.
+  if (!initial.storage) {
+    migrateLegacyRecents(storage).then((changed) => {
+      if (!changed) return
+      recents.reload()
+      state.recent = recents.list(recentView())
+      emit()
+    })
   }
 
   return {

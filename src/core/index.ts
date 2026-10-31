@@ -30,6 +30,12 @@ export {
 } from './images'
 export type { ImageResolverOptions } from './images'
 export {
+  migrateLegacyRecents,
+  LEGACY_DB_NAME,
+  LEGACY_STORE_NAME,
+  LEGACY_MIGRATED_KEY,
+} from './legacy'
+export {
   createMemoryStorage,
   createLocalStorageAdapter,
   getDefaultStorage,
