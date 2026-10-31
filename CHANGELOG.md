@@ -3,6 +3,14 @@ v2.0.0 (unreleased)
 Breaking: props are standardized. Every 1.x prop keeps working with a
 one-time console warning until 3.0 — see [UPGRADE.md](UPGRADE.md).
 
+- Update: toolchain — Vite 8, Vitest 5, TypeScript 6, vue-tsc 3, ESLint 10
+  (flat config), Prettier 3, husky 9, Sass modules (`@use`); Vue 3.5 for
+  development. The published build keeps the 1.x browser targets
+  (Chrome 87, Firefox 78, Safari 14, Edge 88) and gets smaller (ESM 63.7 →
+  57.3 kB gzipped)
+- Add: `EmojiPickerProps` type. The component is typed so its declarations
+  work with every Vue 3 version (3.2–3.5), not only the one used to build it
+
 - Breaking: new prop names. `native` → `set="native"`; `hide-search`,
   `hide-group-icons`, `disable-skin-tones` → `search-position`,
   `nav-position`, `skin-tone-position` (`'none'` hides); `hide-group-names`

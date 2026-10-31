@@ -59,9 +59,16 @@ if (target === 'vue' || target === 'all') {
     ...esm.matchAll(/^export declare (?:type|interface) (\w+)/gm),
   ].map((match) => match[1])
 
+  // The default export's local name (e.g. `EmojiPicker` or `_default`).
+  const defaultName = esm.match(/^export default (\w+);?$/m)?.[1]
+  if (!defaultName) {
+    console.error('[postbuild-dts] no default export in the Vue entry .d.ts')
+    process.exit(1)
+  }
+
   const cjs = esm
     .replace(/^export declare /gm, 'declare ')
-    .replace(/^export default _default;?$/gm, '')
+    .replace(/^export default \w+;?$/gm, '')
     .replace(/^export \{ \};?$/gm, '')
     .trimEnd()
 
@@ -70,11 +77,11 @@ if (target === 'vue' || target === 'all') {
     [
       cjs,
       '',
-      'declare namespace _default {',
+      `declare namespace ${defaultName} {`,
       `    export { ${exportedTypes.join(', ')} };`,
       '}',
       '',
-      'export = _default;',
+      `export = ${defaultName};`,
       '',
     ].join('\n')
   )

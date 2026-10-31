@@ -1,8 +1,7 @@
-@import 'scale';
-@import 'scrollbar';
-@import 'picker';
-@import 'header';
-@import 'body';
-@import 'footer';
-@import 'input';
-@import 'color-theme';
+@use 'scrollbar';
+@use 'picker';
+@use 'header';
+@use 'body';
+@use 'footer';
+@use 'input';
+@use 'color-theme';

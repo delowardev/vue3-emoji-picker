@@ -62,7 +62,7 @@ import flags from '../svgs/groups/flags.svg'
 import recent from '../svgs/groups/recent.svg'
 
 export default defineComponent({
-  name: 'Header',
+  name: 'PickerHeader',
   setup() {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 

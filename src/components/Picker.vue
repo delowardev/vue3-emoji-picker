@@ -35,7 +35,7 @@ import type {
 } from '../types'
 
 /** Props are `undefined` unless passed, so core defaults apply. */
-const optional = <T>(type: unknown) => ({
+const optional = <T,>(type: unknown) => ({
   type: type as PropType<T>,
   default: undefined,
 })

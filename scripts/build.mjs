@@ -24,11 +24,10 @@ const writeTypesPath = (types) => {
   writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 }
 
-const vueTypes = pkg.types
-
 try {
   run('node_modules/vue-tsc/bin/vue-tsc.js', ['--noEmit'])
 
+  writeTypesPath('./dist/emoji-picker.d.ts')
   run('node_modules/vite/bin/vite.js', ['build'])
   runScript(['scripts/postbuild-dts.mjs', '--target', 'vue'])
 
