@@ -2173,6 +2173,11 @@ kbd {
     position: static;
   }
 
+  /* One column: the preview takes the column width, not the picker's. */
+  .preview {
+    width: auto;
+  }
+
   .picker-wrap,
   .picker-wrap.has-input {
     min-width: 0;
@@ -2194,6 +2199,26 @@ kbd {
 
   .brand {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .demo-header {
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  .brand {
+    font-size: 11px;
+  }
+
+  .github {
+    height: 34px;
+    padding: 0 10px;
+  }
+
+  .layout {
+    padding: 16px 12px;
   }
 }
 </style>

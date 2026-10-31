@@ -1,6 +1,8 @@
 .v3-emoji-picker {
   height: var(--v3-picker-height, 320px);
   width: var(--v3-picker-width, 280px);
+  // Never wider than the container (small phones, narrow sidebars).
+  max-width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   margin: 0 auto;
