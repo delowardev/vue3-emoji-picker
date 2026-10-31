@@ -33,7 +33,8 @@ export interface Group {
 }
 
 /**
- * An emoji record as accepted in `additionalGroups`.
+ * An emoji in the dataset's compact shape: `n` names (descriptive name,
+ * then shortcodes), `u` unicode, `v` skin tone variations.
  *
  * `r` (the resolved unicode for the active skin tone) is optional on input —
  * the picker adds it while filtering.
@@ -51,12 +52,33 @@ export const EMOJI_SKIN_TONE_KEY = 't'
 export const EMOJI_EMOJI_KEY = 'i'
 
 /**
- * An emoji as emitted by `select`: the resolved unicode plus the active skin
- * tone and the native character are always present.
+ * The `select` payload.
+ *
+ * Readable fields (`native`, `unicode`, `name`, …) are the 2.x API. The
+ * single-letter keys are kept for 1.x compatibility and will be removed in
+ * 3.0: `i` = native, `r` = unicode, `n` = [name, ...shortcodes], `t` =
+ * skinTone, `u` = unicode without skin tone.
  */
 export interface EmojiExt extends Emoji {
+  /** The emoji character, e.g. "👍🏽". */
+  native: string
+  /** Unicode sequence including the skin tone, e.g. "1f44d-1f3fd". */
+  unicode: string
+  /** Unicode sequence without skin tone, e.g. "1f44d". */
+  baseUnicode: string
+  /** Descriptive name, e.g. "thumbs up". */
+  name: string
+  /** Shortcodes without colons, e.g. ["+1", "thumbsup"]. */
+  shortcodes: string[]
+  /** Active skin tone: "neutral" or a modifier such as "1f3fd". */
+  skinTone: string
+  /** Image URL for custom emoji. */
+  src?: string
+  /** @deprecated use `unicode` */
   [EMOJI_RESULT_KEY]: string
+  /** @deprecated use `skinTone` */
   [EMOJI_SKIN_TONE_KEY]: string
+  /** @deprecated use `native` */
   [EMOJI_EMOJI_KEY]: string
 }
 
@@ -68,29 +90,62 @@ export interface StorageAdapter {
   removeItem(key: string): void
 }
 
+/** Every user-facing string. Pass a partial object to override some. */
+export interface I18n {
+  /** Search input placeholder. */
+  search: string
+  /** Accessible label of the search input. */
+  searchLabel: string
+  /** Accessible label of the category bar. */
+  categoriesLabel: string
+  noResults: string
+  /** Skin tone button text. */
+  skinTone: string
+  /** Names of the six skin tones, from default to dark. */
+  skinTones: string[]
+  /** Category names by key, including custom categories. */
+  categories: Record<string, string>
+}
+
+export type I18nInput = Partial<Omit<I18n, 'categories'>> & {
+  categories?: Record<string, string>
+}
+
+/**
+ * A custom emoji. Readable keys are preferred; the short keys used by the
+ * bundled dataset (`n`, `u`, `v`) are also accepted.
+ */
+export interface CustomEmoji {
+  /** Descriptive name, e.g. "party parrot". */
+  name?: string
+  /** Shortcodes without colons, e.g. ['party_parrot']. */
+  shortcodes?: string[]
+  /** Unique id; a unicode sequence for real emoji. */
+  unicode?: string
+  /** Skin tone variations (unicode sequences). */
+  skins?: string[]
+  /** Image URL. Rendered instead of the native glyph or image set. */
+  src?: string
+  n?: string[]
+  u?: string
+  v?: string[]
+}
+
+export interface CustomCategory {
+  /** Unique key, also usable in `categories` and `i18n.categories`. */
+  key: string
+  name?: string
+  /** Icon URL for the category bar. */
+  icon?: string
+  emojis: Array<CustomEmoji | Emoji>
+}
+
+export type PickerType = 'inline' | 'input' | 'textarea'
+export type InsertMode = 'caret' | 'append' | 'prepend'
+
 export interface EmojiOptions {
-  native: boolean
-  hideSearch: boolean
-  hideGroupIcons: boolean
-  hideGroupNames: boolean
-  hideFooter: boolean
-  staticTexts: Record<string, string>
-  disableStickyGroupNames: boolean
-  disabledGroups: string[]
-  /** Unicode ids (e.g. `1f595`) to leave out of every group and search. */
-  disabledEmojis: string[]
-  groupNames: Record<string, string>
-  disableSkinTones: boolean
-  displayRecent: boolean
-  additionalGroups: EmojiRecord
-  groupOrder: string[]
-  groupIcons: Record<string, string>
-  mode: 'insert' | 'append' | 'prepend'
-  offset: number
-  placement: string
-  inputAttrs: Record<string, unknown>
-  colorTheme: ColorTheme
-  /** Image set; ignored when `native` is true. */
+  theme: ColorTheme
+  /** Artwork; `native` uses the system font. */
   set: EmojiSet
   /** Custom image URL resolver; overrides `set`. */
   imageUrl: ((unicode: string) => string) | null
@@ -98,13 +153,50 @@ export interface EmojiOptions {
   perLine: number
   /** Emoji font/image size in px. */
   emojiSize: number
-  recentMode: RecentMode
+
+  searchPosition: 'top' | 'none'
+  navPosition: 'top' | 'none'
+  previewPosition: 'bottom' | 'none'
+  skinTonePosition: 'preview' | 'none'
+  categoryHeaders: 'sticky' | 'static' | 'none'
+
+  /**
+   * Categories to show, in order, e.g. `['recent', 'smileys_people']`.
+   * Empty shows everything: recent, custom categories, then built-ins.
+   */
+  categories: string[]
+  customCategories: CustomCategory[]
+  /** Icon URL per category key. */
+  categoryIcons: Record<string, string>
+  /** Unicode ids (e.g. `1f595`) to leave out everywhere. */
+  excludeEmojis: string[]
+
+  recent: 'none' | RecentMode
   /** Maximum number of recent emoji shown. */
   maxRecent: number
-  /** Focus the search input on mount (inline) or when the popup opens. */
+
+  i18n: I18nInput
+
+  type: PickerType
+  insertMode: InsertMode
+  /** Popup placement for input/textarea types (Popper placement). */
+  placement: string
+  /** Popup offset in px for input/textarea types. */
+  offset: number
+  /** Attributes bound to the input/textarea. */
+  inputAttrs: Record<string, unknown>
+  /** Focus search on mount (inline) or when the popup opens. */
   autoFocus: boolean
+
   /** Defaults to localStorage, falling back to in-memory. */
   storage?: StorageAdapter
+}
+
+export interface CategoryInfo {
+  key: string
+  title: string
+  /** Built-in icon unicode; empty for custom categories. */
+  u: string
 }
 
 export interface PickerState {
@@ -127,35 +219,38 @@ export interface EmojiPicker {
   hover(emoji: Emoji): void
   /**
    * Resolve the selection payload and record it as recent. Pass
-   * `{ reorderRecent: false }` when the pick comes from the recent group so
-   * the list does not shuffle under the pointer; the new order is persisted
-   * and shown on the next `setOptions` or `refreshRecent`.
+   * `{ reorderRecent: false }` when the pick comes from the recent category
+   * so the list does not shuffle under the pointer; the new order is
+   * persisted and shown on the next `setOptions` or `refreshRecent`.
    */
   select(emoji: Emoji, options?: { reorderRecent?: boolean }): EmojiExt
   /** Re-read the recent list from storage into state. */
   refreshRecent(): void
-  /** Emoji filtered by search, skin tone and disabled groups. */
+  /** Emoji filtered by search, skin tone, categories and exclusions. */
   results(): EmojiRecord
-  groups(): Array<{ key: string; title: string; u: string }>
-  orderedGroupKeys(): string[]
-  groupNames(): Record<string, string>
+  /** Visible categories in display order, with resolved names. */
+  categories(): CategoryInfo[]
+  /** Resolved strings. */
+  i18n(): I18n
   destroy(): void
 }
 
 export interface State {
-  groups: Group[]
   emojis: EmojiRecord
-  additionalGroups: EmojiRecord
   search: string
   emoji: Emoji
   activeGroup: string
   skinTone: string
-  options: Record<string, any>
+  options: EmojiOptions
   recent: Emoji[]
-  /** Resolved display names, including additional groups. */
-  groupNames: Record<string, string>
-  orderedGroupKeys: string[]
-  disabled: string[]
+  /** Visible category keys in display order. */
+  categoryKeys: string[]
+  /** Visible categories with resolved names. */
+  categories: CategoryInfo[]
+  /** Resolved category names by key. */
+  categoryNames: Record<string, string>
+  /** Resolved strings. */
+  i18n: I18n
 }
 
 export interface Store {
@@ -166,5 +261,5 @@ export interface Store {
   refreshRecent: () => void
   updateActiveGroup: (v: string) => void
   updateSkinTone: (v: string) => void
-  updateOptions: (v: Record<string, any>) => void
+  updateOptions: (v: Partial<EmojiOptions>) => void
 }

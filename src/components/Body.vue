@@ -14,10 +14,10 @@
           :data-group="group.key"
           class="v3-group"
           role="group"
-          :aria-label="groupNames[group.key]"
+          :aria-label="categoryNames[group.key]"
         >
           <h5 v-if="hasGroupNames" :class="isSticky ? `v3-sticky` : ``">
-            {{ groupNames[group.key] }}
+            {{ categoryNames[group.key] }}
           </h5>
           <div class="v3-emojis">
             <button
@@ -75,7 +75,8 @@ import {
  */
 import { Emoji, Store, EmojiExt } from '../types'
 
-import { EMOJI_RESULT_KEY, EMOJI_NAME_KEY, STATIC_TEXTS } from '../constant'
+import { EMOJI_RESULT_KEY, EMOJI_NAME_KEY } from '../constant'
+import { toSelection } from '../core/selection'
 import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
 import { resolveEmojiImage } from '../core/images'
 
@@ -98,32 +99,32 @@ export default defineComponent({
           state.emojis,
           state.search,
           state.skinTone,
-          state.options.disabledGroups,
-          state.options.disabledEmojis
+          [],
+          state.options.excludeEmojis
         ) as Record<string, EmojiExt[]>
     )
 
     /** Visible groups in display order; the keyboard grid. */
     const grid = computed<GridGroup[]>(() =>
-      state.orderedGroupKeys
+      state.categoryKeys
         .filter((key) => emojis.value[key]?.length)
         .map((key) => ({ key, items: emojis.value[key] }))
     )
 
     const _this = getCurrentInstance()
-    const hasGroupNames = computed(() => !state.options.hideGroupNames)
-    const isSticky = computed(() => !state.options.disableStickyGroupNames)
-    const groupNames = computed(() => state.groupNames)
-    const noResults = computed(
-      () => state.options.staticTexts?.noResults || STATIC_TEXTS.noResults
+    const hasGroupNames = computed(
+      () => state.options.categoryHeaders !== 'none'
     )
+    const isSticky = computed(() => state.options.categoryHeaders === 'sticky')
+    const categoryNames = computed(() => state.categoryNames)
+    const noResults = computed(() => state.i18n.noResults)
     /** Unicode values whose image failed to load. */
     const failed = ref<Record<string, boolean>>({})
 
     const platform = isMac() ? 'is-mac' : ''
 
     function imageOf(emoji: EmojiExt): string | null {
-      if (state.options.native && !emoji.src) return null
+      if (state.options.set === 'native' && !emoji.src) return null
       return resolveEmojiImage(emoji, emoji.r, {
         set: state.options.set,
         imageUrl: state.options.imageUrl,
@@ -221,11 +222,7 @@ export default defineComponent({
 
     function handleClick(emoji: EmojiExt, group?: string) {
       updateSelect(emoji, group === 'recent')
-      _this?.emit('select', {
-        ...emoji,
-        t: state.skinTone,
-        i: unicodeToEmoji(emoji.r),
-      })
+      _this?.emit('select', toSelection(emoji, state.skinTone))
     }
 
     function handleError(unicode: string) {
@@ -272,7 +269,7 @@ export default defineComponent({
       hasGroupNames,
       isSticky,
       platform,
-      groupNames,
+      categoryNames,
       noResults,
       failed,
     }

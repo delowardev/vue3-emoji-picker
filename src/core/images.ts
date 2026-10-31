@@ -1,7 +1,7 @@
 import type { Emoji, EmojiSet } from './types'
 
 /** emoji-datasource version used for the image sets. */
-export const EMOJI_DATASOURCE_VERSION = '15.1.2'
+export const EMOJI_DATASOURCE_VERSION = '16.0.0'
 
 export const EMOJI_SETS: EmojiSet[] = [
   'native',

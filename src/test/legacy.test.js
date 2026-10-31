@@ -110,7 +110,7 @@ describe('legacy IndexedDB recents', () => {
     globalThis.window = { localStorage: createMemoryStorage() }
 
     try {
-      const picker = createPicker({ displayRecent: true })
+      const picker = createPicker({ recent: 'recent' })
       await new Promise((resolve) => picker.subscribe(resolve))
 
       expect(picker.getState().recent.map((e) => e.u)).toEqual(['1f44d'])

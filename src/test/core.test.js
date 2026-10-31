@@ -46,10 +46,10 @@ describe('core (framework-agnostic)', () => {
 
   it('persists recents across instances sharing storage', () => {
     const storage = createMemoryStorage()
-    const first = createPicker({ storage, displayRecent: true })
+    const first = createPicker({ storage, recent: 'recent' })
     first.select(flat(first.results()).find((emoji) => emoji.u === '1f476'))
 
-    const second = createPicker({ storage, displayRecent: true })
+    const second = createPicker({ storage, recent: 'recent' })
 
     expect(second.getState().recent.map((emoji) => emoji.u)).toEqual(['1f476'])
   })
@@ -69,28 +69,104 @@ describe('core (framework-agnostic)', () => {
     expect(listener.mock.calls.length).toBe(calls)
   })
 
-  it('resolves groups, names and order', () => {
+  it('resolves categories, names and order', () => {
     const picker = createPicker({
       storage: createMemoryStorage(),
-      groupNames: { smileys_people: 'Faces' },
-      additionalGroups: { my_custom_group: [{ n: ['x'], u: 'x' }] },
-      groupOrder: ['flags'],
+      i18n: { categories: { smileys_people: 'Faces' } },
+      customCategories: [
+        { key: 'my_custom_group', emojis: [{ name: 'x', unicode: 'x' }] },
+        { key: 'team', name: 'Our team', emojis: [] },
+      ],
+      categories: ['flags', 'my_custom_group', 'team', 'smileys_people'],
     })
+    const categories = picker.categories()
 
-    expect(picker.groupNames().smileys_people).toBe('Faces')
-    expect(picker.groupNames().my_custom_group).toBe('My Custom Group')
-    expect(picker.orderedGroupKeys()[0]).toBe('flags')
-    expect(
-      picker.groups().some((group) => group.key === 'my_custom_group')
-    ).toBe(true)
+    expect(categories.map((c) => c.key)).toEqual([
+      'flags',
+      'my_custom_group',
+      'team',
+      'smileys_people',
+    ])
+    expect(categories[1].title).toBe('My Custom Group')
+    expect(categories[2].title).toBe('Our team')
+    expect(categories[3].title).toBe('Faces')
+    expect(Object.keys(picker.results())).not.toContain('animals_nature')
   })
 
-  it('excludes disabled groups', () => {
+  it('shows every category by default, recent only when enabled', () => {
     const picker = createPicker({ storage: createMemoryStorage() })
-    picker.setOptions({ disabledGroups: ['flags'] })
+    expect(picker.categories().map((c) => c.key)).not.toContain('recent')
+    expect(picker.categories()).toHaveLength(8)
 
-    expect(Object.keys(picker.results())).not.toContain('flags')
-    expect(picker.orderedGroupKeys()).not.toContain('flags')
+    picker.setOptions({ recent: 'frequent' })
+    expect(picker.categories()[0].key).toBe('recent')
+  })
+
+  it('emits a readable selection payload', () => {
+    const picker = createPicker({ storage: createMemoryStorage() })
+    picker.setSkinTone('1f3fd')
+    const thumbs = flat(picker.results()).find((emoji) => emoji.u === '1f44d')
+    const payload = picker.select(thumbs)
+
+    expect(payload).toMatchObject({
+      native: '👍🏽',
+      unicode: '1f44d-1f3fd',
+      baseUnicode: '1f44d',
+      name: 'thumbs up',
+      skinTone: '1f3fd',
+    })
+    expect(payload.shortcodes).toContain('+1')
+  })
+
+  it('accepts readable custom emoji', () => {
+    const picker = createPicker({
+      storage: createMemoryStorage(),
+      customCategories: [
+        {
+          key: 'team',
+          emojis: [
+            {
+              name: 'party parrot',
+              shortcodes: ['parrot'],
+              unicode: 'x-parrot',
+              src: '/p.gif',
+            },
+          ],
+        },
+      ],
+    })
+    picker.setSearch('parrot')
+    const [parrot] = picker.results().team
+
+    expect(parrot).toMatchObject({
+      n: ['party parrot', 'parrot'],
+      u: 'x-parrot',
+      src: '/p.gif',
+    })
+    expect(picker.select(parrot)).toMatchObject({
+      name: 'party parrot',
+      src: '/p.gif',
+    })
+  })
+
+  it('resolves i18n over English', () => {
+    const picker = createPicker({
+      storage: createMemoryStorage(),
+      i18n: { search: 'Buscar', skinTones: ['Por defecto'] },
+    })
+    const i18n = picker.i18n()
+
+    expect(i18n.search).toBe('Buscar')
+    expect(i18n.noResults).toBe('No emoji found')
+    expect(i18n.skinTones).toEqual([
+      'Por defecto',
+      'Light',
+      'Medium-light',
+      'Medium',
+      'Medium-dark',
+      'Dark',
+    ])
+    expect(i18n.categories.flags).toBe('Flags')
   })
 
   it('exposes the pure helpers too', () => {
@@ -107,7 +183,7 @@ describe('disabled emojis', () => {
   it('removes emoji by unicode from groups and search', () => {
     const picker = createPicker({
       storage: createMemoryStorage(),
-      disabledEmojis: ['1f44d'],
+      excludeEmojis: ['1f44d'],
     })
 
     expect(flat(picker.results()).some((emoji) => emoji.u === '1f44d')).toBe(
@@ -140,11 +216,10 @@ describe('shortcodes', () => {
   })
 
   it('resolves shortcodes from additional groups', () => {
-    const additionalGroups = {
-      custom: [{ n: ['party', 'party_face'], u: '1f973' }],
-    }
-
-    expect(replaceShortcodes(':party_face:', { additionalGroups })).toBe(
+    const customCategories = [
+      { key: 'custom', emojis: [{ n: ['party', 'party_face'], u: '1f973' }] },
+    ]
+    expect(replaceShortcodes(':party_face:', { customCategories })).toBe(
       '\u{1f973}'
     )
   })
@@ -157,8 +232,7 @@ describe('recent modes', () => {
   it('orders by frequency and caps by maxRecent', () => {
     const picker = createPicker({
       storage: createMemoryStorage(),
-      displayRecent: true,
-      recentMode: 'frequent',
+      recent: 'frequent',
       maxRecent: 2,
     })
     pick(picker, '1f600')
@@ -171,7 +245,7 @@ describe('recent modes', () => {
       '1f602',
     ])
 
-    picker.setOptions({ recentMode: 'recent', maxRecent: 3 })
+    picker.setOptions({ recent: 'recent', maxRecent: 3 })
     expect(picker.getState().recent.map((emoji) => emoji.u)).toEqual([
       '1f602',
       '1f601',

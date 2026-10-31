@@ -9,16 +9,20 @@ const TONES = ['1f3fb', '1f3fc', '1f3fd', '1f3fe', '1f3ff']
 
 describe('skin tones', () => {
   it('applies every tone to every tone-capable emoji', () => {
+    // Derived from the dataset so a data refresh does not need a test edit.
+    const expected = flatten(emojis).filter((emoji) => emoji.v).length
+    expect(expected).toBeGreaterThan(200)
+
     for (const tone of TONES) {
       const capable = flatten(filterEmojis(emojis, '', tone, [])).filter(
         (emoji) => Array.isArray(emoji.v)
       )
 
-      expect(capable.length).toBe(212)
+      expect(capable.length).toBe(expected)
 
       for (const emoji of capable) {
         // Regression: `findIndex(...) || -1` collapsed index 0 to -1 and
-        // silently dropped the lightest tone for all 212 emoji.
+        // silently dropped the lightest tone for every tone-capable emoji.
         expect(emoji.r).toContain(tone)
       }
     }

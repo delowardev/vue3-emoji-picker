@@ -3,7 +3,7 @@ import { EMOJI_NAME_KEY, EMOJI_RESULT_KEY } from './constants'
 import { applySkinTone } from './skinTone'
 
 interface SearchEntry {
-  /** Normalised aliases, e.g. ["thumbs up sign", "+1", "thumbsup"] */
+  /** Normalised aliases, e.g. ["thumbs up", "+1", "thumbsup"] */
   aliases: string[]
   /** Every word appearing in any alias */
   words: string[]
