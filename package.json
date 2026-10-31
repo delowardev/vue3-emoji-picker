@@ -79,7 +79,8 @@
     "check:publish": "publint && attw --pack . --entrypoints . && attw --pack . --entrypoints ./core --profile node16",
     "precommit": "npm run type-check && npm run prettier:fix && npm run lint:fix && npm run build",
     "prepublishOnly": "npm run test:once && npm run build && npm run check:publish && npm run test:ssr && npm run test:pack",
-    "demo:build": "vite build --config vite.demo.config.ts"
+    "demo:build": "vite build --config vite.demo.config.ts",
+    "data:update": "node scripts/update-emoji-data.mjs"
   },
   "lint-staged": {
     "*.{js,ts,vue}": [
