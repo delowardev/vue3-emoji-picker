@@ -219,8 +219,10 @@ export default defineComponent({
     }
 
     function setupPopper() {
-      if (button.value && picker.value && isInputType.value) {
-        popper = createPopper(button.value, picker.value, popperOptions())
+      // Anchor to the field, not the icon: `*-start` / `*-end` then align
+      // with the field's edges instead of the small icon at its right.
+      if (elem.value && picker.value && isInputType.value) {
+        popper = createPopper(elem.value, picker.value, popperOptions())
         document.body.addEventListener('click', clickListener)
       }
     }

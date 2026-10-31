@@ -293,6 +293,10 @@ In the search box, `↓` moves into the grid and `Enter` picks the first
 result. `Esc` closes the input/textarea popup. Buttons, groups, the
 category bar and skin tones are labelled for screen readers.
 
+Every control is at least 24×24px (WCAG 2.5.8) at any `emoji-size`. With
+all categories shown (nine, plus `recent`), keep the picker at least 270px
+wide so the category buttons keep that size.
+
 ## Styling with CSS variables
 
 | Variable                            | Default           | Description                                                                                                                                 |

@@ -48,6 +48,8 @@
         }
       }
       .v3-emoji-picker {
+        // Popper positions the popup; a margin would offset it.
+        margin: 0;
         opacity: 0;
         visibility: hidden;
         transition: 200ms;
