@@ -117,23 +117,55 @@
         </label>
 
         <label class="field">
-          <span>Emoji size ({{ emojiSize }}px)</span>
-          <input v-model.number="emojiSize" type="range" min="14" max="40" />
+          <span
+            >Emoji size <output>{{ emojiSize }}px</output></span
+          >
+          <input
+            v-model.number="emojiSize"
+            type="range"
+            min="14"
+            max="40"
+            :style="fill(emojiSize, 14, 40)"
+          />
         </label>
 
         <label class="field">
-          <span>Per line ({{ perLine }})</span>
-          <input v-model.number="perLine" type="range" min="5" max="12" />
+          <span
+            >Per line <output>{{ perLine }}</output></span
+          >
+          <input
+            v-model.number="perLine"
+            type="range"
+            min="5"
+            max="12"
+            :style="fill(perLine, 5, 12)"
+          />
         </label>
 
         <label class="field">
-          <span>Width ({{ width }}px)</span>
-          <input v-model.number="width" type="range" min="240" max="480" />
+          <span
+            >Width <output>{{ width }}px</output></span
+          >
+          <input
+            v-model.number="width"
+            type="range"
+            min="240"
+            max="480"
+            :style="fill(width, 240, 480)"
+          />
         </label>
 
         <label class="field">
-          <span>Height ({{ height }}px)</span>
-          <input v-model.number="height" type="range" min="240" max="520" />
+          <span
+            >Height <output>{{ height }}px</output></span
+          >
+          <input
+            v-model.number="height"
+            type="range"
+            min="240"
+            max="520"
+            :style="fill(height, 240, 520)"
+          />
         </label>
 
         <label class="field">
@@ -201,8 +233,16 @@
           </label>
 
           <label class="field">
-            <span>Offset ({{ offset }}px)</span>
-            <input v-model.number="offset" type="range" min="0" max="40" />
+            <span
+              >Offset <output>{{ offset }}px</output></span
+            >
+            <input
+              v-model.number="offset"
+              type="range"
+              min="0"
+              max="40"
+              :style="fill(offset, 0, 40)"
+            />
           </label>
 
           <label class="field">
@@ -227,8 +267,16 @@
             </select>
           </label>
           <label class="field">
-            <span>Max recent ({{ maxRecent }})</span>
-            <input v-model.number="maxRecent" type="range" min="4" max="48" />
+            <span
+              >Max recent <output>{{ maxRecent }}</output></span
+            >
+            <input
+              v-model.number="maxRecent"
+              type="range"
+              min="4"
+              max="48"
+              :style="fill(maxRecent, 4, 48)"
+            />
           </label>
         </template>
 
@@ -272,7 +320,11 @@
       </aside>
 
       <section class="stage">
-        <div class="picker-wrap" :class="{ dark: isDark }" :style="stageVars">
+        <div
+          class="picker-wrap"
+          :class="{ light: theme === 'light' }"
+          :style="stageVars"
+        >
           <picker
             v-bind="pickerProps"
             @select="onSelect"
@@ -381,6 +433,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import Picker from './components/Picker.vue'
+import { LEGACY_PROPS } from './compat'
 import {
   createMemoryStorage,
   createPicker,
@@ -552,10 +605,19 @@ const stats = [
   },
   {
     icon: '🎛️',
-    value: String(Object.keys(Picker.props || {}).length),
+    // 2.x props only; deprecated 1.x names are not counted.
+    value: String(
+      Object.keys(Picker.props || {}).filter((key) => !(key in LEGACY_PROPS))
+        .length
+    ),
     label: 'Props to customize',
   },
 ]
+
+/** Filled portion of a range track, as a CSS variable. */
+function fill(value: number, min: number, max: number) {
+  return { '--fill': `${((value - min) / (max - min)) * 100}%` }
+}
 
 const installCopied = ref(false)
 
@@ -573,13 +635,13 @@ const tab = ref<'vue' | 'core'>('vue')
 
 const defaults = {
   native: false,
-  theme: 'light' as 'light' | 'dark' | 'auto',
+  theme: 'dark' as 'light' | 'dark' | 'auto',
   set: 'apple' as EmojiSet,
   emojiSize: 22,
   perLine: 8,
   width: 280,
   height: 320,
-  accent: '#2563eb',
+  accent: '#f0b100',
   displayRecent: true,
   recentMode: 'recent' as RecentMode,
   maxRecent: 24,
@@ -649,6 +711,7 @@ const PRESETS: Array<{ name: string; values: Partial<typeof defaults> }> = [
   {
     name: 'Compact',
     values: {
+      theme: 'light',
       emojiSize: 18,
       perLine: 9,
       width: 260,
@@ -686,8 +749,6 @@ function applyPreset(values: Partial<typeof defaults>) {
 const selected = ref<Record<string, any> | null>(null)
 const text = ref('')
 const copied = ref(false)
-
-const isDark = computed(() => theme.value === 'dark')
 
 const disabledEmojis = computed(() =>
   disabledEmojisText.value
@@ -763,7 +824,9 @@ const codeSnippet = computed(() => {
 
   const props = pickerProps.value
 
-  if (theme.value !== d.theme) attrs.push(`theme="${theme.value}"`)
+  // Compare with the library defaults, not the demo's, so the snippet
+  // reproduces exactly what is on screen.
+  if (theme.value !== 'light') attrs.push(`theme="${theme.value}"`)
   if (set.value !== d.set) attrs.push(`set="${set.value}"`)
   if (emojiSize.value !== d.emojiSize)
     attrs.push(`:emoji-size="${emojiSize.value}"`)
@@ -809,12 +872,14 @@ const codeSnippet = computed(() => {
     ? `<EmojiPicker\n  ${attrs.join('\n  ')}\n  @select="onSelect"\n/>`
     : `<EmojiPicker @select="onSelect" />`
 
-  const style =
-    width.value !== d.width ||
-    height.value !== d.height ||
-    accent.value !== d.accent
-      ? `\n\n<style>\n.v3-emoji-picker {\n  --v3-picker-width: ${width.value}px;\n  --v3-picker-height: ${height.value}px;\n  --v3-picker-focus: ${accent.value};\n}\n</style>`
-      : ''
+  const css = [
+    width.value !== 280 && `  --v3-picker-width: ${width.value}px;`,
+    height.value !== 320 && `  --v3-picker-height: ${height.value}px;`,
+    accent.value !== '#2563eb' && `  --v3-picker-focus: ${accent.value};`,
+  ].filter(Boolean)
+  const style = css.length
+    ? `\n\n<style>\n.v3-emoji-picker {\n${css.join('\n')}\n}\n</style>`
+    : ''
 
   return `<script setup>\nimport EmojiPicker from 'vue3-emoji-picker'\nimport 'vue3-emoji-picker/css'\n<\/script>\n\n<template>\n${opening.replace(
     /^/gm,
@@ -899,25 +964,27 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .demo {
-  /* Warm stone neutrals with a single yellow accent. */
-  --bg: #fafaf9;
-  --surface: #ffffff;
-  --surface-2: #f5f5f4;
-  --header: #e7e5e4;
-  --border: #d6d3d1;
-  --border-soft: #e7e5e4;
-  --heading: #1c1917;
-  --text: #44403c;
-  --muted: #78716c;
+  /* Dark stone palette with a single yellow accent. */
+  --bg: #121110;
+  --surface: #1c1a19;
+  --surface-2: #242120;
+  --header: #1a1817;
+  --border: #33302e;
+  --border-strong: #45403d;
+  --heading: #e7e5e4;
+  --text: #c9c5c2;
+  --muted: #8f8a86;
   --accent: #f0b100;
-  --accent-ink: #733e0a;
-  --accent-soft: #fef9c3;
-  --accent-wash: #fffbeb;
+  --accent-ink: #3d2800;
+  --accent-edge: #a86f00;
+  --accent-soft: rgb(240 177 0 / 14%);
   --pixel: 'Silkscreen', ui-monospace, monospace;
+  --radius: 8px;
 
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
+  color-scheme: dark;
   font-family: 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   font-size: 15px;
   line-height: 1.6;
@@ -981,7 +1048,7 @@ h3 {
 }
 
 .nav a:hover {
-  color: var(--heading);
+  color: var(--accent);
 }
 
 .github {
@@ -996,14 +1063,14 @@ h3 {
   height: 40px;
   padding: 0 16px;
   border-radius: 6px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-bottom-width: 4px;
   font: inherit;
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 80ms, border-bottom-width 80ms;
+  transition: transform 80ms, border-bottom-width 80ms, background 150ms;
 }
 
 .btn:active {
@@ -1011,37 +1078,44 @@ h3 {
   border-bottom-width: 2px;
 }
 
+.btn:focus-visible,
+.tabs button:focus-visible,
+.presets button:focus-visible,
+.copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .btn-primary {
   background: var(--accent);
-  border-color: var(--accent-ink);
+  border-color: var(--accent-edge);
   color: var(--accent-ink);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.05);
+  filter: brightness(1.08);
 }
 
 .btn-surface {
-  background: var(--surface);
-  border-color: var(--border);
+  background: var(--surface-2);
   color: var(--heading);
 }
 
 .btn-surface:hover {
-  background: var(--surface-2);
+  background: var(--border);
 }
 
 /* Hero */
 .hero {
   text-align: center;
-  padding: 72px 24px 56px;
+  padding: 80px 24px 64px;
   background: radial-gradient(
       ellipse at top,
-      var(--accent-wash),
-      transparent 65%
+      rgb(240 177 0 / 10%),
+      transparent 60%
     ),
-    var(--bg);
-  border-bottom: 1px solid var(--border-soft);
+    linear-gradient(var(--header), var(--bg));
+  border-bottom: 1px solid var(--border);
 }
 
 .badge {
@@ -1082,7 +1156,7 @@ h3 {
 .install-copy {
   font-size: 12px;
   color: var(--muted);
-  border-left: 1px solid var(--border);
+  border-left: 1px solid var(--border-strong);
   padding-left: 10px;
 }
 
@@ -1102,9 +1176,9 @@ h3 {
   align-items: center;
   gap: 4px;
   padding: 24px;
-  border: 2px solid #fce7a2;
+  border: 2px solid rgb(240 177 0 / 30%);
   border-radius: 10px;
-  background: linear-gradient(var(--accent-wash), var(--surface));
+  background: linear-gradient(rgb(240 177 0 / 8%), var(--surface));
   color: var(--muted);
   font-size: 14px;
 }
@@ -1143,8 +1217,8 @@ h3 {
   margin-top: 22px;
   padding: 4px;
   border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface-2);
+  border-radius: var(--radius);
+  background: var(--surface);
 }
 
 .tabs button {
@@ -1156,6 +1230,10 @@ h3 {
   cursor: pointer;
   color: var(--muted);
   text-transform: uppercase;
+}
+
+.tabs button:hover {
+  color: var(--heading);
 }
 
 .tabs button.active {
@@ -1175,7 +1253,7 @@ h3 {
 
 .controls {
   background: var(--surface);
-  border: 2px solid var(--border-soft);
+  border: 2px solid var(--border);
   border-radius: 10px;
   padding: 20px;
   align-self: start;
@@ -1183,6 +1261,8 @@ h3 {
   top: 88px;
   max-height: calc(100vh - 110px);
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 .controls h2 {
@@ -1193,13 +1273,13 @@ h3 {
 }
 
 .controls h3 {
-  margin: 22px 0 10px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border-soft);
+  margin: 22px 0 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
   font-family: var(--pixel);
   font-size: 12px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--accent);
 }
 
 .presets {
@@ -1209,9 +1289,9 @@ h3 {
 }
 
 .presets button {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-bottom-width: 3px;
-  background: var(--surface);
+  background: var(--surface-2);
   border-radius: 6px;
   padding: 3px 10px;
   font: inherit;
@@ -1222,60 +1302,183 @@ h3 {
 }
 
 .presets button:hover {
-  border-color: var(--accent-ink);
+  border-color: var(--accent-edge);
   background: var(--accent);
   color: var(--accent-ink);
 }
 
+/* Form controls: one look for every input. */
 .field {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 14px;
   font-size: 13px;
 }
 
 .field > span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: var(--muted);
   font-weight: 500;
 }
 
-.field input[type='text'],
-.field select {
-  height: 36px;
+.field output {
+  min-width: 40px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--surface-2);
   border: 1px solid var(--border);
+  color: var(--heading);
+  font: 600 11px/18px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-align: center;
+}
+
+.field input[type='text'],
+.field select,
+.shortcode-input {
+  width: 100%;
+  height: 36px;
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
   padding: 0 10px;
+  background: var(--bg);
+  color: var(--heading);
   font: inherit;
   font-size: 13px;
+  transition: border-color 150ms, box-shadow 150ms;
+}
+
+.field select {
+  appearance: none;
+  padding-right: 32px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238f8a86' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.field select option {
   background: var(--surface);
   color: var(--heading);
 }
 
-.field input[type='text']:focus,
-.field select:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: -1px;
+.field input[type='text']:hover,
+.field select:hover,
+.shortcode-input:hover {
+  border-color: var(--muted);
 }
 
+.field input[type='text']:focus,
+.field select:focus,
+.shortcode-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.field input::placeholder,
+.shortcode-input::placeholder {
+  color: var(--muted);
+}
+
+/* Range: filled track up to the value (--fill), square thumb. */
 .field input[type='range'] {
+  --fill: 50%;
+  appearance: none;
   width: 100%;
-  accent-color: var(--accent);
+  height: 18px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.field input[type='range']::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(
+    to right,
+    var(--accent) var(--fill),
+    var(--border-strong) var(--fill)
+  );
+}
+
+.field input[type='range']::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--border-strong);
+}
+
+.field input[type='range']::-moz-range-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+
+.field input[type='range']::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  border-radius: 4px;
+  background: var(--accent);
+  border: 2px solid var(--accent-ink);
+  box-shadow: 0 2px 0 var(--accent-edge);
+  transition: transform 100ms;
+}
+
+.field input[type='range']::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background: var(--accent);
+  border: 2px solid var(--accent-ink);
+  box-shadow: 0 2px 0 var(--accent-edge);
+}
+
+.field input[type='range']:hover::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.field input[type='range']:focus {
+  outline: none;
+}
+
+.field input[type='range']:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px var(--accent-soft), 0 2px 0 var(--accent-edge);
 }
 
 .field input[type='color'] {
-  width: 48px;
-  height: 30px;
-  padding: 0;
-  border: 1px solid var(--border);
+  appearance: none;
+  width: 52px;
+  height: 32px;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
   border-radius: 6px;
-  background: var(--surface);
+  background: var(--bg);
+  cursor: pointer;
+}
+
+.field input[type='color']::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.field input[type='color']::-webkit-color-swatch {
+  border: 0;
+  border-radius: 3px;
+}
+
+.field input[type='color']::-moz-color-swatch {
+  border: 0;
+  border-radius: 3px;
 }
 
 .toggles {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   font-size: 13px;
 }
 
@@ -1283,17 +1486,51 @@ h3 {
   margin-top: 4px;
 }
 
+.toggles + .field,
+.toggles + template + .field {
+  margin-top: 14px;
+}
+
 .toggles label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
+  color: var(--text);
 }
 
-.toggles input {
-  accent-color: var(--accent);
-  width: 15px;
-  height: 15px;
+.toggles label:hover {
+  color: var(--heading);
+}
+
+/* Checkbox: square, yellow when checked, with a drawn check mark. */
+.toggles input[type='checkbox'] {
+  appearance: none;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border: 2px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--bg) center / 12px no-repeat;
+  cursor: pointer;
+  transition: background-color 120ms, border-color 120ms;
+}
+
+.toggles label:hover input[type='checkbox'] {
+  border-color: var(--muted);
+}
+
+.toggles input[type='checkbox']:checked {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d2800' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
+
+.toggles input[type='checkbox']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--accent);
 }
 
 .stage {
@@ -1307,22 +1544,22 @@ h3 {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-height: 420px;
+  min-height: 440px;
   padding: 48px 24px;
   border: 2px solid var(--accent);
   border-radius: 10px;
   background: radial-gradient(
       circle at 20% 0%,
-      var(--accent-wash),
+      rgb(240 177 0 / 8%),
       transparent 55%
     ),
     var(--surface);
   transition: background 200ms;
 }
 
-.picker-wrap.dark {
-  background: radial-gradient(circle at 20% 0%, #44403c, transparent 60%),
-    #1c1917;
+.picker-wrap.light {
+  background: radial-gradient(circle at 20% 0%, #fef3c7, transparent 55%),
+    #f5f5f4;
 }
 
 .hint {
@@ -1336,16 +1573,16 @@ h3 {
 kbd {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   height: 20px;
   min-width: 20px;
   padding: 0 6px;
   margin: 0 2px;
   border-radius: 3px;
-  border-bottom: 3px solid #78716c;
-  background: rgb(120 113 108 / 25%);
+  border-bottom: 3px solid #57534e;
+  background: #3a3633;
   color: var(--heading);
   font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace;
-  justify-content: center;
 }
 
 .output {
@@ -1356,7 +1593,7 @@ kbd {
 
 .panel {
   background: var(--surface);
-  border: 2px solid var(--border-soft);
+  border: 2px solid var(--border);
   border-radius: 10px;
   padding: 18px;
   min-width: 0;
@@ -1376,7 +1613,7 @@ kbd {
 }
 
 .copy {
-  border: 1px solid var(--accent-ink);
+  border: 1px solid var(--accent-edge);
   border-bottom-width: 3px;
   background: var(--accent);
   color: var(--accent-ink);
@@ -1391,18 +1628,25 @@ kbd {
 .code {
   margin: 0;
   padding: 14px;
-  border-radius: 8px;
-  background: #1c1917;
-  color: #fafaf9;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #0c0b0a;
+  color: #e7e5e4;
   font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
   overflow: auto;
   max-height: 340px;
   white-space: pre;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
 }
 
 .muted {
   color: var(--muted);
   font-size: 13px;
+}
+
+.muted code {
+  color: var(--heading);
 }
 
 .text-row {
@@ -1421,18 +1665,10 @@ kbd {
 }
 
 .shortcode-input {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  height: auto;
   padding: 8px 10px;
   font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
   resize: vertical;
-}
-
-.shortcode-input:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: -1px;
 }
 
 .shortcode-output {
@@ -1489,9 +1725,9 @@ kbd {
   justify-content: center;
   width: 64px;
   height: 64px;
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  background: var(--accent-wash);
+  border: 1px solid rgb(240 177 0 / 45%);
+  border-radius: var(--radius);
+  background: var(--accent-soft);
   font-size: 28px;
 }
 
