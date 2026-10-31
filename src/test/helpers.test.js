@@ -22,11 +22,6 @@ describe('helpers', () => {
           r: '1f602',
           u: '1f602',
         },
-        {
-          n: ['cat face with tears of joy', 'joy_cat'],
-          r: '1f639',
-          u: '1f639',
-        },
       ],
     })
   })

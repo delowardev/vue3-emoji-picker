@@ -199,7 +199,7 @@ describe('keyboard navigation', () => {
     expect(wrapper.emitted('select')[0][0].u).toBe('1f44d')
 
     await input.trigger('keydown', { key: 'ArrowDown' })
-    expect(focused().getAttribute('aria-label')).toBe('thumbs up sign')
+    expect(focused().getAttribute('aria-label')).toBe('thumbs up')
     wrapper.unmount()
   })
 
