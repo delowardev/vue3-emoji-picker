@@ -344,7 +344,7 @@
         </details>
       </aside>
 
-      <section class="workspace">
+      <section class="workspace" :style="stageVars">
         <div class="preview">
           <div class="preview-head">
             <span class="pixel">Preview</span>
@@ -362,7 +362,6 @@
               'has-input': pickerType,
               'place-top': pickerType && placement.startsWith('top'),
             }"
-            :style="stageVars"
           >
             <picker
               v-bind="pickerProps"
@@ -1698,7 +1697,8 @@ h3 {
   position: sticky;
   top: 88px;
   display: grid;
-  grid-template-columns: max-content minmax(300px, 1fr);
+  /* The preview is sized from the picker, never from its text. */
+  grid-template-columns: auto minmax(300px, 1fr);
   gap: 20px;
   align-items: stretch;
   min-width: 0;
@@ -1708,6 +1708,9 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  width: max(360px, calc(var(--v3-picker-width, 280px) + 76px));
+  max-width: 100%;
+  min-width: 0;
 
   padding: 16px;
   background: var(--surface);
@@ -1820,12 +1823,21 @@ h3 {
 .last-codes {
   display: flex;
   gap: 6px;
-  flex-wrap: wrap;
+  min-width: 0;
 }
 
+/* Long shortcodes truncate instead of widening the card. */
 .last-codes code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: var(--accent);
   font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.last-codes code:first-child {
+  flex: none;
 }
 
 .keys {
@@ -1943,6 +1955,8 @@ kbd {
 
 .panel-head {
   display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
   justify-content: space-between;
   align-items: center;
 }
@@ -1970,7 +1984,9 @@ kbd {
   font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
   overflow: auto;
   max-height: 340px;
-  white-space: pre;
+  /* Wrap long lines (names, shortcodes) instead of hiding them. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) transparent;
 }
