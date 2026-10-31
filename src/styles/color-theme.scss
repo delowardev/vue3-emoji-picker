@@ -1,3 +1,15 @@
+// Theme variables also apply to the input/textarea wrapper.
+.v3-emoji-picker,
+.v3-input-emoji-picker {
+  --v3-picker-bg: #ffffff;
+  --v3-picker-fg: #000000;
+  --v3-picker-input-bg: var(--v3-picker-bg);
+  --v3-picker-input-border: #cccccc;
+  --v3-picker-input-focus-border: #000000;
+  --v3-group-image-filter: none;
+  color-scheme: light;
+}
+
 // Default styles
 .v3-emoji-picker {
   --v3-picker-bg: #ffffff;
@@ -46,8 +58,10 @@
 }
 
 // Theme Auto
-.v3-emoji-picker.v3-color-theme-auto {
+.v3-emoji-picker.v3-color-theme-auto,
+.v3-input-emoji-picker.v3-color-theme-auto {
   @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
     --v3-picker-bg: #000000;
     --v3-picker-fg: #ffffff;
     --v3-picker-border: #333333;
@@ -60,8 +74,10 @@
   }
 }
 
-// Theme Default
-.v3-emoji-picker.v3-color-theme-dark {
+// Theme Dark
+.v3-emoji-picker.v3-color-theme-dark,
+.v3-input-emoji-picker.v3-color-theme-dark {
+  color-scheme: dark;
   --v3-picker-bg: #000000;
   --v3-picker-fg: #ffffff;
   --v3-picker-border: #333333;

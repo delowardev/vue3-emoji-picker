@@ -295,15 +295,16 @@ category bar and skin tones are labelled for screen readers.
 
 ## Styling with CSS variables
 
-| Variable                            | Default   | Description              |
-| :---------------------------------- | :-------- | :----------------------- |
-| `--v3-picker-width`                 | `280px`   | Picker width             |
-| `--v3-picker-height`                | `320px`   | Picker height            |
-| `--v3-picker-bg` / `--v3-picker-fg` | theme     | Background / text        |
-| `--v3-picker-border`                | theme     | Header/footer borders    |
-| `--v3-picker-emoji-hover`           | theme     | Emoji hover background   |
-| `--v3-picker-focus`                 | `#2563eb` | Keyboard focus ring      |
-| `--v3-emoji-radius`                 | `6px`     | Emoji hover/focus radius |
+| Variable                            | Default           | Description                                                                                                                                 |
+| :---------------------------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--v3-picker-width`                 | `280px`           | Picker width                                                                                                                                |
+| `--v3-picker-height`                | `320px`           | Picker height                                                                                                                               |
+| `--v3-picker-bg` / `--v3-picker-fg` | theme             | Background / text                                                                                                                           |
+| `--v3-picker-border`                | theme             | Header/footer borders                                                                                                                       |
+| `--v3-picker-emoji-hover`           | theme             | Emoji hover background                                                                                                                      |
+| `--v3-picker-focus`                 | `#2563eb`         | Keyboard focus ring                                                                                                                         |
+| `--v3-emoji-radius`                 | `6px`             | Emoji hover/focus radius                                                                                                                    |
+| `--v3-scale`                        | `emoji-size / 22` | Interface scale (search, icons, headings, footer). Text never shrinks below its default and grows at most 1.3×; controls stay at least 24px |
 
 ```css
 .v3-emoji-picker {

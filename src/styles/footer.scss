@@ -9,9 +9,9 @@ $skin-tones: (
 
 // picker footer
 .v3-emoji-picker .v3-footer {
-  font-size: 14px;
+  font-size: t(14px);
   border-top: 1px solid #dddddd;
-  padding: 15px;
+  padding: c(15px, 10px, 20px) c(15px, 12px, 20px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,22 +21,25 @@ $skin-tones: (
     display: flex;
     align-items: center;
     img {
-      width: 20px;
+      width: c(20px, 18px, 28px);
       display: block;
     }
     > span:first-child {
-      margin-right: 6px;
+      margin-right: s(6px);
     }
   }
   .v3-foot-left {
     > span.v3-text {
-      max-width: 100px;
+      max-width: s(100px);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
   }
   .v3-tone {
+    // Stay on the right when the preview is hidden.
+    margin-left: auto;
+    min-height: $min-target;
     border: none;
     padding: 0;
     background: none;
@@ -48,12 +51,12 @@ $skin-tones: (
       vertical-align: top;
     }
     .v3-text {
-      font-size: 13px;
+      font-size: t(13px);
     }
     .v3-icon {
       display: inline-flex;
-      height: 15px;
-      width: 15px;
+      height: c(15px, 15px, 20px);
+      width: c(15px, 15px, 20px);
       vertical-align: middle;
       align-self: center;
       border: 2px solid rgba(#000, 0.2);
@@ -79,7 +82,7 @@ $skin-tones: (
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 0 15px;
+  padding: 0 s(15px);
   opacity: 0;
   visibility: hidden;
   transition: 200ms;
@@ -90,8 +93,8 @@ $skin-tones: (
   }
   .v3-skin-tone {
     display: inline-block;
-    height: 15px;
-    width: 25px;
+    height: c(15px, 15px, 22px);
+    width: c(25px, $min-target, 36px);
     border: none;
     padding: 0;
     cursor: pointer;

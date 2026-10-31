@@ -357,7 +357,11 @@
 
           <div
             class="picker-wrap"
-            :class="{ light: theme === 'light', 'has-input': pickerType }"
+            :class="{
+              light: theme === 'light',
+              'has-input': pickerType,
+              'place-top': pickerType && placement.startsWith('top'),
+            }"
             :style="stageVars"
           >
             <picker
@@ -1682,17 +1686,13 @@ h3 {
   gap: 20px;
   align-items: stretch;
   min-width: 0;
-  max-height: calc(100vh - 110px);
 }
 
 .preview {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  min-height: 0;
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
+
   padding: 16px;
   background: var(--surface);
   border: 2px solid var(--accent);
@@ -1746,10 +1746,19 @@ h3 {
     #f5f5f4;
 }
 
-/* Room for the popup below the field. */
+/* Input/textarea: full-width field with room for the popup. */
 .picker-wrap.has-input {
-  min-height: calc(var(--v3-picker-height, 320px) + 120px);
-  min-width: calc(var(--v3-picker-width, 280px) + 60px);
+  min-height: calc(var(--v3-picker-height, 320px) + 130px);
+  min-width: calc(var(--v3-picker-width, 280px) + 40px);
+}
+
+.picker-wrap.has-input :deep(.v3-input-emoji-picker) {
+  width: 100%;
+}
+
+/* Popup opens upwards: put the field at the bottom. */
+.picker-wrap.place-top {
+  align-items: flex-end;
 }
 
 .last {
@@ -2086,10 +2095,6 @@ kbd {
 
   .workspace {
     position: static;
-  }
-
-  .workspace {
-    max-height: none;
   }
 
   .picker-wrap,

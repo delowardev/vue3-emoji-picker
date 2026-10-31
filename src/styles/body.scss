@@ -1,7 +1,7 @@
 .v3-emoji-picker {
   // picker body
   .v3-body {
-    padding: 0 0 15px 11px;
+    padding: 0 0 s(15px) s(11px);
     min-height: 0;
     flex-grow: 1;
     .v3-body-inner {
@@ -10,13 +10,14 @@
       overflow-y: auto;
       overflow-x: hidden;
       height: 100%;
-      padding-right: 11px;
+      padding-right: s(11px);
 
       .v3-group {
         h5 {
           margin: 0;
           top: 0;
-          padding: 7px 0 3px 4px;
+          padding: s(7px) 0 s(3px) s(4px);
+          font-size: t(13px);
           z-index: 2;
           &.v3-sticky {
             position: sticky;
@@ -62,7 +63,7 @@
             }
             img {
               max-width: 100%;
-              padding: 4px;
+              padding: s(4px);
             }
 
             span,
@@ -79,10 +80,10 @@
 
       .v3-no-result {
         display: block;
-        padding: 24px 0;
+        padding: s(24px) 0;
         text-align: center;
         opacity: 0.7;
-        font-size: 13px;
+        font-size: t(13px);
       }
 
       &.is-mac .v3-emojis button {

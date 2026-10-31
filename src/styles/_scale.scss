@@ -1,0 +1,23 @@
+// Interface scale. Follows `emoji-size` (Root sets --v3-auto-scale) unless
+// --v3-scale is set explicitly, e.g. `.v3-emoji-picker { --v3-scale: 1.2 }`.
+$scale: var(--v3-scale, var(--v3-auto-scale, 1));
+
+// Spacing and icons: scale freely with the emoji size.
+@function s($size) {
+  @return calc(#{$size} * #{$scale});
+}
+
+// Text: never below its default size (readability), at most 1.3x so the
+// chrome does not outgrow the emoji grid.
+@function t($size) {
+  @return clamp(#{$size}, #{s($size)}, #{$size * 1.3});
+}
+
+// Controls: scale, but stay within [min, max] so they remain tappable
+// (WCAG 2.5.8 minimum 24px) without becoming oversized.
+@function c($size, $min, $max) {
+  @return clamp(#{$min}, #{s($size)}, #{$max});
+}
+
+// Minimum tap target, WCAG 2.5.8 (AA).
+$min-target: 24px;

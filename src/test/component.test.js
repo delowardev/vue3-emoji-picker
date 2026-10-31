@@ -158,6 +158,8 @@ describe('layout and texts', () => {
     const style = wrapper.find('.v3-emoji-picker').attributes('style')
     expect(style).toContain('--v3-per-line: 10')
     expect(style).toContain('--v3-emoji-size: 28px')
+    // The rest of the interface scales with the emoji size (28 / 22).
+    expect(style).toMatch(/--v3-auto-scale: 1\.27/)
     wrapper.unmount()
   })
 
