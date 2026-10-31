@@ -3,6 +3,8 @@ import {
   applySkinTone,
   createMemoryStorage,
   createPicker,
+  getEmojiImageUrl,
+  resolveEmojiImage,
   replaceShortcodes,
   searchEmojis,
   shortcodeToEmoji,
@@ -144,6 +146,52 @@ describe('shortcodes', () => {
 
     expect(replaceShortcodes(':party_face:', { additionalGroups })).toBe(
       '\u{1f973}'
+    )
+  })
+})
+
+describe('recent modes', () => {
+  const pick = (picker, u) =>
+    picker.select(flat(picker.results()).find((emoji) => emoji.u === u))
+
+  it('orders by frequency and caps by maxRecent', () => {
+    const picker = createPicker({
+      storage: createMemoryStorage(),
+      displayRecent: true,
+      recentMode: 'frequent',
+      maxRecent: 2,
+    })
+    pick(picker, '1f600')
+    pick(picker, '1f601')
+    pick(picker, '1f601')
+    pick(picker, '1f602')
+
+    expect(picker.getState().recent.map((emoji) => emoji.u)).toEqual([
+      '1f601',
+      '1f602',
+    ])
+
+    picker.setOptions({ recentMode: 'recent', maxRecent: 3 })
+    expect(picker.getState().recent.map((emoji) => emoji.u)).toEqual([
+      '1f602',
+      '1f601',
+      '1f600',
+    ])
+  })
+})
+
+describe('image urls', () => {
+  it('resolves sets, custom resolvers and custom src', () => {
+    const emoji = { n: ['x'], u: '1f600' }
+    expect(resolveEmojiImage(emoji, '1f600', { set: 'google' })).toBe(
+      getEmojiImageUrl('1f600', 'google')
+    )
+    expect(resolveEmojiImage(emoji, '1f600', { set: 'native' })).toBe(null)
+    expect(
+      resolveEmojiImage(emoji, '1f600', { imageUrl: (u) => `/e/${u}` })
+    ).toBe('/e/1f600')
+    expect(resolveEmojiImage({ ...emoji, src: '/a.png' }, '1f600')).toBe(
+      '/a.png'
     )
   })
 })

@@ -19,7 +19,7 @@ import {
   resolveGroups,
   resolveOrderedGroupKeys,
 } from './groups'
-import { createRecents } from './recents'
+import { createRecents, MAX_RECENT } from './recents'
 import { filterEmojis } from './search'
 import { applySkinTone } from './skinTone'
 import { unicodeToEmoji } from './unicode'
@@ -46,6 +46,13 @@ export function createDefaultOptions(): EmojiOptions {
     placement: 'bottom-end',
     inputAttrs: {},
     colorTheme: 'light',
+    set: 'apple',
+    imageUrl: null,
+    perLine: 8,
+    emojiSize: 22,
+    recentMode: 'recent',
+    maxRecent: MAX_RECENT,
+    autoFocus: false,
   }
 }
 
@@ -65,12 +72,17 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     storage: options.storage,
   })
 
+  const recentView = () => ({
+    mode: options.recentMode,
+    max: options.maxRecent,
+  })
+
   const state: PickerState = {
     search: '',
     skinTone: SKIN_TONE_NEUTRAL,
     activeGroup: '',
     hovered: DEFAULT_EMOJI as Emoji,
-    recent: recents.list(),
+    recent: recents.list(recentView()),
     options,
   }
 
@@ -92,7 +104,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       options = { ...options, ...partial }
       state.options = options
       lookup = buildLookup(options.additionalGroups)
-      state.recent = recents.list()
+      state.recent = recents.list(recentView())
       emit()
     },
 
@@ -126,7 +138,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
       } as EmojiExt
 
       if (options.displayRecent) {
-        const next = recents.add(emoji)
+        const next = recents.add(emoji, recentView())
         // Picking from the recent group itself must not move the emoji
         // under the pointer (issue #75).
         if (reorderRecent) state.recent = next
@@ -137,7 +149,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     },
 
     refreshRecent() {
-      state.recent = recents.list()
+      state.recent = recents.list(recentView())
       emit()
     },
 

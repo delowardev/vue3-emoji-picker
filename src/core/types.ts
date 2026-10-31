@@ -18,6 +18,12 @@ export type GroupKeys =
 
 export type ColorTheme = 'dark' | 'light' | 'auto'
 
+/** Artwork used to render emoji. `native` uses the system font. */
+export type EmojiSet = 'native' | 'apple' | 'google' | 'twitter' | 'facebook'
+
+/** `recent`: most recently used first. `frequent`: most used first. */
+export type RecentMode = 'recent' | 'frequent'
+
 export type GroupNames = Record<GroupKeys, string>
 
 export interface Group {
@@ -84,6 +90,19 @@ export interface EmojiOptions {
   placement: string
   inputAttrs: Record<string, unknown>
   colorTheme: ColorTheme
+  /** Image set; ignored when `native` is true. */
+  set: EmojiSet
+  /** Custom image URL resolver; overrides `set`. */
+  imageUrl: ((unicode: string) => string) | null
+  /** Emoji per row. */
+  perLine: number
+  /** Emoji font/image size in px. */
+  emojiSize: number
+  recentMode: RecentMode
+  /** Maximum number of recent emoji shown. */
+  maxRecent: number
+  /** Focus the search input on mount (inline) or when the popup opens. */
+  autoFocus: boolean
   /** Defaults to localStorage, falling back to in-memory. */
   storage?: StorageAdapter
 }

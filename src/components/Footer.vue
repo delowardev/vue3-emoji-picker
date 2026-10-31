@@ -2,7 +2,7 @@
   <div class="v3-footer" @mouseleave="updateSkinToneState(false)">
     <div class="v3-foot-left">
       <span :class="platform" class="v3-icon">
-        <span v-if="native || hasError">{{ unicodeToEmoji(emoji.r) }}</span>
+        <span v-if="!emoji.src || hasError">{{ unicodeToEmoji(emoji.r) }}</span>
         <img
           v-else
           :alt="unicodeToEmoji(emoji.r)"
@@ -16,18 +16,32 @@
     </div>
 
     <template v-if="hasSkinTones">
-      <button type="button" class="v3-tone" @click="toggleSkinToneState">
+      <button
+        type="button"
+        class="v3-tone"
+        :aria-expanded="skinTone ? 'true' : 'false'"
+        @click="toggleSkinToneState"
+      >
         <span class="v3-text">
           {{ skinToneText }}
         </span>
         <span :class="`v3-icon v3-tone-${stateSkinTone}`" />
       </button>
 
-      <div :class="skinTone ? 'v3-is-open' : ''" class="v3-skin-tones">
+      <div
+        :class="skinTone ? 'v3-is-open' : ''"
+        class="v3-skin-tones"
+        role="radiogroup"
+        :aria-label="skinToneText"
+      >
         <button
-          v-for="tone in SKIN_TONES"
+          v-for="(tone, index) in SKIN_TONES"
           :key="tone"
           type="button"
+          role="radio"
+          :aria-checked="stateSkinTone === tone ? 'true' : 'false'"
+          :aria-label="toneLabels[index] || tone"
+          :tabindex="skinTone ? 0 : -1"
           :class="['v3-skin-tone-' + tone, 'v3-skin-tone']"
           @click="selectSkinTone(tone)"
         />
@@ -46,13 +60,14 @@ import { computed, defineComponent, inject, ref, watch } from 'vue'
  * Internal dependencies
  */
 import {
-  EMOJI_REMOTE_SRC,
   SKIN_TONES,
+  STATIC_TEXTS,
   EMOJI_RESULT_KEY,
   EMOJI_NAME_KEY,
 } from '../constant'
 import { Store } from '../types'
 import { unicodeToEmoji, isMac } from '../helpers'
+import { resolveEmojiImage } from '../core/images'
 
 export default defineComponent({
   name: 'Header',
@@ -65,14 +80,24 @@ export default defineComponent({
       () => state.options.staticTexts.skinTone || 'Skin tone'
     )
     const hasSkinTones = computed(() => !state.options.disableSkinTones)
-    const native = computed(() => state.options.native)
+    const toneLabels = computed(() =>
+      String(state.options.staticTexts.skinTones || STATIC_TEXTS.skinTones)
+        .split(',')
+        .map((label) => label.trim())
+    )
     const platform = isMac() ? 'is-mac' : ''
 
     const emoji = computed<any>(() => {
-      return {
-        ...state.emoji,
-        src: EMOJI_REMOTE_SRC + '/' + state.emoji[EMOJI_RESULT_KEY] + '.png',
-      }
+      const unicode = state.emoji[EMOJI_RESULT_KEY] || state.emoji.u
+      const src =
+        state.options.native && !state.emoji.src
+          ? null
+          : resolveEmojiImage(state.emoji, unicode, {
+              set: state.options.set,
+              imageUrl: state.options.imageUrl,
+            })
+
+      return { ...state.emoji, r: unicode, src }
     })
 
     function updateSkinToneState(open = true) {
@@ -107,7 +132,7 @@ export default defineComponent({
       EMOJI_NAME_KEY,
       skinToneText,
       hasSkinTones,
-      native,
+      toneLabels,
       unicodeToEmoji,
       platform,
       hasError,

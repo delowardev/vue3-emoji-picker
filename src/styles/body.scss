@@ -36,12 +36,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-basis: 12.5%;
-            max-width: 12.5%;
+            flex-basis: calc(100% / var(--v3-per-line, 8));
+            max-width: calc(100% / var(--v3-per-line, 8));
             flex-grow: 1;
             padding: 0;
-            font-size: 22px;
+            font-size: var(--v3-emoji-size, 22px);
             position: relative;
+            border-radius: var(--v3-emoji-radius, 6px);
+            &:focus {
+              outline: none;
+            }
+            &:focus-visible {
+              outline: 2px solid var(--v3-picker-focus, #2563eb);
+              outline-offset: -2px;
+            }
             &::after {
               content: '';
               width: 100%;
@@ -67,6 +75,14 @@
             }
           }
         }
+      }
+
+      .v3-no-result {
+        display: block;
+        padding: 24px 0;
+        text-align: center;
+        opacity: 0.7;
+        font-size: 13px;
       }
 
       &.is-mac .v3-emojis button {

@@ -37,6 +37,8 @@
           ref="picker"
           class="v3-emoji-picker"
           :class="'v3-color-theme-' + colorTheme"
+          :style="cssVars"
+          @keydown.esc="close"
         >
           <Header />
           <Body @select="onSelect" />
@@ -45,7 +47,13 @@
       </div>
     </div>
   </div>
-  <div v-else class="v3-emoji-picker" :class="'v3-color-theme-' + colorTheme">
+  <div
+    v-else
+    ref="inline"
+    class="v3-emoji-picker"
+    :class="'v3-color-theme-' + colorTheme"
+    :style="cssVars"
+  >
     <Header />
     <Body @select="onSelect" />
     <Footer v-if="hasFooter" />
@@ -175,10 +183,32 @@ export default defineComponent({
       }
     }
 
+    const inline = ref<HTMLElement>()
+
+    /** Layout props exposed as CSS custom properties. */
+    const cssVars = computed(() => ({
+      '--v3-per-line': String(state.options.perLine || 8),
+      '--v3-emoji-size': `${state.options.emojiSize || 22}px`,
+    }))
+
+    function focusSearch(root?: HTMLElement) {
+      root?.querySelector<HTMLInputElement>('.v3-search input')?.focus()
+    }
+
     function toggle() {
       open.value = !open.value
       // Show selections from the previous session in their new order.
-      if (open.value) refreshRecent()
+      if (open.value) {
+        refreshRecent()
+        if (state.options.autoFocus) nextTick(() => focusSearch(picker.value))
+      }
+    }
+
+    /** Escape closes the popup and returns focus to the field. */
+    function close() {
+      if (!open.value) return
+      open.value = false
+      elem.value?.focus()
     }
 
     function popperOptions() {
@@ -228,6 +258,9 @@ export default defineComponent({
      */
     onMounted(() => {
       setupPopper()
+      if (state.options.autoFocus && !isInputType.value) {
+        focusSearch(inline.value)
+      }
     })
 
     // cleanup
@@ -253,6 +286,9 @@ export default defineComponent({
       hasFooter,
       inputAttrs,
       toggle,
+      close,
+      cssVars,
+      inline,
     }
   },
 })

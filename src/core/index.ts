@@ -10,8 +10,25 @@ export { shortcodeToEmoji, replaceShortcodes } from './shortcodes'
 export type { ShortcodeOptions } from './shortcodes'
 
 export { createPicker, createDefaultOptions } from './createPicker'
-export { createRecents, RECENT_STORAGE_KEY, MAX_RECENT } from './recents'
-export type { RecentEntry, Recents, RecentsOptions } from './recents'
+export {
+  createRecents,
+  RECENT_STORAGE_KEY,
+  MAX_RECENT,
+  MAX_STORED_RECENT,
+} from './recents'
+export type {
+  RecentEntry,
+  Recents,
+  RecentsOptions,
+  RecentView,
+} from './recents'
+export {
+  EMOJI_SETS,
+  EMOJI_DATASOURCE_VERSION,
+  getEmojiImageUrl,
+  resolveEmojiImage,
+} from './images'
+export type { ImageResolverOptions } from './images'
 export {
   createMemoryStorage,
   createLocalStorageAdapter,
