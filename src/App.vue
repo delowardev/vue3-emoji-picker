@@ -726,7 +726,7 @@ const defaults = {
   perLine: 8,
   width: 280,
   height: 320,
-  accent: '#f0b100',
+  accent: '#42b883',
   displayRecent: true,
   recentMode: 'recent' as RecentMode,
   maxRecent: 24,
@@ -1074,10 +1074,12 @@ onBeforeUnmount(() => {
   --heading: #e7e5e4;
   --text: #c9c5c2;
   --muted: #8f8a86;
-  --accent: #f0b100;
-  --accent-ink: #3d2800;
-  --accent-edge: #a86f00;
-  --accent-soft: rgb(240 177 0 / 14%);
+  /* Vue green. Change --accent-rgb and the three hex tokens to re-brand. */
+  --accent-rgb: 66 184 131;
+  --accent: #42b883;
+  --accent-ink: #052e1c;
+  --accent-edge: #2b7a57;
+  --accent-soft: rgb(var(--accent-rgb) / 14%);
   --pixel: 'Silkscreen', ui-monospace, monospace;
   --radius: 8px;
 
@@ -1211,7 +1213,7 @@ h3 {
   padding: 80px 24px 64px;
   background: radial-gradient(
       ellipse at top,
-      rgb(240 177 0 / 10%),
+      rgb(var(--accent-rgb) / 10%),
       transparent 60%
     ),
     linear-gradient(var(--header), var(--bg));
@@ -1276,9 +1278,9 @@ h3 {
   align-items: center;
   gap: 4px;
   padding: 24px;
-  border: 2px solid rgb(240 177 0 / 30%);
+  border: 2px solid rgb(var(--accent-rgb) / 30%);
   border-radius: 10px;
-  background: linear-gradient(rgb(240 177 0 / 8%), var(--surface));
+  background: linear-gradient(rgb(var(--accent-rgb) / 8%), var(--surface));
   color: var(--muted);
   font-size: 14px;
 }
@@ -1662,7 +1664,7 @@ h3 {
 .toggles input[type='checkbox']:checked {
   border-color: var(--accent);
   background-color: var(--accent);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233d2800' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23052e1c' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
 }
 
 .toggles input[type='checkbox']:focus-visible {
@@ -1731,7 +1733,7 @@ h3 {
   border-radius: var(--radius);
   background: radial-gradient(
       circle at 20% 0%,
-      rgb(240 177 0 / 9%),
+      rgb(var(--accent-rgb) / 9%),
       transparent 60%
     ),
     var(--bg);
@@ -1740,7 +1742,7 @@ h3 {
 }
 
 .picker-wrap.light {
-  background: radial-gradient(circle at 20% 0%, #fef3c7, transparent 60%),
+  background: radial-gradient(circle at 20% 0%, #d1fae5, transparent 60%),
     #f5f5f4;
 }
 
@@ -2033,7 +2035,7 @@ kbd {
   justify-content: center;
   width: 64px;
   height: 64px;
-  border: 1px solid rgb(240 177 0 / 45%);
+  border: 1px solid rgb(var(--accent-rgb) / 45%);
   border-radius: var(--radius);
   background: var(--accent-soft);
   font-size: 28px;
