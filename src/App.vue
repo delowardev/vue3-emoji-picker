@@ -97,268 +97,353 @@
           </button>
         </div>
 
-        <h3>Appearance</h3>
-        <label class="field">
-          <span>Theme</span>
-          <select v-model="theme">
-            <option value="light">light</option>
-            <option value="dark">dark</option>
-            <option value="auto">auto</option>
-          </select>
-        </label>
+        <details class="group" open>
+          <summary>Appearance</summary>
+          <div class="group-body">
+            <label class="field">
+              <span>Theme</span>
+              <select v-model="theme">
+                <option value="light">light</option>
+                <option value="dark">dark</option>
+                <option value="auto">auto</option>
+              </select>
+            </label>
 
-        <label class="field">
-          <span>Emoji set</span>
-          <select v-model="set">
-            <option v-for="name in EMOJI_SETS" :key="name" :value="name">
-              {{ name }}
-            </option>
-          </select>
-        </label>
+            <label class="field">
+              <span>Emoji set</span>
+              <select v-model="set">
+                <option v-for="name in EMOJI_SETS" :key="name" :value="name">
+                  {{ name }}
+                </option>
+              </select>
+            </label>
 
-        <label class="field">
-          <span
-            >Emoji size <output>{{ emojiSize }}px</output></span
-          >
-          <input
-            v-model.number="emojiSize"
-            type="range"
-            min="14"
-            max="40"
-            :style="fill(emojiSize, 14, 40)"
-          />
-        </label>
+            <label class="field">
+              <span
+                >Emoji size <output>{{ emojiSize }}px</output></span
+              >
+              <input
+                v-model.number="emojiSize"
+                type="range"
+                min="14"
+                max="40"
+                :style="fill(emojiSize, 14, 40)"
+              />
+            </label>
 
-        <label class="field">
-          <span
-            >Per line <output>{{ perLine }}</output></span
-          >
-          <input
-            v-model.number="perLine"
-            type="range"
-            min="5"
-            max="12"
-            :style="fill(perLine, 5, 12)"
-          />
-        </label>
+            <label class="field">
+              <span
+                >Per line <output>{{ perLine }}</output></span
+              >
+              <input
+                v-model.number="perLine"
+                type="range"
+                min="5"
+                max="12"
+                :style="fill(perLine, 5, 12)"
+              />
+            </label>
 
-        <label class="field">
-          <span
-            >Width <output>{{ width }}px</output></span
-          >
-          <input
-            v-model.number="width"
-            type="range"
-            min="240"
-            max="480"
-            :style="fill(width, 240, 480)"
-          />
-        </label>
+            <label class="field">
+              <span
+                >Width <output>{{ width }}px</output></span
+              >
+              <input
+                v-model.number="width"
+                type="range"
+                min="240"
+                max="480"
+                :style="fill(width, 240, 480)"
+              />
+            </label>
 
-        <label class="field">
-          <span
-            >Height <output>{{ height }}px</output></span
-          >
-          <input
-            v-model.number="height"
-            type="range"
-            min="240"
-            max="520"
-            :style="fill(height, 240, 520)"
-          />
-        </label>
+            <label class="field">
+              <span
+                >Height <output>{{ height }}px</output></span
+              >
+              <input
+                v-model.number="height"
+                type="range"
+                min="240"
+                max="520"
+                :style="fill(height, 240, 520)"
+              />
+            </label>
 
-        <label class="field">
-          <span>Accent (focus ring)</span>
-          <input v-model="accent" type="color" />
-        </label>
+            <label class="field">
+              <span>Accent (focus ring)</span>
+              <input v-model="accent" type="color" />
+            </label>
+          </div>
+        </details>
+        <details class="group" open>
+          <summary>Layout</summary>
+          <div class="group-body">
+            <div class="toggles">
+              <label
+                ><input v-model="hideSearch" type="checkbox" /> hide
+                search</label
+              >
+              <label
+                ><input v-model="hideGroupIcons" type="checkbox" /> hide group
+                icons</label
+              >
+              <label
+                ><input v-model="hideGroupNames" type="checkbox" /> hide group
+                names</label
+              >
+              <label
+                ><input v-model="hideFooter" type="checkbox" /> hide
+                preview</label
+              >
+              <label
+                ><input v-model="disableSkinTones" type="checkbox" /> disable
+                skin tones</label
+              >
+              <label
+                ><input v-model="disableStickyGroupNames" type="checkbox" />
+                disable sticky names</label
+              >
+              <label
+                ><input v-model="autoFocus" type="checkbox" /> auto focus
+                search</label
+              >
+            </div>
+          </div>
+        </details>
+        <details class="group" open>
+          <summary>Input mode</summary>
+          <div class="group-body">
+            <label class="field">
+              <span>Picker type</span>
+              <select v-model="pickerType">
+                <option value="">inline</option>
+                <option value="input">input</option>
+                <option value="textarea">textarea</option>
+              </select>
+            </label>
 
-        <h3>Layout</h3>
-        <div class="toggles">
-          <label
-            ><input v-model="hideSearch" type="checkbox" /> hide search</label
-          >
-          <label
-            ><input v-model="hideGroupIcons" type="checkbox" /> hide group
-            icons</label
-          >
-          <label
-            ><input v-model="hideGroupNames" type="checkbox" /> hide group
-            names</label
-          >
-          <label
-            ><input v-model="hideFooter" type="checkbox" /> hide preview</label
-          >
-          <label
-            ><input v-model="disableSkinTones" type="checkbox" /> disable skin
-            tones</label
-          >
-          <label
-            ><input v-model="disableStickyGroupNames" type="checkbox" /> disable
-            sticky names</label
-          >
-          <label
-            ><input v-model="autoFocus" type="checkbox" /> auto focus
-            search</label
-          >
-        </div>
+            <template v-if="pickerType">
+              <label class="field">
+                <span>Insert mode</span>
+                <select v-model="mode">
+                  <option value="caret">insert at caret</option>
+                  <option value="append">append</option>
+                  <option value="prepend">prepend</option>
+                </select>
+              </label>
 
-        <h3>Input mode</h3>
-        <label class="field">
-          <span>Picker type</span>
-          <select v-model="pickerType">
-            <option value="">inline</option>
-            <option value="input">input</option>
-            <option value="textarea">textarea</option>
-          </select>
-        </label>
+              <label class="field">
+                <span>Placement</span>
+                <select v-model="placement">
+                  <option v-for="name in PLACEMENTS" :key="name" :value="name">
+                    {{ name }}
+                  </option>
+                </select>
+              </label>
 
-        <template v-if="pickerType">
-          <label class="field">
-            <span>Insert mode</span>
-            <select v-model="mode">
-              <option value="caret">insert at caret</option>
-              <option value="append">append</option>
-              <option value="prepend">prepend</option>
-            </select>
-          </label>
+              <label class="field">
+                <span
+                  >Offset <output>{{ offset }}px</output></span
+                >
+                <input
+                  v-model.number="offset"
+                  type="range"
+                  min="0"
+                  max="40"
+                  :style="fill(offset, 0, 40)"
+                />
+              </label>
 
-          <label class="field">
-            <span>Placement</span>
-            <select v-model="placement">
-              <option v-for="name in PLACEMENTS" :key="name" :value="name">
-                {{ name }}
-              </option>
-            </select>
-          </label>
+              <label class="field">
+                <span>Input placeholder</span>
+                <input v-model="inputPlaceholder" type="text" />
+              </label>
+            </template>
+          </div>
+        </details>
+        <details class="group">
+          <summary>Recently used</summary>
+          <div class="group-body">
+            <div class="toggles">
+              <label
+                ><input v-model="displayRecent" type="checkbox" /> show recently
+                used</label
+              >
+            </div>
+            <template v-if="displayRecent">
+              <label class="field">
+                <span>Order</span>
+                <select v-model="recentMode">
+                  <option value="recent">most recent</option>
+                  <option value="frequent">most frequent</option>
+                </select>
+              </label>
+              <label class="field">
+                <span
+                  >Max recent <output>{{ maxRecent }}</output></span
+                >
+                <input
+                  v-model.number="maxRecent"
+                  type="range"
+                  min="4"
+                  max="48"
+                  :style="fill(maxRecent, 4, 48)"
+                />
+              </label>
+            </template>
+          </div>
+        </details>
+        <details class="group">
+          <summary>Content</summary>
+          <div class="group-body">
+            <div class="toggles">
+              <label
+                ><input v-model="customGroup" type="checkbox" /> custom emoji
+                group (own images)</label
+              >
+              <label
+                ><input v-model="flagsFirst" type="checkbox" /> flags group
+                first</label
+              >
+            </div>
 
-          <label class="field">
-            <span
-              >Offset <output>{{ offset }}px</output></span
-            >
-            <input
-              v-model.number="offset"
-              type="range"
-              min="0"
-              max="40"
-              :style="fill(offset, 0, 40)"
-            />
-          </label>
+            <label class="field">
+              <span>Disabled emoji (unicode, comma separated)</span>
+              <input
+                v-model="disabledEmojisText"
+                type="text"
+                placeholder="1f595, 1f4a9"
+              />
+            </label>
 
-          <label class="field">
-            <span>Input placeholder</span>
-            <input v-model="inputPlaceholder" type="text" />
-          </label>
-        </template>
-
-        <h3>Recently used</h3>
-        <div class="toggles">
-          <label
-            ><input v-model="displayRecent" type="checkbox" /> show recently
-            used</label
-          >
-        </div>
-        <template v-if="displayRecent">
-          <label class="field">
-            <span>Order</span>
-            <select v-model="recentMode">
-              <option value="recent">most recent</option>
-              <option value="frequent">most frequent</option>
-            </select>
-          </label>
-          <label class="field">
-            <span
-              >Max recent <output>{{ maxRecent }}</output></span
-            >
-            <input
-              v-model.number="maxRecent"
-              type="range"
-              min="4"
-              max="48"
-              :style="fill(maxRecent, 4, 48)"
-            />
-          </label>
-        </template>
-
-        <h3>Content</h3>
-        <div class="toggles">
-          <label
-            ><input v-model="customGroup" type="checkbox" /> custom emoji group
-            (own images)</label
-          >
-          <label
-            ><input v-model="flagsFirst" type="checkbox" /> flags group
-            first</label
-          >
-        </div>
-
-        <label class="field">
-          <span>Disabled emoji (unicode, comma separated)</span>
-          <input
-            v-model="disabledEmojisText"
-            type="text"
-            placeholder="1f595, 1f4a9"
-          />
-        </label>
-
-        <div class="toggles compact">
-          <label v-for="group in GROUPS" :key="group[0]">
-            <input v-model="disabledGroups" type="checkbox" :value="group[0]" />
-            hide {{ group[1] }}
-          </label>
-        </div>
-
-        <h3>Language</h3>
-        <label class="field">
-          <span>Locale (via the i18n prop)</span>
-          <select v-model="locale">
-            <option v-for="(_, key) in LOCALES" :key="key" :value="key">
-              {{ key }}
-            </option>
-          </select>
-        </label>
+            <div class="toggles compact">
+              <label v-for="group in GROUPS" :key="group[0]">
+                <input
+                  v-model="disabledGroups"
+                  type="checkbox"
+                  :value="group[0]"
+                />
+                hide {{ group[1] }}
+              </label>
+            </div>
+          </div>
+        </details>
+        <details class="group">
+          <summary>Language</summary>
+          <div class="group-body">
+            <label class="field">
+              <span>Locale (via the i18n prop)</span>
+              <select v-model="locale">
+                <option v-for="(_, key) in LOCALES" :key="key" :value="key">
+                  {{ key }}
+                </option>
+              </select>
+            </label>
+          </div>
+        </details>
       </aside>
 
-      <section class="stage">
-        <div
-          class="picker-wrap"
-          :class="{ light: theme === 'light' }"
-          :style="stageVars"
-        >
-          <picker
-            v-bind="pickerProps"
-            @select="onSelect"
-            @update:text="onText"
-          />
+      <section class="workspace">
+        <div class="preview">
+          <div class="preview-head">
+            <span class="pixel">Preview</span>
+            <span class="chips">
+              <span class="chip">{{ theme }}</span>
+              <span class="chip">{{ set }}</span>
+              <span class="chip">{{ pickerType || 'inline' }}</span>
+            </span>
+          </div>
+
+          <div
+            class="picker-wrap"
+            :class="{ light: theme === 'light', 'has-input': pickerType }"
+            :style="stageVars"
+          >
+            <picker
+              v-bind="pickerProps"
+              @select="onSelect"
+              @update:model-value="onText"
+            />
+          </div>
+
+          <div class="last" aria-live="polite">
+            <template v-if="selected">
+              <span class="last-emoji">
+                <img v-if="selected.src" :src="selected.src" alt="" />
+                <template v-else>{{ selected.native }}</template>
+              </span>
+              <span class="last-meta">
+                <strong>{{ selected.name }}</strong>
+                <span class="last-codes">
+                  <code>{{ selected.unicode }}</code>
+                  <code
+                    v-for="code in (selected.shortcodes || []).slice(0, 2)"
+                    :key="code"
+                    >:{{ code }}:</code
+                  >
+                </span>
+              </span>
+            </template>
+            <span v-else class="muted">Pick an emoji. It shows up here.</span>
+          </div>
+
+          <p v-if="pickerType" class="text-row">
+            <span class="label">v-model</span>
+            <code>{{ JSON.stringify(text) }}</code>
+          </p>
         </div>
 
-        <p class="hint">
-          <kbd>Tab</kbd> into the grid · <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd
-          ><kbd>↓</kbd> move · <kbd>Enter</kbd> select · in search,
-          <kbd>↓</kbd> enters the grid and <kbd>Enter</kbd> picks the first
-          result · <kbd>Esc</kbd> closes popups
-        </p>
-
-        <div class="output">
-          <div class="panel">
-            <h3>Selected</h3>
-            <pre v-if="selected" class="code">{{ selectedJson }}</pre>
-            <p v-else class="muted">Click an emoji to inspect the event.</p>
-            <p v-if="pickerType" class="text-row">
-              <span class="label">text</span>
-              <code>{{ JSON.stringify(text) }}</code>
-            </p>
-          </div>
-
-          <div class="panel">
-            <div class="panel-head">
-              <h3>Usage</h3>
-              <button type="button" class="copy" @click="copyCode">
-                {{ copied ? 'Copied' : 'Copy' }}
+        <div class="panel output-panel">
+          <div class="panel-head">
+            <div class="segmented" role="tablist">
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="outputTab === 'usage'"
+                :class="{ active: outputTab === 'usage' }"
+                @click="outputTab = 'usage'"
+              >
+                Usage
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="outputTab === 'event'"
+                :class="{ active: outputTab === 'event' }"
+                @click="showEvent"
+              >
+                @select
+                <span v-if="eventUnread" class="dot" aria-label="new" />
+              </button>
+              <button
+                type="button"
+                role="tab"
+                :aria-selected="outputTab === 'keys'"
+                :class="{ active: outputTab === 'keys' }"
+                @click="outputTab = 'keys'"
+              >
+                Keys
               </button>
             </div>
-            <pre class="code">{{ codeSnippet }}</pre>
+            <button
+              v-if="outputTab !== 'keys'"
+              type="button"
+              class="copy"
+              @click="copyCode"
+            >
+              {{ copied ? 'Copied' : 'Copy' }}
+            </button>
           </div>
+          <ul v-if="outputTab === 'keys'" class="keys">
+            <li><kbd>Tab</kbd> into the grid</li>
+            <li><kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> move</li>
+            <li><kbd>Enter</kbd> select</li>
+            <li><kbd>↓</kbd> search → grid</li>
+            <li><kbd>Enter</kbd> in search: first result</li>
+            <li><kbd>Esc</kbd> close popup</li>
+          </ul>
+          <pre v-else class="code">{{ outputText }}</pre>
         </div>
       </section>
     </main>
@@ -887,8 +972,23 @@ const codeSnippet = computed(() => {
   )}\n</template>${style}`
 })
 
+const outputTab = ref<'usage' | 'event' | 'keys'>('usage')
+const eventUnread = ref(false)
+
+const outputText = computed(() =>
+  outputTab.value === 'usage'
+    ? codeSnippet.value
+    : selectedJson.value || '// Pick an emoji to see the @select payload'
+)
+
 function onSelect(emoji: Record<string, any>) {
   selected.value = emoji
+  if (outputTab.value !== 'event') eventUnread.value = true
+}
+
+function showEvent() {
+  outputTab.value = 'event'
+  eventUnread.value = false
 }
 
 function onText(value: string | undefined) {
@@ -897,7 +997,7 @@ function onText(value: string | undefined) {
 
 async function copyCode() {
   try {
-    await navigator.clipboard.writeText(codeSnippet.value)
+    await navigator.clipboard.writeText(outputText.value)
     copied.value = true
     window.setTimeout(() => (copied.value = false), 1500)
   } catch {
@@ -1244,10 +1344,11 @@ h3 {
 /* Playground */
 .layout {
   display: grid;
-  grid-template-columns: 300px minmax(0, 1fr);
+  grid-template-columns: 320px minmax(0, 1fr);
+  align-items: start;
   gap: 24px;
   padding: 24px;
-  max-width: 1240px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -1257,12 +1358,6 @@ h3 {
   border-radius: 10px;
   padding: 20px;
   align-self: start;
-  position: sticky;
-  top: 88px;
-  max-height: calc(100vh - 110px);
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
 }
 
 .controls h2 {
@@ -1272,14 +1367,57 @@ h3 {
   text-transform: uppercase;
 }
 
-.controls h3 {
-  margin: 22px 0 12px;
-  padding-top: 16px;
+/* Collapsible option groups. */
+.group {
+  margin-top: 18px;
   border-top: 1px solid var(--border);
+}
+
+.group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0 12px;
   font-family: var(--pixel);
   font-size: 12px;
   text-transform: uppercase;
   color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.group summary::-webkit-details-marker {
+  display: none;
+}
+
+.group summary::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-right: 2px solid var(--muted);
+  border-bottom: 2px solid var(--muted);
+  transform: rotate(-45deg);
+  transition: transform 150ms;
+}
+
+.group[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.group summary:hover::after {
+  border-color: var(--accent);
+}
+
+.group summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.group-body {
+  padding-bottom: 4px;
 }
 
 .presets {
@@ -1533,41 +1671,217 @@ h3 {
   border-color: var(--accent);
 }
 
-.stage {
+/* Workspace: preview + output side by side, kept in view. */
+.workspace {
+  position: sticky;
+  top: 88px;
+  display: grid;
+  grid-template-columns: max-content minmax(300px, 1fr);
+  gap: 20px;
+  align-items: stretch;
+  min-width: 0;
+  max-height: calc(100vh - 110px);
+}
+
+.preview {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  min-width: 0;
+  gap: 14px;
+  min-height: 0;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+  padding: 16px;
+  background: var(--surface);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+}
+
+.preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--heading);
+  text-transform: uppercase;
+}
+
+.chips {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  color: var(--muted);
+  font: 600 11px/20px ui-monospace, SFMono-Regular, Menlo, monospace;
+  text-transform: none;
 }
 
 .picker-wrap {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  min-height: 440px;
-  padding: 48px 24px;
-  border: 2px solid var(--accent);
-  border-radius: 10px;
+  min-width: 320px;
+  padding: 20px;
+  border-radius: var(--radius);
   background: radial-gradient(
       circle at 20% 0%,
-      rgb(240 177 0 / 8%),
-      transparent 55%
+      rgb(240 177 0 / 9%),
+      transparent 60%
     ),
-    var(--surface);
+    var(--bg);
+  border: 1px solid var(--border);
   transition: background 200ms;
 }
 
 .picker-wrap.light {
-  background: radial-gradient(circle at 20% 0%, #fef3c7, transparent 55%),
+  background: radial-gradient(circle at 20% 0%, #fef3c7, transparent 60%),
     #f5f5f4;
 }
 
-.hint {
-  margin: 0;
+/* Room for the popup below the field. */
+.picker-wrap.has-input {
+  min-height: calc(var(--v3-picker-height, 320px) + 120px);
+  min-width: calc(var(--v3-picker-width, 280px) + 60px);
+}
+
+.last {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.last-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.last-emoji img {
+  width: 32px;
+  height: 32px;
+}
+
+.last-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
   font-size: 13px;
+}
+
+.last-meta strong {
+  color: var(--heading);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.last-codes {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.last-codes code {
+  color: var(--accent);
+  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.keys {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 14px;
+  list-style: none;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: #0c0b0a;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.keys li {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.keys li kbd:last-of-type {
+  margin-right: 10px;
+}
+
+.output-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: calc(100vh - 110px);
+}
+
+.output-panel .code {
+  flex: 1;
+  max-height: none;
+  margin-top: 12px;
+}
+
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.segmented button {
+  position: relative;
+  border: 0;
+  border-radius: 5px;
+  padding: 4px 12px;
+  background: transparent;
   color: var(--muted);
-  text-align: center;
-  line-height: 2.2;
+  font: 700 12px var(--pixel);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.segmented button:hover {
+  color: var(--heading);
+}
+
+.segmented button.active {
+  background: var(--surface-2);
+  color: var(--heading);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.segmented button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  vertical-align: middle;
 }
 
 kbd {
@@ -1583,12 +1897,6 @@ kbd {
   background: #3a3633;
   color: var(--heading);
   font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace;
-}
-
-.output {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
 }
 
 .panel {
@@ -1759,17 +2067,39 @@ kbd {
   color: var(--heading);
 }
 
+@media (max-width: 1180px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .output-panel {
+    max-height: 420px;
+  }
+}
+
 @media (max-width: 900px) {
   .layout {
     grid-template-columns: 1fr;
   }
 
-  .controls {
+  .workspace {
     position: static;
+  }
+
+  .workspace {
     max-height: none;
   }
 
-  .output,
+  .picker-wrap,
+  .picker-wrap.has-input {
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .chips {
+    display: none;
+  }
+
   .features,
   .stats {
     grid-template-columns: 1fr;
