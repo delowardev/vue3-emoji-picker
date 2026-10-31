@@ -1357,6 +1357,17 @@
       ]
     },
     {
+      "n": ["person: blond hair", "person_with_blond_hair"],
+      "u": "1f471",
+      "v": [
+        "1f471-1f3fb",
+        "1f471-1f3fc",
+        "1f471-1f3fd",
+        "1f471-1f3fe",
+        "1f471-1f3ff"
+      ]
+    },
+    {
       "n": ["man", "man"],
       "u": "1f468",
       "v": [
@@ -1555,7 +1566,7 @@
       ]
     },
     {
-      "n": ["man: blond hair", "blond-haired-man", "person_with_blond_hair"],
+      "n": ["man: blond hair", "blond-haired-man"],
       "u": "1f471-200d-2642-fe0f",
       "v": [
         "1f471-1f3fb-200d-2642-fe0f",
@@ -1599,6 +1610,17 @@
       ]
     },
     {
+      "n": ["person frowning", "person_frowning"],
+      "u": "1f64d",
+      "v": [
+        "1f64d-1f3fb",
+        "1f64d-1f3fc",
+        "1f64d-1f3fd",
+        "1f64d-1f3fe",
+        "1f64d-1f3ff"
+      ]
+    },
+    {
       "n": ["man frowning", "man-frowning"],
       "u": "1f64d-200d-2642-fe0f",
       "v": [
@@ -1610,7 +1632,7 @@
       ]
     },
     {
-      "n": ["woman frowning", "woman-frowning", "person_frowning"],
+      "n": ["woman frowning", "woman-frowning"],
       "u": "1f64d-200d-2640-fe0f",
       "v": [
         "1f64d-1f3fb-200d-2640-fe0f",
@@ -1618,6 +1640,17 @@
         "1f64d-1f3fd-200d-2640-fe0f",
         "1f64d-1f3fe-200d-2640-fe0f",
         "1f64d-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person pouting", "person_with_pouting_face"],
+      "u": "1f64e",
+      "v": [
+        "1f64e-1f3fb",
+        "1f64e-1f3fc",
+        "1f64e-1f3fd",
+        "1f64e-1f3fe",
+        "1f64e-1f3ff"
       ]
     },
     {
@@ -1632,7 +1665,7 @@
       ]
     },
     {
-      "n": ["woman pouting", "woman-pouting", "person_with_pouting_face"],
+      "n": ["woman pouting", "woman-pouting"],
       "u": "1f64e-200d-2640-fe0f",
       "v": [
         "1f64e-1f3fb-200d-2640-fe0f",
@@ -1640,6 +1673,17 @@
         "1f64e-1f3fd-200d-2640-fe0f",
         "1f64e-1f3fe-200d-2640-fe0f",
         "1f64e-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person gesturing no", "no_good"],
+      "u": "1f645",
+      "v": [
+        "1f645-1f3fb",
+        "1f645-1f3fc",
+        "1f645-1f3fd",
+        "1f645-1f3fe",
+        "1f645-1f3ff"
       ]
     },
     {
@@ -1654,7 +1698,7 @@
       ]
     },
     {
-      "n": ["woman gesturing no", "woman-gesturing-no", "no_good"],
+      "n": ["woman gesturing no", "woman-gesturing-no"],
       "u": "1f645-200d-2640-fe0f",
       "v": [
         "1f645-1f3fb-200d-2640-fe0f",
@@ -1662,6 +1706,17 @@
         "1f645-1f3fd-200d-2640-fe0f",
         "1f645-1f3fe-200d-2640-fe0f",
         "1f645-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person gesturing ok", "ok_woman"],
+      "u": "1f646",
+      "v": [
+        "1f646-1f3fb",
+        "1f646-1f3fc",
+        "1f646-1f3fd",
+        "1f646-1f3fe",
+        "1f646-1f3ff"
       ]
     },
     {
@@ -1676,7 +1731,7 @@
       ]
     },
     {
-      "n": ["woman gesturing ok", "woman-gesturing-ok", "ok_woman"],
+      "n": ["woman gesturing ok", "woman-gesturing-ok"],
       "u": "1f646-200d-2640-fe0f",
       "v": [
         "1f646-1f3fb-200d-2640-fe0f",
@@ -1684,6 +1739,17 @@
         "1f646-1f3fd-200d-2640-fe0f",
         "1f646-1f3fe-200d-2640-fe0f",
         "1f646-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person tipping hand", "information_desk_person"],
+      "u": "1f481",
+      "v": [
+        "1f481-1f3fb",
+        "1f481-1f3fc",
+        "1f481-1f3fd",
+        "1f481-1f3fe",
+        "1f481-1f3ff"
       ]
     },
     {
@@ -1698,11 +1764,7 @@
       ]
     },
     {
-      "n": [
-        "woman tipping hand",
-        "woman-tipping-hand",
-        "information_desk_person"
-      ],
+      "n": ["woman tipping hand", "woman-tipping-hand"],
       "u": "1f481-200d-2640-fe0f",
       "v": [
         "1f481-1f3fb-200d-2640-fe0f",
@@ -1710,6 +1772,17 @@
         "1f481-1f3fd-200d-2640-fe0f",
         "1f481-1f3fe-200d-2640-fe0f",
         "1f481-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person raising hand", "raising_hand"],
+      "u": "1f64b",
+      "v": [
+        "1f64b-1f3fb",
+        "1f64b-1f3fc",
+        "1f64b-1f3fd",
+        "1f64b-1f3fe",
+        "1f64b-1f3ff"
       ]
     },
     {
@@ -1724,7 +1797,7 @@
       ]
     },
     {
-      "n": ["woman raising hand", "woman-raising-hand", "raising_hand"],
+      "n": ["woman raising hand", "woman-raising-hand"],
       "u": "1f64b-200d-2640-fe0f",
       "v": [
         "1f64b-1f3fb-200d-2640-fe0f",
@@ -2395,7 +2468,18 @@
       ]
     },
     {
-      "n": ["man police officer", "male-police-officer", "cop"],
+      "n": ["police officer", "cop"],
+      "u": "1f46e",
+      "v": [
+        "1f46e-1f3fb",
+        "1f46e-1f3fc",
+        "1f46e-1f3fd",
+        "1f46e-1f3fe",
+        "1f46e-1f3ff"
+      ]
+    },
+    {
+      "n": ["man police officer", "male-police-officer"],
       "u": "1f46e-200d-2642-fe0f",
       "v": [
         "1f46e-1f3fb-200d-2642-fe0f",
@@ -2417,7 +2501,18 @@
       ]
     },
     {
-      "n": ["man detective", "male-detective", "sleuth_or_spy"],
+      "n": ["detective", "sleuth_or_spy"],
+      "u": "1f575-fe0f",
+      "v": [
+        "1f575-1f3fb",
+        "1f575-1f3fc",
+        "1f575-1f3fd",
+        "1f575-1f3fe",
+        "1f575-1f3ff"
+      ]
+    },
+    {
+      "n": ["man detective", "male-detective"],
       "u": "1f575-fe0f-200d-2642-fe0f",
       "v": [
         "1f575-1f3fb-200d-2642-fe0f",
@@ -2439,7 +2534,18 @@
       ]
     },
     {
-      "n": ["man guard", "male-guard", "guardsman"],
+      "n": ["guard", "guardsman"],
+      "u": "1f482",
+      "v": [
+        "1f482-1f3fb",
+        "1f482-1f3fc",
+        "1f482-1f3fd",
+        "1f482-1f3fe",
+        "1f482-1f3ff"
+      ]
+    },
+    {
+      "n": ["man guard", "male-guard"],
       "u": "1f482-200d-2642-fe0f",
       "v": [
         "1f482-1f3fb-200d-2642-fe0f",
@@ -2472,11 +2578,18 @@
       ]
     },
     {
-      "n": [
-        "man construction worker",
-        "male-construction-worker",
-        "construction_worker"
-      ],
+      "n": ["construction worker", "construction_worker"],
+      "u": "1f477",
+      "v": [
+        "1f477-1f3fb",
+        "1f477-1f3fc",
+        "1f477-1f3fd",
+        "1f477-1f3fe",
+        "1f477-1f3ff"
+      ]
+    },
+    {
+      "n": ["man construction worker", "male-construction-worker"],
       "u": "1f477-200d-2642-fe0f",
       "v": [
         "1f477-1f3fb-200d-2642-fe0f",
@@ -2531,7 +2644,18 @@
       ]
     },
     {
-      "n": ["man wearing turban", "man-wearing-turban", "man_with_turban"],
+      "n": ["person wearing turban", "man_with_turban"],
+      "u": "1f473",
+      "v": [
+        "1f473-1f3fb",
+        "1f473-1f3fc",
+        "1f473-1f3fd",
+        "1f473-1f3fe",
+        "1f473-1f3ff"
+      ]
+    },
+    {
+      "n": ["man wearing turban", "man-wearing-turban"],
       "u": "1f473-200d-2642-fe0f",
       "v": [
         "1f473-1f3fb-200d-2642-fe0f",
@@ -2828,6 +2952,17 @@
       ]
     },
     {
+      "n": ["mage", "mage"],
+      "u": "1f9d9",
+      "v": [
+        "1f9d9-1f3fb",
+        "1f9d9-1f3fc",
+        "1f9d9-1f3fd",
+        "1f9d9-1f3fe",
+        "1f9d9-1f3ff"
+      ]
+    },
+    {
       "n": ["man mage", "male_mage"],
       "u": "1f9d9-200d-2642-fe0f",
       "v": [
@@ -2839,7 +2974,7 @@
       ]
     },
     {
-      "n": ["woman mage", "female_mage", "mage"],
+      "n": ["woman mage", "female_mage"],
       "u": "1f9d9-200d-2640-fe0f",
       "v": [
         "1f9d9-1f3fb-200d-2640-fe0f",
@@ -2847,6 +2982,17 @@
         "1f9d9-1f3fd-200d-2640-fe0f",
         "1f9d9-1f3fe-200d-2640-fe0f",
         "1f9d9-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["fairy", "fairy"],
+      "u": "1f9da",
+      "v": [
+        "1f9da-1f3fb",
+        "1f9da-1f3fc",
+        "1f9da-1f3fd",
+        "1f9da-1f3fe",
+        "1f9da-1f3ff"
       ]
     },
     {
@@ -2861,7 +3007,7 @@
       ]
     },
     {
-      "n": ["woman fairy", "female_fairy", "fairy"],
+      "n": ["woman fairy", "female_fairy"],
       "u": "1f9da-200d-2640-fe0f",
       "v": [
         "1f9da-1f3fb-200d-2640-fe0f",
@@ -2869,6 +3015,17 @@
         "1f9da-1f3fd-200d-2640-fe0f",
         "1f9da-1f3fe-200d-2640-fe0f",
         "1f9da-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["vampire", "vampire"],
+      "u": "1f9db",
+      "v": [
+        "1f9db-1f3fb",
+        "1f9db-1f3fc",
+        "1f9db-1f3fd",
+        "1f9db-1f3fe",
+        "1f9db-1f3ff"
       ]
     },
     {
@@ -2883,7 +3040,7 @@
       ]
     },
     {
-      "n": ["woman vampire", "female_vampire", "vampire"],
+      "n": ["woman vampire", "female_vampire"],
       "u": "1f9db-200d-2640-fe0f",
       "v": [
         "1f9db-1f3fb-200d-2640-fe0f",
@@ -2894,7 +3051,18 @@
       ]
     },
     {
-      "n": ["merman", "merman", "merperson"],
+      "n": ["merperson", "merperson"],
+      "u": "1f9dc",
+      "v": [
+        "1f9dc-1f3fb",
+        "1f9dc-1f3fc",
+        "1f9dc-1f3fd",
+        "1f9dc-1f3fe",
+        "1f9dc-1f3ff"
+      ]
+    },
+    {
+      "n": ["merman", "merman"],
       "u": "1f9dc-200d-2642-fe0f",
       "v": [
         "1f9dc-1f3fb-200d-2642-fe0f",
@@ -2916,7 +3084,18 @@
       ]
     },
     {
-      "n": ["man elf", "male_elf", "elf"],
+      "n": ["elf", "elf"],
+      "u": "1f9dd",
+      "v": [
+        "1f9dd-1f3fb",
+        "1f9dd-1f3fc",
+        "1f9dd-1f3fd",
+        "1f9dd-1f3fe",
+        "1f9dd-1f3ff"
+      ]
+    },
+    {
+      "n": ["man elf", "male_elf"],
       "u": "1f9dd-200d-2642-fe0f",
       "v": [
         "1f9dd-1f3fb-200d-2642-fe0f",
@@ -2938,7 +3117,11 @@
       ]
     },
     {
-      "n": ["man genie", "male_genie", "genie"],
+      "n": ["genie", "genie"],
+      "u": "1f9de"
+    },
+    {
+      "n": ["man genie", "male_genie"],
       "u": "1f9de-200d-2642-fe0f"
     },
     {
@@ -2946,7 +3129,11 @@
       "u": "1f9de-200d-2640-fe0f"
     },
     {
-      "n": ["man zombie", "male_zombie", "zombie"],
+      "n": ["zombie", "zombie"],
+      "u": "1f9df"
+    },
+    {
+      "n": ["man zombie", "male_zombie"],
       "u": "1f9df-200d-2642-fe0f"
     },
     {
@@ -2956,6 +3143,17 @@
     {
       "n": ["troll", "troll"],
       "u": "1f9cc"
+    },
+    {
+      "n": ["person getting massage", "massage"],
+      "u": "1f486",
+      "v": [
+        "1f486-1f3fb",
+        "1f486-1f3fc",
+        "1f486-1f3fd",
+        "1f486-1f3fe",
+        "1f486-1f3ff"
+      ]
     },
     {
       "n": ["man getting massage", "man-getting-massage"],
@@ -2969,7 +3167,7 @@
       ]
     },
     {
-      "n": ["woman getting massage", "woman-getting-massage", "massage"],
+      "n": ["woman getting massage", "woman-getting-massage"],
       "u": "1f486-200d-2640-fe0f",
       "v": [
         "1f486-1f3fb-200d-2640-fe0f",
@@ -2977,6 +3175,17 @@
         "1f486-1f3fd-200d-2640-fe0f",
         "1f486-1f3fe-200d-2640-fe0f",
         "1f486-1f3ff-200d-2640-fe0f"
+      ]
+    },
+    {
+      "n": ["person getting haircut", "haircut"],
+      "u": "1f487",
+      "v": [
+        "1f487-1f3fb",
+        "1f487-1f3fc",
+        "1f487-1f3fd",
+        "1f487-1f3fe",
+        "1f487-1f3ff"
       ]
     },
     {
@@ -2991,7 +3200,7 @@
       ]
     },
     {
-      "n": ["woman getting haircut", "woman-getting-haircut", "haircut"],
+      "n": ["woman getting haircut", "woman-getting-haircut"],
       "u": "1f487-200d-2640-fe0f",
       "v": [
         "1f487-1f3fb-200d-2640-fe0f",
@@ -3002,7 +3211,18 @@
       ]
     },
     {
-      "n": ["man walking", "man-walking", "walking"],
+      "n": ["person walking", "walking"],
+      "u": "1f6b6",
+      "v": [
+        "1f6b6-1f3fb",
+        "1f6b6-1f3fc",
+        "1f6b6-1f3fd",
+        "1f6b6-1f3fe",
+        "1f6b6-1f3ff"
+      ]
+    },
+    {
+      "n": ["man walking", "man-walking"],
       "u": "1f6b6-200d-2642-fe0f",
       "v": [
         "1f6b6-1f3fb-200d-2642-fe0f",
@@ -3381,7 +3601,18 @@
       ]
     },
     {
-      "n": ["man running", "man-running", "runner", "running"],
+      "n": ["person running", "runner", "running"],
+      "u": "1f3c3",
+      "v": [
+        "1f3c3-1f3fb",
+        "1f3c3-1f3fc",
+        "1f3c3-1f3fd",
+        "1f3c3-1f3fe",
+        "1f3c3-1f3ff"
+      ]
+    },
+    {
+      "n": ["man running", "man-running"],
       "u": "1f3c3-200d-2642-fe0f",
       "v": [
         "1f3c3-1f3fb-200d-2642-fe0f",
@@ -3469,6 +3700,10 @@
       ]
     },
     {
+      "n": ["people with bunny ears", "dancers"],
+      "u": "1f46f"
+    },
+    {
       "n": [
         "men with bunny ears",
         "men-with-bunny-ears-partying",
@@ -3480,17 +3715,23 @@
       "n": [
         "women with bunny ears",
         "women-with-bunny-ears-partying",
-        "woman-with-bunny-ears-partying",
-        "dancers"
+        "woman-with-bunny-ears-partying"
       ],
       "u": "1f46f-200d-2640-fe0f"
     },
     {
-      "n": [
-        "man in steamy room",
-        "man_in_steamy_room",
-        "person_in_steamy_room"
-      ],
+      "n": ["person in steamy room", "person_in_steamy_room"],
+      "u": "1f9d6",
+      "v": [
+        "1f9d6-1f3fb",
+        "1f9d6-1f3fc",
+        "1f9d6-1f3fd",
+        "1f9d6-1f3fe",
+        "1f9d6-1f3ff"
+      ]
+    },
+    {
+      "n": ["man in steamy room", "man_in_steamy_room"],
       "u": "1f9d6-200d-2642-fe0f",
       "v": [
         "1f9d6-1f3fb-200d-2642-fe0f",
@@ -3512,6 +3753,17 @@
       ]
     },
     {
+      "n": ["person climbing", "person_climbing"],
+      "u": "1f9d7",
+      "v": [
+        "1f9d7-1f3fb",
+        "1f9d7-1f3fc",
+        "1f9d7-1f3fd",
+        "1f9d7-1f3fe",
+        "1f9d7-1f3ff"
+      ]
+    },
+    {
       "n": ["man climbing", "man_climbing"],
       "u": "1f9d7-200d-2642-fe0f",
       "v": [
@@ -3523,7 +3775,7 @@
       ]
     },
     {
-      "n": ["woman climbing", "woman_climbing", "person_climbing"],
+      "n": ["woman climbing", "woman_climbing"],
       "u": "1f9d7-200d-2640-fe0f",
       "v": [
         "1f9d7-1f3fb-200d-2640-fe0f",
@@ -3564,7 +3816,18 @@
       ]
     },
     {
-      "n": ["man golfing", "man-golfing", "golfer"],
+      "n": ["person golfing", "golfer"],
+      "u": "1f3cc-fe0f",
+      "v": [
+        "1f3cc-1f3fb",
+        "1f3cc-1f3fc",
+        "1f3cc-1f3fd",
+        "1f3cc-1f3fe",
+        "1f3cc-1f3ff"
+      ]
+    },
+    {
+      "n": ["man golfing", "man-golfing"],
       "u": "1f3cc-fe0f-200d-2642-fe0f",
       "v": [
         "1f3cc-1f3fb-200d-2642-fe0f",
@@ -3586,7 +3849,18 @@
       ]
     },
     {
-      "n": ["man surfing", "man-surfing", "surfer"],
+      "n": ["person surfing", "surfer"],
+      "u": "1f3c4",
+      "v": [
+        "1f3c4-1f3fb",
+        "1f3c4-1f3fc",
+        "1f3c4-1f3fd",
+        "1f3c4-1f3fe",
+        "1f3c4-1f3ff"
+      ]
+    },
+    {
+      "n": ["man surfing", "man-surfing"],
       "u": "1f3c4-200d-2642-fe0f",
       "v": [
         "1f3c4-1f3fb-200d-2642-fe0f",
@@ -3608,7 +3882,18 @@
       ]
     },
     {
-      "n": ["man rowing boat", "man-rowing-boat", "rowboat"],
+      "n": ["person rowing boat", "rowboat"],
+      "u": "1f6a3",
+      "v": [
+        "1f6a3-1f3fb",
+        "1f6a3-1f3fc",
+        "1f6a3-1f3fd",
+        "1f6a3-1f3fe",
+        "1f6a3-1f3ff"
+      ]
+    },
+    {
+      "n": ["man rowing boat", "man-rowing-boat"],
       "u": "1f6a3-200d-2642-fe0f",
       "v": [
         "1f6a3-1f3fb-200d-2642-fe0f",
@@ -3630,7 +3915,18 @@
       ]
     },
     {
-      "n": ["man swimming", "man-swimming", "swimmer"],
+      "n": ["person swimming", "swimmer"],
+      "u": "1f3ca",
+      "v": [
+        "1f3ca-1f3fb",
+        "1f3ca-1f3fc",
+        "1f3ca-1f3fd",
+        "1f3ca-1f3fe",
+        "1f3ca-1f3ff"
+      ]
+    },
+    {
+      "n": ["man swimming", "man-swimming"],
       "u": "1f3ca-200d-2642-fe0f",
       "v": [
         "1f3ca-1f3fb-200d-2642-fe0f",
@@ -3652,7 +3948,18 @@
       ]
     },
     {
-      "n": ["man bouncing ball", "man-bouncing-ball", "person_with_ball"],
+      "n": ["person bouncing ball", "person_with_ball"],
+      "u": "26f9-fe0f",
+      "v": [
+        "26f9-1f3fb",
+        "26f9-1f3fc",
+        "26f9-1f3fd",
+        "26f9-1f3fe",
+        "26f9-1f3ff"
+      ]
+    },
+    {
+      "n": ["man bouncing ball", "man-bouncing-ball"],
       "u": "26f9-fe0f-200d-2642-fe0f",
       "v": [
         "26f9-1f3fb-200d-2642-fe0f",
@@ -3674,7 +3981,18 @@
       ]
     },
     {
-      "n": ["man lifting weights", "man-lifting-weights", "weight_lifter"],
+      "n": ["person lifting weights", "weight_lifter"],
+      "u": "1f3cb-fe0f",
+      "v": [
+        "1f3cb-1f3fb",
+        "1f3cb-1f3fc",
+        "1f3cb-1f3fd",
+        "1f3cb-1f3fe",
+        "1f3cb-1f3ff"
+      ]
+    },
+    {
+      "n": ["man lifting weights", "man-lifting-weights"],
       "u": "1f3cb-fe0f-200d-2642-fe0f",
       "v": [
         "1f3cb-1f3fb-200d-2642-fe0f",
@@ -3696,7 +4014,18 @@
       ]
     },
     {
-      "n": ["man biking", "man-biking", "bicyclist"],
+      "n": ["person biking", "bicyclist"],
+      "u": "1f6b4",
+      "v": [
+        "1f6b4-1f3fb",
+        "1f6b4-1f3fc",
+        "1f6b4-1f3fd",
+        "1f6b4-1f3fe",
+        "1f6b4-1f3ff"
+      ]
+    },
+    {
+      "n": ["man biking", "man-biking"],
       "u": "1f6b4-200d-2642-fe0f",
       "v": [
         "1f6b4-1f3fb-200d-2642-fe0f",
@@ -3718,7 +4047,18 @@
       ]
     },
     {
-      "n": ["man mountain biking", "man-mountain-biking", "mountain_bicyclist"],
+      "n": ["person mountain biking", "mountain_bicyclist"],
+      "u": "1f6b5",
+      "v": [
+        "1f6b5-1f3fb",
+        "1f6b5-1f3fc",
+        "1f6b5-1f3fd",
+        "1f6b5-1f3fe",
+        "1f6b5-1f3ff"
+      ]
+    },
+    {
+      "n": ["man mountain biking", "man-mountain-biking"],
       "u": "1f6b5-200d-2642-fe0f",
       "v": [
         "1f6b5-1f3fb-200d-2642-fe0f",
@@ -3884,6 +4224,17 @@
       ]
     },
     {
+      "n": ["person in lotus position", "person_in_lotus_position"],
+      "u": "1f9d8",
+      "v": [
+        "1f9d8-1f3fb",
+        "1f9d8-1f3fc",
+        "1f9d8-1f3fd",
+        "1f9d8-1f3fe",
+        "1f9d8-1f3ff"
+      ]
+    },
+    {
       "n": ["man in lotus position", "man_in_lotus_position"],
       "u": "1f9d8-200d-2642-fe0f",
       "v": [
@@ -3895,11 +4246,7 @@
       ]
     },
     {
-      "n": [
-        "woman in lotus position",
-        "woman_in_lotus_position",
-        "person_in_lotus_position"
-      ],
+      "n": ["woman in lotus position", "woman_in_lotus_position"],
       "u": "1f9d8-200d-2640-fe0f",
       "v": [
         "1f9d8-1f3fb-200d-2640-fe0f",
@@ -4073,7 +4420,7 @@
       ]
     },
     {
-      "n": ["family: man, woman, boy", "man-woman-boy", "family"],
+      "n": ["family: man, woman, boy", "man-woman-boy"],
       "u": "1f468-200d-1f469-200d-1f466"
     },
     {
@@ -4187,6 +4534,10 @@
     {
       "n": ["people hugging", "people_hugging"],
       "u": "1fac2"
+    },
+    {
+      "n": ["family", "family"],
+      "u": "1f46a"
     },
     {
       "n": ["family: adult, adult, child", "family_adult_adult_child"],

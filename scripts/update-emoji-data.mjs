@@ -235,22 +235,16 @@ function buildData(datasource, cldrNames) {
     if (group.categories.length) record[group.key] = []
   }
 
-  // Obsolete entries (mostly gender-neutral bases the datasource renders as
-  // the man variant) are dropped, but their shortcodes move to the
-  // replacement so existing `:cop:` / `:runner:` text keeps resolving.
-  const inherited = new Map()
-  for (const entry of datasource) {
-    if (!entry.obsoleted_by) continue
-    const names = inherited.get(entry.obsoleted_by) || []
-    inherited.set(entry.obsoleted_by, [...names, ...entry.short_names])
-  }
+  // Entries with `obsoleted_by` are kept: they are the gender-neutral bases
+  // (👮 police officer, 🏃 person running, 👪 family…), still fully-qualified
+  // in Unicode and shipped by emoji-mart and emojibase. Their sort_order
+  // places them before the man/woman variants.
 
   const fallbackNames = []
   const sorted = [...datasource].sort((a, b) => a.sort_order - b.sort_order)
 
   for (const entry of sorted) {
     if (SKIPPED_CATEGORIES.has(entry.category)) continue
-    if (entry.obsoleted_by) continue
     if (!hasRequiredImages(entry)) continue
 
     const key = groupByCategory.get(entry.category)
@@ -263,12 +257,7 @@ function buildData(datasource, cldrNames) {
       fallbackNames.push(u)
     }
 
-    const shortcodes = [
-      ...new Set([
-        ...entry.short_names,
-        ...(inherited.get(entry.unified) || []),
-      ]),
-    ]
+    const shortcodes = [...new Set(entry.short_names)]
     const emoji = { n: [name, ...shortcodes], u }
     const v = toneVariations(entry)
     if (v) emoji.v = v
