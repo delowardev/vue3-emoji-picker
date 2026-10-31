@@ -1,20 +1,7 @@
-import type { ColorTheme, GroupNames } from './types'
+import type { ColorTheme } from './types'
 
 export const EMOJI_REMOTE_SRC =
   'https://cdn.jsdelivr.net/npm/emoji-datasource-apple@6.0.1/img/apple/64'
-
-// ./data/groups.json
-export const GROUP_NAMES: GroupNames = {
-  recent: 'Recently used',
-  smileys_people: 'Smiles & People',
-  animals_nature: 'Animals & Nature',
-  food_drink: 'Food & Drink',
-  activities: 'Activities',
-  travel_places: 'Travel places',
-  objects: 'Objects',
-  symbols: 'Symbols',
-  flags: 'Flags',
-}
 
 export const EMOJI_UNICODE_KEY = 'u'
 export const EMOJI_NAME_KEY = 'n'
@@ -42,14 +29,5 @@ export const SKIN_TONES = [
   SKIN_TONE_MEDIUM_DARK,
   SKIN_TONE_DARK,
 ]
-
-export const STATIC_TEXTS = {
-  placeholder: 'Search emoji',
-  skinTone: 'Skin tone',
-  noResults: 'No emoji has been found!',
-  searchLabel: 'Search emoji',
-  categoriesLabel: 'Emoji categories',
-  skinTones: 'Default, Light, Medium-light, Medium, Medium-dark, Dark',
-}
 
 export const COLOR_THEMES: Array<ColorTheme> = ['light', 'dark', 'auto']

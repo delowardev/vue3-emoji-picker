@@ -10,12 +10,12 @@ const mountPicker = (props = {}, attach = false) =>
   })
 
 describe('prop reactivity', () => {
-  it('re-renders when native changes after mount', async () => {
-    const wrapper = mountPicker({ native: false })
+  it('re-renders when set changes to native after mount', async () => {
+    const wrapper = mountPicker({ set: 'apple' })
 
     expect(wrapper.findAll('.v3-emojis img').length).toBeGreaterThan(0)
 
-    await wrapper.setProps({ native: true })
+    await wrapper.setProps({ set: 'native' })
 
     expect(wrapper.findAll('.v3-emojis img').length).toBe(0)
     expect(wrapper.findAll('.v3-emojis button > span').length).toBeGreaterThan(
@@ -41,12 +41,12 @@ describe('prop reactivity', () => {
     wrapper.unmount()
   })
 
-  it('switches to input mode when pickerType changes after mount', async () => {
-    const wrapper = mountPicker({ pickerType: '' })
+  it('switches to input mode when type changes after mount', async () => {
+    const wrapper = mountPicker({ type: 'inline' })
 
     expect(wrapper.find('.v3-emoji-picker-input').exists()).toBe(false)
 
-    await wrapper.setProps({ pickerType: 'input' })
+    await wrapper.setProps({ type: 'input' })
 
     expect(wrapper.find('.v3-emoji-picker-input').exists()).toBe(true)
 
@@ -55,8 +55,7 @@ describe('prop reactivity', () => {
 
   it('applies a custom group name', async () => {
     const wrapper = mountPicker({
-      groupNames: { smileys_people: 'Faces' },
-      hideGroupNames: false,
+      i18n: { categories: { smileys_people: 'Faces' } },
     })
 
     expect(wrapper.text()).toContain('Faces')
@@ -64,8 +63,10 @@ describe('prop reactivity', () => {
     wrapper.unmount()
   })
 
-  it('honours disabled groups', async () => {
-    const wrapper = mountPicker({ disabledGroups: ['flags'] })
+  it('shows only the listed categories', async () => {
+    const wrapper = mountPicker({
+      categories: ['smileys_people', 'animals_nature'],
+    })
 
     expect(wrapper.find('#flags').exists()).toBe(false)
     expect(wrapper.find('#smileys_people').exists()).toBe(true)
@@ -75,14 +76,17 @@ describe('prop reactivity', () => {
 })
 
 describe('new props', () => {
-  it('hides the footer', () => {
-    const wrapper = mountPicker({ hideFooter: true })
+  it('hides the footer when preview and skin tones are off', () => {
+    const wrapper = mountPicker({
+      previewPosition: 'none',
+      skinTonePosition: 'none',
+    })
     expect(wrapper.find('.v3-footer').exists()).toBe(false)
     wrapper.unmount()
   })
 
   it('hides individual emoji', () => {
-    const wrapper = mountPicker({ native: true, disabledEmojis: ['1f600'] })
+    const wrapper = mountPicker({ set: 'native', excludeEmojis: ['1f600'] })
     const body = wrapper.find('.v3-body').text()
     expect(body).not.toContain('\u{1f600}')
     expect(body).toContain('\u{1f601}')
@@ -91,7 +95,7 @@ describe('new props', () => {
 
   it('passes input attributes through to the input', () => {
     const wrapper = mountPicker({
-      pickerType: 'textarea',
+      type: 'textarea',
       inputAttrs: { placeholder: 'Say hi', rows: 3, class: 'my-input' },
     })
     const textarea = wrapper.find('textarea')
@@ -105,7 +109,7 @@ describe('new props', () => {
   })
 
   it('lazy-loads emoji images', () => {
-    const wrapper = mountPicker({ native: false })
+    const wrapper = mountPicker({ set: 'apple' })
     const img = wrapper.find('.v3-emojis img')
     // happy-dom may set it as a DOM property instead of an attribute.
     expect(img.attributes('loading') || img.element.loading).toBe('lazy')
@@ -135,10 +139,13 @@ describe('image sets', () => {
 
   it('renders custom emoji from their own src, even in native mode', () => {
     const wrapper = mountPicker({
-      native: true,
-      additionalGroups: {
-        custom: [{ n: ['parrot', 'party_parrot'], u: 'parrot', src: '/p.gif' }],
-      },
+      set: 'native',
+      customCategories: [
+        {
+          key: 'custom',
+          emojis: [{ name: 'parrot', unicode: 'parrot', src: '/p.gif' }],
+        },
+      ],
     })
     expect(wrapper.find('#custom img').attributes('src')).toBe('/p.gif')
     wrapper.unmount()
@@ -155,7 +162,7 @@ describe('layout and texts', () => {
   })
 
   it('shows a configurable no-results message', async () => {
-    const wrapper = mountPicker({ staticTexts: { noResults: 'Nada' } })
+    const wrapper = mountPicker({ i18n: { noResults: 'Nada' } })
     await wrapper.find('.v3-search input').setValue('zzzzqqq')
     expect(wrapper.find('.v3-no-result').text()).toBe('Nada')
     wrapper.unmount()
@@ -166,14 +173,14 @@ describe('keyboard navigation', () => {
   const focused = () => document.activeElement
 
   it('keeps a single tab stop in the grid', () => {
-    const wrapper = mountPicker({ native: true })
+    const wrapper = mountPicker({ set: 'native' })
     const tabbable = wrapper.findAll('.v3-emojis button[tabindex="0"]')
     expect(tabbable).toHaveLength(1)
     wrapper.unmount()
   })
 
   it('moves with arrow keys and respects perLine', async () => {
-    const wrapper = mountPicker({ native: true, perLine: 8 }, true)
+    const wrapper = mountPicker({ set: 'native', perLine: 8 }, true)
     const first = wrapper.find('button[data-g="0"][data-i="0"]')
     first.element.focus()
 
@@ -191,7 +198,7 @@ describe('keyboard navigation', () => {
   })
 
   it('moves from search into the grid and selects with Enter', async () => {
-    const wrapper = mountPicker({ native: true }, true)
+    const wrapper = mountPicker({ set: 'native' }, true)
     const input = wrapper.find('.v3-search input')
 
     await input.setValue('thumbsup')

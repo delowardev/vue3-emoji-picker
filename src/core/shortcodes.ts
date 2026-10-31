@@ -1,4 +1,5 @@
-import type { Emoji, EmojiRecord } from './types'
+import type { CustomCategory, Emoji, EmojiRecord } from './types'
+import { customRecord } from './categories'
 import { SKIN_TONES } from './constants'
 import { defaultEmojis } from './dataset'
 import { applySkinTone } from './skinTone'
@@ -28,16 +29,16 @@ function addToIndex(index: Map<string, Emoji>, record: EmojiRecord) {
   }
 }
 
-function getIndex(additionalGroups?: EmojiRecord): Map<string, Emoji> {
+function getIndex(custom?: EmojiRecord): Map<string, Emoji> {
   if (!defaultIndex) {
     defaultIndex = new Map()
     addToIndex(defaultIndex, defaultEmojis)
   }
 
-  if (!additionalGroups) return defaultIndex
+  if (!custom || Object.keys(custom).length === 0) return defaultIndex
 
   const index = new Map<string, Emoji>()
-  addToIndex(index, additionalGroups)
+  addToIndex(index, custom)
   for (const [key, emoji] of defaultIndex) {
     if (!index.has(key)) index.set(key, emoji)
   }
@@ -47,8 +48,8 @@ function getIndex(additionalGroups?: EmojiRecord): Map<string, Emoji> {
 export interface ShortcodeOptions {
   /** Skin tone unicode (e.g. `1f3fb`) applied when the code has none. */
   skinTone?: string
-  /** Custom groups whose shortcodes should also resolve. */
-  additionalGroups?: EmojiRecord
+  /** Custom categories whose shortcodes should also resolve. */
+  customCategories?: CustomCategory[]
 }
 
 function toneFromSuffix(suffix: string | undefined, fallback?: string) {
@@ -71,7 +72,7 @@ export function shortcodeToEmoji(
   const match = new RegExp(`^${SHORTCODE_PATTERN.source}$`, 'i').exec(wrapped)
   if (!match) return ''
 
-  const emoji = getIndex(options.additionalGroups).get(match[1].toLowerCase())
+  const emoji = getIndex(customRecord(options)).get(match[1].toLowerCase())
   if (!emoji) return ''
 
   const tone = toneFromSuffix(match[2], options.skinTone)
@@ -88,7 +89,7 @@ export function replaceShortcodes(
 ): string {
   if (typeof text !== 'string' || !text.includes(':')) return text
 
-  const index = getIndex(options.additionalGroups)
+  const index = getIndex(customRecord(options))
 
   return text.replace(SHORTCODE_PATTERN, (whole, name, suffix) => {
     const emoji = index.get(String(name).toLowerCase())

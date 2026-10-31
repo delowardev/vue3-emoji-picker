@@ -46,8 +46,7 @@ import { computed, defineComponent, inject, ref } from 'vue'
  * Internal dependencies
  */
 import { Group, Store } from '../types'
-import { snakeToCapitalizedCase } from '../helpers'
-import { STATIC_TEXTS } from '../constant'
+import { customCategoryIcons } from '../core/categories'
 
 /**
  * Group/Category Images
@@ -67,12 +66,9 @@ export default defineComponent({
   setup() {
     const { state, updateSearch, updateActiveGroup } = inject('store') as Store
 
-    const hasSearch = computed(() => !state.options.hideSearch)
+    const hasSearch = computed(() => state.options.searchPosition !== 'none')
     const searchInput = ref<HTMLInputElement | null>(null)
-    const texts = computed(() => ({
-      ...STATIC_TEXTS,
-      ...state.options.staticTexts,
-    }))
+    const texts = computed(() => state.i18n)
 
     function emojiButtons(): HTMLButtonElement[] {
       const root = searchInput.value?.closest('.v3-emoji-picker')
@@ -99,38 +95,18 @@ export default defineComponent({
         }
       }
     }
-    const hasGroupIcons = computed(() => !state.options.hideGroupIcons)
-    const placeholder = computed(
-      () => state.options.staticTexts.placeholder || ''
-    )
+    const hasGroupIcons = computed(() => state.options.navPosition !== 'none')
+    const placeholder = computed(() => state.i18n.search)
 
     const searchValue = computed({
       get: () => state.search,
       set: (value: string) => updateSearch(value),
     })
 
-    /**
-     * Recomputed whenever groups, names, order or disabled groups change.
-     * This used to be snapshotted in `setup()`, so none of those props could
-     * take effect after mount.
-     */
-    const orderedGroups = computed<Group[]>(() => {
-      const groups = [
-        ...state.groups.map((group) => ({
-          ...group,
-          title: state.groupNames[group.key] || group.title,
-        })),
-        ...Object.keys(state.options.additionalGroups || {}).map((key) => ({
-          key,
-          title: state.groupNames[key] || snakeToCapitalizedCase(key),
-          u: '',
-        })),
-      ] as Group[]
-
-      return state.orderedGroupKeys
-        .map((key) => groups.find((group) => group.key === key))
-        .filter((group): group is Group => Boolean(group))
-    })
+    /** Visible categories in order, with resolved names. */
+    const orderedGroups = computed<Group[]>(
+      () => state.categories as unknown as Group[]
+    )
 
     const icons = computed<Record<string, string>>(() => ({
       smileys_people,
@@ -144,7 +120,8 @@ export default defineComponent({
       // `recent` must come before the user-provided icons so it can be
       // overridden — the README documents that it can.
       recent,
-      ...state.options.groupIcons,
+      ...customCategoryIcons(state.options),
+      ...state.options.categoryIcons,
     }))
 
     return {

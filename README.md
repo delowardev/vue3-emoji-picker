@@ -38,26 +38,33 @@ import 'vue3-emoji-picker/css'
 ```
 
 ```vue
-// use picker component
-<EmojiPicker :native="true" @select="onSelectEmoji" />
-```
+<script setup>
+import EmojiPicker from 'vue3-emoji-picker'
+import 'vue3-emoji-picker/css'
 
-```javascript
-// event callback
 function onSelectEmoji(emoji) {
   console.log(emoji)
   /*
-    // result
-    { 
-        i: "😚", 
-        n: ["kissing face"], 
-        r: "1f61a", // with skin tone
-        t: "neutral", // skin tone
-        u: "1f61a" // without tone
+    {
+      native: "👍🏽",          // the character to insert
+      unicode: "1f44d-1f3fd", // with skin tone
+      baseUnicode: "1f44d",   // without skin tone
+      name: "thumbs up",
+      shortcodes: ["+1", "thumbsup"],
+      skinTone: "1f3fd",      // or "neutral"
+      // 1.x keys i, n, r, t, u are still included until 3.0
     }
-    */
+  */
 }
+</script>
+
+<template>
+  <EmojiPicker set="native" @select="onSelectEmoji" />
+</template>
 ```
+
+> Upgrading from 1.x? Old props keep working with a console warning. See
+> [UPGRADE.md](UPGRADE.md).
 
 ## Playground
 
@@ -74,17 +81,21 @@ plain DOM.
 ```javascript
 import { createPicker } from 'vue3-emoji-picker/core'
 
-const picker = createPicker({ displayRecent: true })
+const picker = createPicker({ recent: 'recent' })
 
 picker.subscribe((state) => render(state))
 
 picker.setSearch('thumbsup')
 picker.setSkinTone('1f3fb')
 
-const results = picker.results() // { groupKey: Emoji[] }
+const results = picker.results() // { categoryKey: Emoji[] }
 const payload = picker.select(results.smileys_people[0])
-// { ...emoji, r, t, i }
+// { native, unicode, name, shortcodes, skinTone, ... }
+picker.categories() // [{ key, title, u }] in display order
 ```
+
+`createPicker` takes the same options as the component props, in camelCase
+(`searchPosition`, `customCategories`, `i18n`, …).
 
 ### Shortcodes
 
@@ -95,7 +106,7 @@ replaceShortcodes('Hello :wave::skin-tone-2: :+1:') // 'Hello 👋🏻 👍'
 shortcodeToEmoji('joy_cat') // '😹'
 ```
 
-Unknown codes are left as-is. Both accept `{ skinTone, additionalGroups }`.
+Unknown codes are left as-is. Both accept `{ skinTone, customCategories }`.
 
 Exports include `createPicker`, `replaceShortcodes` / `shortcodeToEmoji`, `searchEmojis` / `filterEmojis`, `applySkinTone`,
 `unicodeToEmoji`, the bundled dataset (`defaultEmojis`, `defaultGroups`),
@@ -108,53 +119,134 @@ out in tests or on the server.
 
 ## Options (`props`)
 
-| Prop                       | Type     | Default Value | Description                                                                                      |
-| :------------------------- | :------- | :------------ | :----------------------------------------------------------------------------------------------- |
-| native                     | Boolean  | false         | Load native emoji instead of image.                                                              |
-| set                        | String   | 'apple'       | Artwork: `native`, `apple`, `google`, `twitter`, `facebook`. See [Emoji artwork](#emoji-artwork) |
-| image-url                  | Function | null          | `(unicode) => url` to self-host or use any CDN; overrides `set`                                  |
-| hide-search                | Boolean  | false         | Show/hide search input.                                                                          |
-| hide-group-icons           | Boolean  | false         | Show/hide header group icons.                                                                    |
-| hide-group-names           | Boolean  | false         | Show/hide group names.                                                                           |
-| hide-footer                | Boolean  | false         | Show/hide the footer (preview and skin tones).                                                   |
-| per-line                   | Number   | 8             | Emoji per row                                                                                    |
-| emoji-size                 | Number   | 22            | Emoji size in px                                                                                 |
-| auto-focus                 | Boolean  | false         | Focus search on mount (inline) or when the popup opens                                           |
-| disable-sticky-group-names | Boolean  | false         | Disable sticky for group names                                                                   |
-| disable-skin-tones         | Boolean  | false         | Disable skin tones.                                                                              |
-| disabled-groups            | Array    | []            | Disable any group/category. See [Available groups](#available-groups)                            |
-| disabled-emojis            | Array    | []            | Hide individual emoji by unicode, e.g. `['1f595']`.                                              |
-| group-names                | Object   | {}            | Change any group name. See [Default group names](#default-group-names)                           |
-| static-texts               | Object   | Object        | See [static-texts](#propsstatic-texts) table                                                     |
-| pickerType                 | string   | ''            | Choose picker type, possible options: `input`, `textarea` (Popup with input/textarea), `''`      |
-| text                       | String   | ''            | Initial value for the input/textarea picker types.                                               |
-| mode                       | string   | 'insert'      | Choose insert mode, possible options: `prepend`, `insert`, `append`                              |
-| offset                     | Number   | 6             | Popup offset in px (only for `input`/`textarea` picker types)                                    |
-| placement                  | string   | 'bottom-end'  | Popup placement for `input`/`textarea` picker types (any Popper placement, e.g. `top-start`)     |
-| input-attrs                | Object   | {}            | Attributes for the `input`/`textarea`, e.g. `{ placeholder: 'Say hi', class: 'my-input' }`       |
-| additional-groups          | Object   | {}            | Add additional customized groups, keys are the group names translated from snake_case            |
-| group-order                | Array    | []            | Override ordering of groups                                                                      |
-| group-icons                | Object   | {}            | Override group icons by passing svg's on keys                                                    |
-| display-recent             | Boolean  | false         | Display Recently used emojis                                                                     |
-| recent-mode                | String   | 'recent'      | `recent` (last used first) or `frequent` (most used first)                                       |
-| max-recent                 | Number   | 24            | Maximum recent emoji shown                                                                       |
-| theme                      | String   | 'light'       | Available options, 'light', 'dark', and 'auto'                                                   |
+### Appearance
 
-## Static text option (`props['static-texts']`)
+| Prop         | Type     | Default   | Description                                                                             |
+| :----------- | :------- | :-------- | :-------------------------------------------------------------------------------------- |
+| `theme`      | String   | `'light'` | `light`, `dark` or `auto`                                                               |
+| `set`        | String   | `'apple'` | `native`, `apple`, `google`, `twitter`, `facebook`. See [Emoji artwork](#emoji-artwork) |
+| `image-url`  | Function | –         | `(unicode) => url` to self-host or use any CDN; overrides `set`                         |
+| `per-line`   | Number   | `8`       | Emoji per row                                                                           |
+| `emoji-size` | Number   | `22`      | Emoji size in px                                                                        |
 
-| Prop            | Type   | Default Value                                           | Description                                             |
-| :-------------- | :----- | :------------------------------------------------------ | :------------------------------------------------------ |
-| placeholder     | String | Search emoji                                            | Update search input placeholder text.                   |
-| skinTone        | String | Skin tone                                               | Footer skin tone button text.                           |
-| noResults       | String | No emoji has been found!                                | Shown when a search has no results.                     |
-| searchLabel     | String | Search emoji                                            | Accessible label of the search input.                   |
-| categoriesLabel | String | Emoji categories                                        | Accessible label of the category bar.                   |
-| skinTones       | String | Default, Light, Medium-light, Medium, Medium-dark, Dark | Comma-separated accessible names of the six skin tones. |
+### Layout
 
-Together with `group-names`, every string in the picker can be translated.
+| Prop                 | Type    | Default     | Values                                         |
+| :------------------- | :------ | :---------- | :--------------------------------------------- |
+| `search-position`    | String  | `'top'`     | `top`, `none`                                  |
+| `nav-position`       | String  | `'top'`     | `top`, `none` (category bar)                   |
+| `preview-position`   | String  | `'bottom'`  | `bottom`, `none`                               |
+| `skin-tone-position` | String  | `'preview'` | `preview`, `none`                              |
+| `category-headers`   | String  | `'sticky'`  | `sticky`, `static`, `none`                     |
+| `auto-focus`         | Boolean | `false`     | Focus search on mount, or when the popup opens |
 
-Example:
-`:static-texts="{ placeholder: 'Search emoji'}" `<br/>
+### Categories and emoji
+
+| Prop                | Type   | Default  | Description                                                                |
+| :------------------ | :----- | :------- | :------------------------------------------------------------------------- |
+| `categories`        | Array  | all      | Categories to show, in order. See [Categories](#categories)                |
+| `custom-categories` | Array  | `[]`     | Your own categories and emoji. See [Custom categories](#custom-categories) |
+| `category-icons`    | Object | `{}`     | Icon URL per category key, e.g. `{ recent: '/star.svg' }`                  |
+| `exclude-emojis`    | Array  | `[]`     | Unicode ids to hide everywhere, e.g. `['1f595']`                           |
+| `recent`            | String | `'none'` | `none`, `recent` (last used first) or `frequent` (most used first)         |
+| `max-recent`        | Number | `24`     | Maximum recent emoji shown                                                 |
+
+### Text and language
+
+| Prop   | Type   | Default | Description                                   |
+| :----- | :----- | :------ | :-------------------------------------------- |
+| `i18n` | Object | English | Every string in the picker. See [i18n](#i18n) |
+
+### Input and textarea
+
+| Prop          | Type   | Default        | Description                                                                   |
+| :------------ | :----- | :------------- | :---------------------------------------------------------------------------- |
+| `type`        | String | `'inline'`     | `inline`, `input` or `textarea` (field with a popup picker)                   |
+| `v-model`     | String | `''`           | The field's text                                                              |
+| `insert-mode` | String | `'caret'`      | Where picked emoji go: `caret`, `append`, `prepend`                           |
+| `placement`   | String | `'bottom-end'` | Popup placement (any Popper placement, e.g. `top-start`)                      |
+| `offset`      | Number | `6`            | Popup offset in px                                                            |
+| `input-attrs` | Object | `{}`           | Attributes for the field, e.g. `{ placeholder: 'Say hi', class: 'my-input' }` |
+
+```vue
+<EmojiPicker type="textarea" v-model="message" :input-attrs="{ rows: 3 }" />
+```
+
+## i18n
+
+Pass any subset; missing strings fall back to English. `EN_I18N` from
+`vue3-emoji-picker/core` shows every key.
+
+```vue
+<EmojiPicker
+  :i18n="{
+    search: 'Buscar emoji',
+    noResults: 'No se encontraron emoji',
+    skinTone: 'Tono de piel',
+    skinTones: [
+      'Predeterminado',
+      'Claro',
+      'Medio claro',
+      'Medio',
+      'Medio oscuro',
+      'Oscuro',
+    ],
+    categories: { smileys_people: 'Caras y personas', flags: 'Banderas' },
+  }"
+/>
+```
+
+| Key               | Default                                                 |
+| :---------------- | :------------------------------------------------------ |
+| `search`          | Search emoji (placeholder)                              |
+| `searchLabel`     | Search emoji (screen readers)                           |
+| `categoriesLabel` | Emoji categories (screen readers)                       |
+| `noResults`       | No emoji found                                          |
+| `skinTone`        | Skin tone                                               |
+| `skinTones`       | Default, Light, Medium-light, Medium, Medium-dark, Dark |
+| `categories`      | Category names by key, including your custom categories |
+
+## Categories
+
+Built-in keys: `smileys_people`, `animals_nature`, `food_drink`, `activities`,
+`travel_places`, `objects`, `symbols`, `flags`, plus `recent` (shown when
+`recent` is not `none`) and your custom category keys.
+
+By default every category is shown: recent, custom categories, then the
+built-ins. `categories` picks which ones appear and in what order:
+
+```vue
+<EmojiPicker
+  recent="frequent"
+  :categories="['recent', 'smileys_people', 'flags']"
+/>
+```
+
+## Custom categories
+
+```vue
+<EmojiPicker
+  :custom-categories="[
+    {
+      key: 'team',
+      name: 'Team', // or i18n.categories.team
+      icon: '/icons/team.svg', // category bar icon
+      emojis: [
+        {
+          name: 'ship it',
+          shortcodes: ['shipit'],
+          unicode: 'x-shipit',
+          src: '/emoji/shipit.png',
+        },
+        { name: 'party', shortcodes: ['party_face'], unicode: '1f973' },
+      ],
+    },
+  ]"
+/>
+```
+
+`unicode` must be unique. Emoji with `src` render that image; others use the
+native glyph or the selected `set`. `skins` takes skin tone variations.
 
 ## Emoji artwork
 
@@ -167,16 +259,8 @@ images yourself:
 <EmojiPicker :image-url="(u) => `/emoji/${u}.png`" />
 ```
 
-Emoji in `additional-groups` can carry their own image with `src`, which is
-always used — handy for team or brand emoji:
-
-```js
-{
-  custom: [
-    { n: ['ship it', 'shipit'], u: 'x-shipit', src: '/emoji/shipit.png' },
-  ]
-}
-```
+Custom emoji can carry their own image with `src`, which is always used —
+handy for team or brand emoji. See [Custom categories](#custom-categories).
 
 > Licensing differs per set. Twitter (Twemoji, CC-BY 4.0) and Google (Noto,
 > Apache 2.0) can be used commercially; check Apple's and Facebook's terms
@@ -228,99 +312,9 @@ category bar and skin tones are labelled for screen readers.
 }
 ```
 
-## Events / Callbacks
+## Events
 
-### `@select`
-
-This event fires when an emoji gets selected/clicked.<br/>
-Event callback will receive selected emoji in the first argument.
-
-```
-<EmojiPicker @select="onSelectEmoji" />
-
-function onSelectEmoji(emoji) { /* do something */ }
-```
-
-### `@update:text`
-
-This event fires when input text gets changed.<br/>
-Event callback will receive the text in the first argument.
-
-```
-<EmojiPicker @update:text="onChangeText" />
-
-function onChangeText(text) { /* do something */ }
-```
-
-## Available groups
-
-```json
-[
-  "smileys_people",
-  "animals_nature",
-  "food_drink",
-  "activities",
-  "travel_places",
-  "objects",
-  "symbols",
-  "flags"
-]
-```
-
-## Default group names
-
-```json
-{
-  "smileys_people": "Smiles & People",
-  "animals_nature": "Animals & Nature",
-  "food_drink": "Food & Drink",
-  "activities": "Activities",
-  "travel_places": "Travel places",
-  "objects": "Objects",
-  "symbols": "Symbols",
-  "flags": "Flags",
-  "recent": "Recently used"
-}
-```
-
-## Overriding group names
-
-```vue
-<picker :group-names="{ smileys_people: 'My customized group name' }" />
-```
-
-## Overriding group icons
-
-```vue
-<template>
-  <picker :group-icons="{ smileys_people: customSVG }" />
-</template>
-
-<script setup>
-import customSVG from './path/to/svg'
-</script>
-```
-
-## Override group order
-
-This will make it so flags is first and then any other non-defined group will follow.
-
-```vue
-<picker :group-order="['flags']" />
-```
-
-## Add additional groups
-
-To see any existing emoji's see `src/data/emojis.json`
-
-```vue
-<picker
-  :additional-groups="{
-    my_custom_group: [
-      { n: ['grinning face', 'grinning'], u: '1f600' },
-      { n: ['grinning face with smiling eyes', 'grin'], u: '1f601' },
-    ],
-  }"
-  :group-names="{ my_custom_group: 'Frequently used' }"
-/>
-```
+| Event               | Payload    | Description                                            |
+| :------------------ | :--------- | :----------------------------------------------------- |
+| `select`            | `EmojiExt` | An emoji was picked. See [Usage](#usage) for the shape |
+| `update:modelValue` | `string`   | The field text changed (`v-model`)                     |

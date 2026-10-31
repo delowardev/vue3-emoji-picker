@@ -155,7 +155,7 @@
             names</label
           >
           <label
-            ><input v-model="hideFooter" type="checkbox" /> hide footer</label
+            ><input v-model="hideFooter" type="checkbox" /> hide preview</label
           >
           <label
             ><input v-model="disableSkinTones" type="checkbox" /> disable skin
@@ -185,7 +185,7 @@
           <label class="field">
             <span>Insert mode</span>
             <select v-model="mode">
-              <option value="insert">insert at caret</option>
+              <option value="caret">insert at caret</option>
               <option value="append">append</option>
               <option value="prepend">prepend</option>
             </select>
@@ -262,7 +262,7 @@
 
         <h3>Language</h3>
         <label class="field">
-          <span>Locale (via static-texts + group-names)</span>
+          <span>Locale (via the i18n prop)</span>
           <select v-model="locale">
             <option v-for="(_, key) in LOCALES" :key="key" :value="key">
               {{ key }}
@@ -389,8 +389,8 @@ import {
   SKIN_TONES,
   unicodeToEmoji,
 } from './core'
-import type { EmojiSet, RecentMode } from './core'
-import { defaultEmojis } from './core'
+import type { EmojiSet, I18nInput, InsertMode, RecentMode } from './core'
+import { BUILTIN_CATEGORIES, defaultEmojis } from './core'
 import pkg from '../package.json'
 
 const version = pkg.version
@@ -418,20 +418,21 @@ const PLACEMENTS = [
 ]
 
 /** Example translations; any strings can be passed the same way. */
-const LOCALES: Record<
-  string,
-  { texts: Record<string, string>; groups: Record<string, string> }
-> = {
-  English: { texts: {}, groups: {} },
+const LOCALES: Record<string, I18nInput> = {
+  English: {},
   Español: {
-    texts: {
-      placeholder: 'Buscar emoji',
-      skinTone: 'Tono de piel',
-      noResults: 'No se encontraron emoji',
-      skinTones:
-        'Predeterminado, Claro, Medio claro, Medio, Medio oscuro, Oscuro',
-    },
-    groups: {
+    search: 'Buscar emoji',
+    skinTone: 'Tono de piel',
+    noResults: 'No se encontraron emoji',
+    skinTones: [
+      'Predeterminado',
+      'Claro',
+      'Medio claro',
+      'Medio',
+      'Medio oscuro',
+      'Oscuro',
+    ],
+    categories: {
       recent: 'Usados recientemente',
       smileys_people: 'Caras y personas',
       animals_nature: 'Animales y naturaleza',
@@ -441,17 +442,22 @@ const LOCALES: Record<
       objects: 'Objetos',
       symbols: 'Símbolos',
       flags: 'Banderas',
+      team: 'Equipo',
     },
   },
   Français: {
-    texts: {
-      placeholder: 'Rechercher un emoji',
-      skinTone: 'Teint',
-      noResults: 'Aucun emoji trouvé',
-      skinTones:
-        'Par défaut, Clair, Moyennement clair, Moyen, Moyennement foncé, Foncé',
-    },
-    groups: {
+    search: 'Rechercher un emoji',
+    skinTone: 'Teint',
+    noResults: 'Aucun emoji trouvé',
+    skinTones: [
+      'Par défaut',
+      'Clair',
+      'Moyennement clair',
+      'Moyen',
+      'Moyennement foncé',
+      'Foncé',
+    ],
+    categories: {
       recent: 'Utilisés récemment',
       smileys_people: 'Smileys et personnes',
       animals_nature: 'Animaux et nature',
@@ -461,6 +467,7 @@ const LOCALES: Record<
       objects: 'Objets',
       symbols: 'Symboles',
       flags: 'Drapeaux',
+      team: 'Équipe',
     },
   },
 }
@@ -472,14 +479,32 @@ const badge = (label: string, color: string) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${color}"/><text x="32" y="42" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">${label}</text></svg>`
   )
 
-const CUSTOM_GROUP = {
-  team: [
-    { n: ['ship it', 'shipit'], u: 'x-shipit', src: badge('SHIP', '#16a34a') },
-    { n: ['lgtm', 'lgtm'], u: 'x-lgtm', src: badge('LGTM', '#2563eb') },
-    { n: ['wip', 'wip'], u: 'x-wip', src: badge('WIP', '#d97706') },
-    { n: ['vue', 'vue'], u: 'x-vue', src: badge('VUE', '#41b883') },
-  ],
-}
+const TEAM_EMOJIS = [
+  {
+    name: 'ship it',
+    shortcodes: ['shipit'],
+    unicode: 'x-shipit',
+    src: badge('SHIP', '#16a34a'),
+  },
+  {
+    name: 'lgtm',
+    shortcodes: ['lgtm'],
+    unicode: 'x-lgtm',
+    src: badge('LGTM', '#2563eb'),
+  },
+  {
+    name: 'wip',
+    shortcodes: ['wip'],
+    unicode: 'x-wip',
+    src: badge('WIP', '#d97706'),
+  },
+  {
+    name: 'vue',
+    shortcodes: ['vue'],
+    unicode: 'x-vue',
+    src: badge('VUE', '#41b883'),
+  },
+]
 
 const FEATURES = [
   {
@@ -589,7 +614,7 @@ const autoFocus = ref(defaults.autoFocus)
 const customGroup = ref(defaults.customGroup)
 const flagsFirst = ref(defaults.flagsFirst)
 const pickerType = ref('')
-const mode = ref('insert')
+const mode = ref<InsertMode>('caret')
 const placement = ref('bottom-end')
 const offset = ref(6)
 const inputPlaceholder = ref('Type a message…')
@@ -662,7 +687,6 @@ const selected = ref<Record<string, any> | null>(null)
 const text = ref('')
 const copied = ref(false)
 
-const native = computed(() => set.value === 'native')
 const isDark = computed(() => theme.value === 'dark')
 
 const disabledEmojis = computed(() =>
@@ -672,7 +696,7 @@ const disabledEmojis = computed(() =>
     .filter(Boolean)
 )
 
-const localeData = computed(() => LOCALES[locale.value] || LOCALES.English)
+const i18n = computed(() => LOCALES[locale.value] || LOCALES.English)
 
 /** Width/height/accent are plain CSS variables set on a parent element. */
 const stageVars = computed(() => ({
@@ -681,40 +705,52 @@ const stageVars = computed(() => ({
   '--v3-picker-focus': accent.value,
 }))
 
-const pickerProps = computed(() => ({
-  native: native.value,
-  set: set.value,
+/** `categories` is only passed when the default order is changed. */
+const categories = computed(() => {
+  // Custom categories show up by default; only reorder/filter when asked.
+  if (!flagsFirst.value && !disabledGroups.length) {
+    return []
+  }
+  return [
+    'recent',
+    ...(customGroup.value ? ['team'] : []),
+    ...(flagsFirst.value ? ['flags'] : []),
+    ...BUILTIN_CATEGORIES,
+  ].filter(
+    (key, index, all) =>
+      all.indexOf(key) === index && !disabledGroups.includes(key)
+  )
+})
+
+const pickerProps = computed<Record<string, any>>(() => ({
   theme: theme.value,
+  set: set.value,
   emojiSize: emojiSize.value,
   perLine: perLine.value,
-  displayRecent: displayRecent.value,
-  recentMode: recentMode.value,
+  searchPosition: hideSearch.value ? 'none' : 'top',
+  navPosition: hideGroupIcons.value ? 'none' : 'top',
+  previewPosition: hideFooter.value ? 'none' : 'bottom',
+  skinTonePosition: disableSkinTones.value ? 'none' : 'preview',
+  categoryHeaders: hideGroupNames.value
+    ? 'none'
+    : disableStickyGroupNames.value
+    ? 'static'
+    : 'sticky',
+  categories: categories.value,
+  customCategories: customGroup.value
+    ? [{ key: 'team', name: 'Team', emojis: TEAM_EMOJIS }]
+    : [],
+  excludeEmojis: disabledEmojis.value,
+  recent: displayRecent.value ? recentMode.value : 'none',
   maxRecent: maxRecent.value,
-  hideSearch: hideSearch.value,
-  hideGroupNames: hideGroupNames.value,
-  hideGroupIcons: hideGroupIcons.value,
-  hideFooter: hideFooter.value,
-  disableSkinTones: disableSkinTones.value,
-  disableStickyGroupNames: disableStickyGroupNames.value,
+  i18n: i18n.value,
   autoFocus: autoFocus.value,
-  pickerType: pickerType.value,
-  mode: mode.value,
+  type: pickerType.value || 'inline',
+  insertMode: mode.value,
   offset: offset.value,
   placement: placement.value,
   inputAttrs: { placeholder: inputPlaceholder.value },
-  groupOrder: [
-    ...(customGroup.value ? ['team'] : []),
-    ...(flagsFirst.value ? ['flags'] : []),
-  ],
-  additionalGroups: customGroup.value ? CUSTOM_GROUP : {},
-  groupNames: {
-    ...localeData.value.groups,
-    ...(customGroup.value ? { team: 'Team' } : {}),
-  },
-  disabledGroups: [...disabledGroups],
-  disabledEmojis: disabledEmojis.value,
-  staticTexts: localeData.value.texts,
-  ...(pickerType.value ? { text: text.value } : {}),
+  ...(pickerType.value ? { modelValue: text.value } : {}),
 }))
 
 const selectedJson = computed(() =>
@@ -725,48 +761,49 @@ const codeSnippet = computed(() => {
   const attrs: string[] = []
   const d = defaults
 
+  const props = pickerProps.value
+
   if (theme.value !== d.theme) attrs.push(`theme="${theme.value}"`)
-  if (native.value) attrs.push(':native="true"')
-  else if (set.value !== d.set) attrs.push(`set="${set.value}"`)
+  if (set.value !== d.set) attrs.push(`set="${set.value}"`)
   if (emojiSize.value !== d.emojiSize)
     attrs.push(`:emoji-size="${emojiSize.value}"`)
   if (perLine.value !== d.perLine) attrs.push(`:per-line="${perLine.value}"`)
   if (displayRecent.value) {
-    attrs.push(':display-recent="true"')
-    if (recentMode.value !== d.recentMode)
-      attrs.push(`recent-mode="${recentMode.value}"`)
+    attrs.push(`recent="${recentMode.value}"`)
     if (maxRecent.value !== d.maxRecent)
       attrs.push(`:max-recent="${maxRecent.value}"`)
   }
-  if (hideSearch.value) attrs.push(':hide-search="true"')
-  if (hideGroupNames.value) attrs.push(':hide-group-names="true"')
-  if (hideGroupIcons.value) attrs.push(':hide-group-icons="true"')
-  if (hideFooter.value) attrs.push(':hide-footer="true"')
-  if (disableSkinTones.value) attrs.push(':disable-skin-tones="true"')
-  if (disableStickyGroupNames.value)
-    attrs.push(':disable-sticky-group-names="true"')
+  if (props.searchPosition !== 'top') attrs.push('search-position="none"')
+  if (props.navPosition !== 'top') attrs.push('nav-position="none"')
+  if (props.previewPosition !== 'bottom') attrs.push('preview-position="none"')
+  if (props.skinTonePosition !== 'preview')
+    attrs.push('skin-tone-position="none"')
+  if (props.categoryHeaders !== 'sticky')
+    attrs.push(`category-headers="${props.categoryHeaders}"`)
   if (autoFocus.value) attrs.push(':auto-focus="true"')
   if (pickerType.value) {
-    attrs.push(`picker-type="${pickerType.value}"`)
-    attrs.push('v-model:text="text"')
-    if (mode.value !== 'insert') attrs.push(`mode="${mode.value}"`)
+    attrs.push(`type="${pickerType.value}"`)
+    attrs.push('v-model="text"')
+    if (mode.value !== 'caret') attrs.push(`insert-mode="${mode.value}"`)
     if (placement.value !== 'bottom-end')
       attrs.push(`placement="${placement.value}"`)
     if (offset.value !== 6) attrs.push(`:offset="${offset.value}"`)
     if (inputPlaceholder.value)
       attrs.push(`:input-attrs="{ placeholder: '${inputPlaceholder.value}' }"`)
   }
-  if (customGroup.value) attrs.push(':additional-groups="customGroups"')
-  const order = pickerProps.value.groupOrder
-  if (order.length) attrs.push(`:group-order="${JSON.stringify(order)}"`)
-  if (disabledGroups.length)
-    attrs.push(`:disabled-groups="${JSON.stringify([...disabledGroups])}"`)
+  if (categories.value.length)
+    attrs.push(
+      `:categories="${JSON.stringify(categories.value).replace(/"/g, "'")}"`
+    )
+  if (customGroup.value) attrs.push(':custom-categories="customCategories"')
   if (disabledEmojis.value.length)
-    attrs.push(`:disabled-emojis="${JSON.stringify(disabledEmojis.value)}"`)
-  if (locale.value !== 'English') {
-    attrs.push(':static-texts="texts"')
-    attrs.push(':group-names="groupNames"')
-  }
+    attrs.push(
+      `:exclude-emojis="${JSON.stringify(disabledEmojis.value).replace(
+        /"/g,
+        "'"
+      )}"`
+    )
+  if (locale.value !== 'English') attrs.push(':i18n="i18n"')
 
   const opening = attrs.length
     ? `<EmojiPicker\n  ${attrs.join('\n  ')}\n  @select="onSelect"\n/>`
@@ -846,8 +883,7 @@ function renderCore() {
 onMounted(() => {
   corePicker = createPicker({
     storage: createMemoryStorage(),
-    displayRecent: true,
-    hideSearch: true,
+    recent: 'recent',
   })
   corePicker.subscribe(renderCore)
   renderCore()

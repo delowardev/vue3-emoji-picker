@@ -31,12 +31,12 @@ export function buildLookup(extra?: EmojiRecord): Map<string, Emoji> {
 
 /** Record shape consumed by search: recent first, then custom, then bundled. */
 export function mergeEmojis(
-  additionalGroups: EmojiRecord | undefined,
+  custom: EmojiRecord | undefined,
   recent: Emoji[]
 ): EmojiRecord {
   return {
     recent,
-    ...(additionalGroups || {}),
+    ...(custom || {}),
     ...defaultEmojis,
   }
 }
