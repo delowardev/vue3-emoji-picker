@@ -1,5 +1,16 @@
 v1.2.0 (unreleased)
 
+- Update: emoji data regenerated from emoji-datasource 16.0.0 (Emoji 16.0):
+  1870 emoji, up from 1563, including the Emoji 14–16 additions (🫠 melting
+  face, 🫨 shaking face, 🪿 goose, 🫩 face with bags under eyes…). Names are
+  now the CLDR short names, so "red heart" finds ❤️ (was "heavy black heart")
+  and 👍 is "thumbs up". Gender-neutral base emoji that emoji-datasource marks
+  obsolete (e.g. 👮 police officer) are dropped; their shortcodes (`:cop:`,
+  `:runner:`…) now resolve to the variant that replaces them. More emoji
+  support skin tones (291, up from 212). See #70, #58, #66, #46
+- Add: `npm run data:update` regenerates the emoji data from a given
+  emoji-datasource release, and a weekly workflow opens a PR when a new
+  release is out
 - Add: `vue3-emoji-picker/core` — a framework-agnostic entry point with
   `createPicker`, search, skin tones and recent storage. It has no Vue
   import, so it can back a picker in another view layer.
@@ -8,7 +19,7 @@ v1.2.0 (unreleased)
   for emoji, groups, the category bar and skin tones
 - Add: `set` (`native`, `apple`, `google`, `twitter`, `facebook`) and
   `image-url` props; custom emoji render their own `src`. Image sets come
-  from emoji-datasource 15.1.2 (the default Apple set moves from 6.0.1)
+  from emoji-datasource 16.0.0 (the default Apple set moves from 6.0.1)
 - Add: `per-line`, `emoji-size` and `auto-focus` props; picker size and
   focus colour are CSS variables (`--v3-picker-width`, `--v3-picker-height`,
   `--v3-picker-focus`)

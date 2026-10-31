@@ -182,6 +182,25 @@ always used — handy for team or brand emoji:
 > Apache 2.0) can be used commercially; check Apple's and Facebook's terms
 > before shipping their artwork in a product.
 
+## Emoji data
+
+The bundled emoji (`src/data/emojis.json`) are generated from
+[emoji-datasource](https://github.com/iamcal/emoji-data), the same release the
+artwork sets load from (`EMOJI_DATASOURCE_VERSION` in `src/core/images.ts`), so
+every listed emoji has an image. Names are the Unicode CLDR short names
+("red heart"); shortcodes are the Slack/GitHub-style `short_names`. Only emoji
+with Twitter and Google artwork are included.
+
+To regenerate (defaults to the latest emoji-datasource on npm):
+
+```sh
+npm run data:update            # or: npm run data:update -- 16.0.0
+```
+
+A weekly GitHub Actions workflow (`update-emoji-data.yml`) does this
+automatically and opens a pull request with the added, removed and renamed
+emoji when a newer emoji-datasource is published.
+
 ## Keyboard and accessibility
 
 The grid has a single tab stop. Arrow keys move between emoji (respecting
