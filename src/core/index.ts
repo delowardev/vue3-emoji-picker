@@ -47,8 +47,14 @@ export {
   mergeEmojis,
 } from './dataset'
 export {
-  disabledGroupsOf,
-  resolveGroupNames,
-  resolveOrderedGroupKeys,
-  resolveGroups,
-} from './groups'
+  BUILTIN_CATEGORIES,
+  RECENT_CATEGORY,
+  customRecord,
+  normalizeEmoji,
+  resolveCategories,
+  resolveCategoryKeys,
+  resolveCategoryNames,
+  customCategoryIcons,
+} from './categories'
+export { EN_I18N, resolveI18n } from './i18n'
+export { toSelection } from './selection'

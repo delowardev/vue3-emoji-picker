@@ -1,20 +1,22 @@
 import { reactive, readonly } from 'vue'
 import {
   createPicker,
-  disabledGroupsOf,
-  resolveGroupNames,
-  resolveOrderedGroupKeys,
+  customRecord,
+  resolveCategories,
+  resolveCategoryKeys,
+  resolveCategoryNames,
+  resolveI18n,
 } from '../core'
 import type {
+  CategoryInfo,
   Emoji,
   EmojiOptions,
   EmojiRecord,
-  Group,
+  I18n,
   State,
   Store,
 } from '../types'
 import emojis from '../data/emojis.json'
-import _groups from '../data/groups.json'
 
 /**
  * Vue bridge over the framework-agnostic core.
@@ -31,37 +33,31 @@ export default function Store(): Store {
     emoji: initial.hovered,
     activeGroup: initial.activeGroup,
     skinTone: initial.skinTone,
-    options: initial.options as unknown as Record<string, any>,
-    additionalGroups: {} as EmojiRecord,
+    options: initial.options,
     recent: initial.recent,
 
     get emojis() {
       return {
         recent: this.recent,
-        ...(this.options.additionalGroups || {}),
+        ...customRecord(this.options),
         ...emojis,
       } as EmojiRecord
     },
 
-    get disabled() {
-      return disabledGroupsOf(this.options as unknown as EmojiOptions)
+    get categoryKeys(): string[] {
+      return resolveCategoryKeys(this.options)
     },
 
-    get groups(): Group[] {
-      return _groups.filter(
-        (group) => !this.disabled.includes(group.key)
-      ) as Group[]
+    get categories(): CategoryInfo[] {
+      return resolveCategories(this.options)
     },
 
-    get groupNames(): Record<string, string> {
-      return resolveGroupNames(this.options as unknown as EmojiOptions)
+    get categoryNames(): Record<string, string> {
+      return resolveCategoryNames(this.options)
     },
 
-    get orderedGroupKeys() {
-      return resolveOrderedGroupKeys(
-        this.options as unknown as EmojiOptions,
-        this.disabled
-      )
+    get i18n(): I18n {
+      return resolveI18n(this.options.i18n)
     },
   })
 
@@ -71,7 +67,7 @@ export default function Store(): Store {
     state.activeGroup = next.activeGroup
     state.skinTone = next.skinTone
     state.recent = next.recent
-    state.options = next.options as unknown as Record<string, any>
+    state.options = next.options
   })
 
   return {
@@ -80,8 +76,8 @@ export default function Store(): Store {
     updateEmoji: (value: Emoji) => picker.hover(value),
     updateActiveGroup: (group: string) => picker.setActiveGroup(group),
     updateSkinTone: (tone = 'neutral') => picker.setSkinTone(tone),
-    updateOptions: (options: Record<string, any>) =>
-      picker.setOptions(options as Partial<EmojiOptions>),
+    updateOptions: (options: Partial<EmojiOptions>) =>
+      picker.setOptions(options),
     updateSelect: (emoji: Emoji, fromRecent = false) => {
       picker.select(emoji, { reorderRecent: !fromRecent })
     },

@@ -101,22 +101,6 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    additionalGroups: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupOrder: {
-      type: Array,
-      default: () => [],
-    },
-    groupIcons: {
-      type: Object,
-      default: () => ({}),
-    },
-    groupNames: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   emits: {
     select: (_emoji: EmojiExt) => true,
@@ -133,8 +117,12 @@ export default defineComponent({
     )
     let cursor = -1
     const { state, refreshRecent } = inject('store') as Store
-    const colorTheme = computed(() => state.options.colorTheme)
-    const hasFooter = computed(() => !state.options.hideFooter)
+    const colorTheme = computed(() => state.options.theme)
+    const hasFooter = computed(
+      () =>
+        state.options.previewPosition !== 'none' ||
+        state.options.skinTonePosition !== 'none'
+    )
     const inputAttrs = computed(() => state.options.inputAttrs || {})
     let popper: Instance | null = null
 
@@ -151,10 +139,10 @@ export default defineComponent({
      */
     function onSelect(emoji: EmojiExt) {
       if (isInputType.value) {
-        const mode = state.options.mode
+        const mode = state.options.insertMode
         if (mode === 'prepend') {
           input.value = emoji.i + input.value
-        } else if (mode === 'insert' && cursor !== -1) {
+        } else if (mode === 'caret' && cursor !== -1) {
           input.value = `${input.value.slice(0, cursor)}${
             emoji.i
           }${input.value.slice(cursor)}`

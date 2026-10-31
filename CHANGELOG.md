@@ -1,5 +1,29 @@
-v1.2.0 (unreleased)
+v2.0.0 (unreleased)
 
+Breaking: props are standardized. Every 1.x prop keeps working with a
+one-time console warning until 3.0 — see [UPGRADE.md](UPGRADE.md).
+
+- Breaking: new prop names. `native` → `set="native"`; `hide-search`,
+  `hide-group-icons`, `disable-skin-tones` → `search-position`,
+  `nav-position`, `skin-tone-position` (`'none'` hides); `hide-group-names`
+  and `disable-sticky-group-names` → `category-headers`
+  (`sticky`/`static`/`none`); `static-texts` and `group-names` → `i18n`;
+  `group-order` and `disabled-groups` → `categories`; `additional-groups` →
+  `custom-categories`; `group-icons` → `category-icons`; `display-recent` →
+  `recent`; `picker-type` → `type`; `mode` → `insert-mode`; `v-model:text`
+  → `v-model`
+- Add: `i18n` covers every string, including screen-reader labels and the
+  six skin tone names; `EN_I18N` is exported from the core
+- Add: `custom-categories` take a name, icon and readable emoji
+  (`name`, `shortcodes`, `unicode`, `skins`, `src`)
+- Add: the `select` payload has readable fields — `native`, `unicode`,
+  `baseUnicode`, `name`, `shortcodes`, `skinTone`. The 1.x keys (`i`, `r`,
+  `u`, `n`, `t`) remain until 3.0
+- Update: default strings fixed ("Smileys & People", "Travel & Places",
+  "No emoji found")
+- Add: 1.x CDN file names (`emoji-picker.umd.js`, `emoji-picker.es.js`)
+  are still shipped, and recents saved by 1.x in IndexedDB are migrated to
+  localStorage automatically
 - Update: emoji data regenerated from emoji-datasource 16.0.0 (Emoji 16.0):
   1906 emoji, up from 1563, including the Emoji 14–16 additions (🫠 melting
   face, 🫨 shaking face, 🪿 goose, 🫩 face with bags under eyes…). Names are
@@ -23,18 +47,16 @@ v1.2.0 (unreleased)
 - Add: `per-line`, `emoji-size` and `auto-focus` props; picker size and
   focus colour are CSS variables (`--v3-picker-width`, `--v3-picker-height`,
   `--v3-picker-focus`)
-- Add: `recent-mode` (`recent` | `frequent`) and `max-recent` props
-- Add: `noResults`, `searchLabel`, `categoriesLabel` and `skinTones`
-  static texts, so every string can be localized
+- Add: `recent="frequent"` ordering and `max-recent`
 - Fix: searches with no match now show the no-results message (it only
   appeared when every group was disabled)
 - Fix: jumping to a category no longer uses `#id` selectors, which broke
   with two pickers on a page or non-CSS-safe group keys
 - Update: the playground has presets, every new option, localization and
   custom emoji examples, and a shortcode converter
-- Add: `disabled-emojis` prop to hide individual emoji by unicode.
+- Add: `exclude-emojis` prop to hide individual emoji by unicode.
   See #77, #78
-- Add: `hide-footer` prop. See #73
+- Add: `preview-position="none"` hides the preview. See #73
 - Add: `placement` prop for input/textarea popups; `offset` and
   `placement` now update after mount, and the Popper instance is destroyed
   on unmount. See #71
@@ -62,7 +84,7 @@ v1.2.0 (unreleased)
   `disabled-groups`, `group-order`, `group-names`, `group-icons`,
   `picker-type`, `hide-*` and the rest previously only took effect at
   mount time.
-- Fix: `:text` behaves as a controlled prop, so resetting the value from
+- Fix: `v-model` is controlled, so resetting the value from
   the parent updates the input. See #65
 - Update: Group names resolve once in the store, so header tooltips and
   body headings agree. They previously disagreed on two categories

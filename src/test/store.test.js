@@ -38,24 +38,24 @@ afterEach(() => {
 describe('recent emojis', () => {
   it('persists the unicode id and restores it in a new store', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
     store.updateSelect(findEmoji('1f476'))
 
     expect(store.state.recent.map((emoji) => emoji.u)).toEqual(['1f476'])
 
     const reloaded = Store()
-    reloaded.updateOptions({ displayRecent: true })
+    reloaded.updateOptions({ recent: 'recent' })
 
     expect(reloaded.state.recent.map((emoji) => emoji.u)).toEqual(['1f476'])
   })
 
   it('applies the active skin tone to restored recents', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
     store.updateSelect(findEmoji('1f476'))
 
     const reloaded = Store()
-    reloaded.updateOptions({ displayRecent: true })
+    reloaded.updateOptions({ recent: 'recent' })
 
     const result = filterEmojis(
       { recent: reloaded.state.recent },
@@ -70,7 +70,7 @@ describe('recent emojis', () => {
 
   it('keeps most-recently-used order and de-duplicates', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
     store.updateSelect(findEmoji('1f600'))
     store.updateSelect(findEmoji('1f601'))
     store.updateSelect(findEmoji('1f600'))
@@ -83,7 +83,7 @@ describe('recent emojis', () => {
 
   it('does not reorder when picking from the recent group (#75)', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
     store.updateSelect(findEmoji('1f600'))
     store.updateSelect(findEmoji('1f601'))
 
@@ -104,7 +104,7 @@ describe('recent emojis', () => {
 
   it('increments the stored selection count', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
     store.updateSelect(findEmoji('1f600'))
     store.updateSelect(findEmoji('1f600'))
 
@@ -114,7 +114,7 @@ describe('recent emojis', () => {
 
   it('caps the list at 24 entries', () => {
     const store = Store()
-    store.updateOptions({ displayRecent: true })
+    store.updateOptions({ recent: 'recent' })
 
     for (const emoji of Object.values(emojis).flat().slice(0, 30)) {
       store.updateSelect(emoji)
@@ -127,7 +127,7 @@ describe('recent emojis', () => {
     data.set(STORAGE_KEY, '{not json')
 
     const store = Store()
-    expect(() => store.updateOptions({ displayRecent: true })).not.toThrow()
+    expect(() => store.updateOptions({ recent: 'recent' })).not.toThrow()
     expect(store.state.recent).toEqual([])
   })
 
@@ -136,8 +136,8 @@ describe('recent emojis', () => {
     const store = Store()
 
     store.updateOptions({
-      displayRecent: true,
-      additionalGroups: { custom: [custom] },
+      recent: 'recent',
+      customCategories: [{ key: 'custom', emojis: [custom] }],
     })
     store.updateSelect(custom)
 
@@ -148,7 +148,7 @@ describe('recent emojis', () => {
     delete globalThis.window
 
     const store = Store()
-    expect(() => store.updateOptions({ displayRecent: true })).not.toThrow()
+    expect(() => store.updateOptions({ recent: 'recent' })).not.toThrow()
     expect(store.state.recent).toEqual([])
   })
 })
@@ -158,21 +158,23 @@ describe('group names', () => {
     const store = Store()
 
     store.updateOptions({
-      groupNames: { smileys_people: 'Faces' },
-      additionalGroups: { my_custom_group: [{ n: ['x'], u: 'x' }] },
+      i18n: { categories: { smileys_people: 'Faces' } },
+      customCategories: [
+        { key: 'my_custom_group', emojis: [{ n: ['x'], u: 'x' }] },
+      ],
     })
 
-    expect(store.state.groupNames.smileys_people).toBe('Faces')
-    expect(store.state.groupNames.my_custom_group).toBe('My Custom Group')
+    expect(store.state.categoryNames.smileys_people).toBe('Faces')
+    expect(store.state.categoryNames.my_custom_group).toBe('My Custom Group')
   })
 
   it('reflects option updates after creation', () => {
     const store = Store()
 
-    store.updateOptions({ native: false })
-    expect(store.state.options.native).toBe(false)
+    store.updateOptions({ set: 'apple' })
+    expect(store.state.options.set).toBe('apple')
 
-    store.updateOptions({ native: true })
-    expect(store.state.options.native).toBe(true)
+    store.updateOptions({ set: 'native' })
+    expect(store.state.options.set).toBe('native')
   })
 })
