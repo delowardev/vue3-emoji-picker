@@ -1,5 +1,9 @@
 <template>
-  <div v-if="isInputType" class="v3-input-emoji-picker">
+  <div
+    v-if="isInputType"
+    class="v3-input-emoji-picker"
+    :class="'v3-color-theme-' + colorTheme"
+  >
     <div class="v3-input-picker-root">
       <input
         v-if="type === 'input'"
@@ -177,6 +181,10 @@ export default defineComponent({
     const cssVars = computed(() => ({
       '--v3-per-line': String(state.options.perLine || 8),
       '--v3-emoji-size': `${state.options.emojiSize || 22}px`,
+      // Header, search, headings and footer scale with the emoji size.
+      '--v3-auto-scale': String(
+        Math.min(2, Math.max(0.75, (state.options.emojiSize || 22) / 22))
+      ),
     }))
 
     function focusSearch(root?: HTMLElement) {
@@ -211,8 +219,10 @@ export default defineComponent({
     }
 
     function setupPopper() {
-      if (button.value && picker.value && isInputType.value) {
-        popper = createPopper(button.value, picker.value, popperOptions())
+      // Anchor to the field, not the icon: `*-start` / `*-end` then align
+      // with the field's edges instead of the small icon at its right.
+      if (elem.value && picker.value && isInputType.value) {
+        popper = createPopper(elem.value, picker.value, popperOptions())
         document.body.addEventListener('click', clickListener)
       }
     }

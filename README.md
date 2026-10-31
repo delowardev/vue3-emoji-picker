@@ -293,17 +293,22 @@ In the search box, `↓` moves into the grid and `Enter` picks the first
 result. `Esc` closes the input/textarea popup. Buttons, groups, the
 category bar and skin tones are labelled for screen readers.
 
+Every control is at least 24×24px (WCAG 2.5.8) at any `emoji-size`. With
+all categories shown (nine, plus `recent`), keep the picker at least 270px
+wide so the category buttons keep that size.
+
 ## Styling with CSS variables
 
-| Variable                            | Default   | Description              |
-| :---------------------------------- | :-------- | :----------------------- |
-| `--v3-picker-width`                 | `280px`   | Picker width             |
-| `--v3-picker-height`                | `320px`   | Picker height            |
-| `--v3-picker-bg` / `--v3-picker-fg` | theme     | Background / text        |
-| `--v3-picker-border`                | theme     | Header/footer borders    |
-| `--v3-picker-emoji-hover`           | theme     | Emoji hover background   |
-| `--v3-picker-focus`                 | `#2563eb` | Keyboard focus ring      |
-| `--v3-emoji-radius`                 | `6px`     | Emoji hover/focus radius |
+| Variable                            | Default           | Description                                                                                                                                 |
+| :---------------------------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
+| `--v3-picker-width`                 | `280px`           | Picker width                                                                                                                                |
+| `--v3-picker-height`                | `320px`           | Picker height                                                                                                                               |
+| `--v3-picker-bg` / `--v3-picker-fg` | theme             | Background / text                                                                                                                           |
+| `--v3-picker-border`                | theme             | Header/footer borders                                                                                                                       |
+| `--v3-picker-emoji-hover`           | theme             | Emoji hover background                                                                                                                      |
+| `--v3-picker-focus`                 | `#2563eb`         | Keyboard focus ring                                                                                                                         |
+| `--v3-emoji-radius`                 | `6px`             | Emoji hover/focus radius                                                                                                                    |
+| `--v3-scale`                        | `emoji-size / 22` | Interface scale (search, icons, headings, footer). Text never shrinks below its default and grows at most 1.3×; controls stay at least 24px |
 
 ```css
 .v3-emoji-picker {

@@ -357,7 +357,11 @@
 
           <div
             class="picker-wrap"
-            :class="{ light: theme === 'light', 'has-input': pickerType }"
+            :class="{
+              light: theme === 'light',
+              'has-input': pickerType,
+              'place-top': pickerType && placement.startsWith('top'),
+            }"
             :style="stageVars"
           >
             <picker
@@ -614,7 +618,16 @@ const LOCALES: Record<string, I18nInput> = {
 const badge = (label: string, color: string) =>
   'data:image/svg+xml,' +
   encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${color}"/><text x="32" y="42" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#fff" text-anchor="middle">${label}</text></svg>`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="${color}"/><text x="32" y="42" font-family="system-ui,sans-serif" font-size="${
+      label.length > 3 ? 19 : 24
+    }" font-weight="700" fill="#fff" text-anchor="middle">${label}</text></svg>`
+  )
+
+/** Category bar icon for the custom category: a simple people outline. */
+const TEAM_ICON =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14a6.5 6.5 0 0 1 3.5 6"/></svg>'
   )
 
 const TEAM_EMOJIS = [
@@ -884,7 +897,14 @@ const pickerProps = computed<Record<string, any>>(() => ({
     : 'sticky',
   categories: categories.value,
   customCategories: customGroup.value
-    ? [{ key: 'team', name: 'Team', emojis: TEAM_EMOJIS }]
+    ? [
+        {
+          key: 'team',
+          name: 'Team',
+          icon: TEAM_ICON,
+          emojis: TEAM_EMOJIS,
+        },
+      ]
     : [],
   excludeEmojis: disabledEmojis.value,
   recent: displayRecent.value ? recentMode.value : 'none',
@@ -1682,17 +1702,13 @@ h3 {
   gap: 20px;
   align-items: stretch;
   min-width: 0;
-  max-height: calc(100vh - 110px);
 }
 
 .preview {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  min-height: 0;
-  overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
+
   padding: 16px;
   background: var(--surface);
   border: 2px solid var(--accent);
@@ -1746,10 +1762,19 @@ h3 {
     #f5f5f4;
 }
 
-/* Room for the popup below the field. */
+/* Input/textarea: full-width field with room for the popup. */
 .picker-wrap.has-input {
-  min-height: calc(var(--v3-picker-height, 320px) + 120px);
-  min-width: calc(var(--v3-picker-width, 280px) + 60px);
+  min-height: calc(var(--v3-picker-height, 320px) + 130px);
+  min-width: calc(var(--v3-picker-width, 280px) + 40px);
+}
+
+.picker-wrap.has-input :deep(.v3-input-emoji-picker) {
+  width: 100%;
+}
+
+/* Popup opens upwards: put the field at the bottom. */
+.picker-wrap.place-top {
+  align-items: flex-end;
 }
 
 .last {
@@ -2086,10 +2111,6 @@ kbd {
 
   .workspace {
     position: static;
-  }
-
-  .workspace {
-    max-height: none;
   }
 
   .picker-wrap,
