@@ -44,9 +44,9 @@
           :style="cssVars"
           @keydown.esc="close"
         >
-          <Header />
-          <Body @select="onSelect" />
-          <Footer v-if="hasFooter" />
+          <PickerHeader />
+          <PickerBody @select="onSelect" />
+          <PickerFooter v-if="hasFooter" />
         </div>
       </div>
     </div>
@@ -58,9 +58,9 @@
     :class="'v3-color-theme-' + colorTheme"
     :style="cssVars"
   >
-    <Header />
-    <Body @select="onSelect" />
-    <Footer v-if="hasFooter" />
+    <PickerHeader />
+    <PickerBody @select="onSelect" />
+    <PickerFooter v-if="hasFooter" />
   </div>
 </template>
 
@@ -84,17 +84,17 @@ import { createPopper, Instance, Placement } from '@popperjs/core'
  * Internal dependencies
  */
 import smileys_people from '../svgs/groups/smileys_people.svg'
-import Body from './Body.vue'
-import Header from './Header.vue'
-import Footer from './Footer.vue'
+import PickerBody from './Body.vue'
+import PickerHeader from './Header.vue'
+import PickerFooter from './Footer.vue'
 import { EmojiExt, Store } from '../types'
 
 export default defineComponent({
   name: 'PickerRoot',
   components: {
-    Header,
-    Body,
-    Footer,
+    PickerHeader,
+    PickerBody,
+    PickerFooter,
   },
   props: {
     type: {

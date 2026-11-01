@@ -38,6 +38,10 @@ export const LEGACY_PROPS: Record<string, string> = {
 const kebab = (name: string) =>
   name.replace(/[A-Z]/g, (char) => '-' + char.toLowerCase())
 
+// Bundlers replace `process.env.NODE_ENV`; declared here so the library does
+// not need Node types.
+declare const process: { env?: { NODE_ENV?: string } }
+
 const warned = new Set<string>()
 
 function isProduction() {

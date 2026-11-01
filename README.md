@@ -16,7 +16,7 @@ npm install vue3-emoji-picker
 yarn add vue3-emoji-picker
 ```
 
-_TypeScript types ship with the package — no `declare module 'vue3-emoji-picker'` shim is needed._
+_TypeScript types ship with the package — no `declare module 'vue3-emoji-picker'` shim is needed. They work with Vue 3.2+ and TypeScript 4.9+ (Vue 3.5 itself needs TypeScript 5.4+). The component's props are exported as `EmojiPickerProps`._
 
 ### SSR / Nuxt
 
@@ -71,6 +71,9 @@ function onSelectEmoji(emoji) {
 `npm run dev` starts an interactive playground with live prop controls, the
 generated usage snippet and a vanilla-core demo. `npm run demo:build` emits a
 static build to `demo-dist/`.
+
+Developing the package needs Node 22.12 or newer (Vite 8 and Vitest 5); using
+it does not.
 
 ## Framework-agnostic core
 

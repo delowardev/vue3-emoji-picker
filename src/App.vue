@@ -892,8 +892,8 @@ const pickerProps = computed<Record<string, any>>(() => ({
   categoryHeaders: hideGroupNames.value
     ? 'none'
     : disableStickyGroupNames.value
-    ? 'static'
-    : 'sticky',
+      ? 'static'
+      : 'sticky',
   categories: categories.value,
   customCategories: customGroup.value
     ? [
@@ -1106,7 +1106,12 @@ onBeforeUnmount(() => {
   background: var(--bg);
   color: var(--text);
   color-scheme: dark;
-  font-family: 'Noto Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family:
+    'Noto Sans',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
   font-size: 15px;
   line-height: 1.6;
 }
@@ -1191,7 +1196,10 @@ h3 {
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 80ms, border-bottom-width 80ms, background 150ms;
+  transition:
+    transform 80ms,
+    border-bottom-width 80ms,
+    background 150ms;
 }
 
 .btn:active {
@@ -1230,7 +1238,8 @@ h3 {
 .hero {
   text-align: center;
   padding: 80px 24px 64px;
-  background: radial-gradient(
+  background:
+    radial-gradient(
       ellipse at top,
       rgb(var(--accent-rgb) / 10%),
       transparent 60%
@@ -1271,7 +1280,11 @@ h3 {
 }
 
 .install code {
-  font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    13px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
 }
 
 .install-copy {
@@ -1490,7 +1503,11 @@ h3 {
   background: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--heading);
-  font: 600 11px/18px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    600 11px/18px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   text-align: center;
 }
 
@@ -1507,7 +1524,9 @@ h3 {
   color: var(--heading);
   font: inherit;
   font-size: 13px;
-  transition: border-color 150ms, box-shadow 150ms;
+  transition:
+    border-color 150ms,
+    box-shadow 150ms;
 }
 
 .field select {
@@ -1606,7 +1625,9 @@ h3 {
 }
 
 .field input[type='range']:focus-visible::-webkit-slider-thumb {
-  box-shadow: 0 0 0 4px var(--accent-soft), 0 2px 0 var(--accent-edge);
+  box-shadow:
+    0 0 0 4px var(--accent-soft),
+    0 2px 0 var(--accent-edge);
 }
 
 .field input[type='color'] {
@@ -1673,7 +1694,9 @@ h3 {
   border-radius: 4px;
   background: var(--bg) center / 12px no-repeat;
   cursor: pointer;
-  transition: background-color 120ms, border-color 120ms;
+  transition:
+    background-color 120ms,
+    border-color 120ms;
 }
 
 .toggles label:hover input[type='checkbox'] {
@@ -1739,7 +1762,11 @@ h3 {
   border: 1px solid var(--border-strong);
   background: var(--surface-2);
   color: var(--muted);
-  font: 600 11px/20px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    600 11px/20px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   text-transform: none;
 }
 
@@ -1750,7 +1777,8 @@ h3 {
   min-width: 320px;
   padding: 20px;
   border-radius: var(--radius);
-  background: radial-gradient(
+  background:
+    radial-gradient(
       circle at 20% 0%,
       rgb(var(--accent-rgb) / 9%),
       transparent 60%
@@ -1761,8 +1789,8 @@ h3 {
 }
 
 .picker-wrap.light {
-  background: radial-gradient(circle at 20% 0%, #d1fae5, transparent 60%),
-    #f5f5f4;
+  background:
+    radial-gradient(circle at 20% 0%, #d1fae5, transparent 60%), #f5f5f4;
 }
 
 /* Input/textarea: full-width field with room for the popup. */
@@ -1833,7 +1861,11 @@ h3 {
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--accent);
-  font: 11px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    11px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
 }
 
 .last-codes code:first-child {
@@ -1935,7 +1967,11 @@ kbd {
   border-bottom: 3px solid #57534e;
   background: #3a3633;
   color: var(--heading);
-  font: 500 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    500 12px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
 }
 
 .panel {
@@ -1981,7 +2017,11 @@ kbd {
   border: 1px solid var(--border);
   background: #0c0b0a;
   color: #e7e5e4;
-  font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    12px/1.6 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   overflow: auto;
   max-height: 340px;
   /* Wrap long lines (names, shortcodes) instead of hiding them. */
@@ -2018,7 +2058,11 @@ kbd {
 .shortcode-input {
   height: auto;
   padding: 8px 10px;
-  font: 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+  font:
+    13px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
   resize: vertical;
 }
 
@@ -2129,6 +2173,11 @@ kbd {
     position: static;
   }
 
+  /* One column: the preview takes the column width, not the picker's. */
+  .preview {
+    width: auto;
+  }
+
   .picker-wrap,
   .picker-wrap.has-input {
     min-width: 0;
@@ -2150,6 +2199,26 @@ kbd {
 
   .brand {
     font-size: 13px;
+  }
+}
+
+@media (max-width: 400px) {
+  .demo-header {
+    gap: 12px;
+    padding: 0 12px;
+  }
+
+  .brand {
+    font-size: 11px;
+  }
+
+  .github {
+    height: 34px;
+    padding: 0 10px;
+  }
+
+  .layout {
+    padding: 16px 12px;
   }
 }
 </style>

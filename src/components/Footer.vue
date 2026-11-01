@@ -65,7 +65,7 @@ import { unicodeToEmoji, isMac } from '../helpers'
 import { resolveEmojiImage } from '../core/images'
 
 export default defineComponent({
-  name: 'Footer',
+  name: 'PickerFooter',
   setup() {
     const { state, updateSkinTone } = inject('store') as Store
     const skinTone = ref(false)

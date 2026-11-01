@@ -80,13 +80,13 @@ import { toSelection } from '../core/selection'
 import { filterEmojis, unicodeToEmoji, isMac } from '../helpers'
 import { resolveEmojiImage } from '../core/images'
 
-interface GridGroup {
+export interface GridGroup {
   key: string
   items: EmojiExt[]
 }
 
 export default defineComponent({
-  name: 'Body',
+  name: 'PickerBody',
   emits: {
     select: (_emoji: EmojiExt) => true,
   },
