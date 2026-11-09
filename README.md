@@ -143,6 +143,21 @@ out in tests or on the server.
 | `category-headers`   | String  | `'sticky'`  | `sticky`, `static`, `none`                     |
 | `auto-focus`         | Boolean | `false`     | Focus search on mount, or when the popup opens |
 
+### Skin tone
+
+| Prop        | Type   | Default    | Values                                                 |
+| :---------- | :----- | :--------- | :----------------------------------------------------- |
+| `skin-tone` | String | last saved | `neutral`, `1f3fb`, `1f3fc`, `1f3fd`, `1f3fe`, `1f3ff` |
+
+The tone picked in the footer is saved to localStorage
+(`vue3-emoji-picker.skin-tone`) and restored next time. Pass `skin-tone` to
+choose it yourself, or bind `v-model:skin-tone` to keep your own copy in
+sync, for example to save it with the user's settings:
+
+```vue
+<EmojiPicker v-model:skin-tone="tone" />
+```
+
 ### Categories and emoji
 
 | Prop                | Type   | Default  | Description                                                                |
@@ -326,3 +341,4 @@ wide so the category buttons keep that size.
 | :------------------ | :--------- | :----------------------------------------------------- |
 | `select`            | `EmojiExt` | An emoji was picked. See [Usage](#usage) for the shape |
 | `update:modelValue` | `string`   | The field text changed (`v-model`)                     |
+| `update:skinTone`   | `string`   | A skin tone was picked (`v-model:skin-tone`)           |

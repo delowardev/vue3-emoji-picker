@@ -218,3 +218,29 @@ describe('keyboard navigation', () => {
     wrapper.unmount()
   })
 })
+
+describe('skin tone prop (issue #92)', () => {
+  const toneIcon = (wrapper) =>
+    wrapper.find('.v3-tone .v3-icon').classes().join(' ')
+
+  it('starts on the skin-tone prop and follows changes', async () => {
+    const wrapper = mountPicker({ skinTone: '1f3fd' })
+    expect(toneIcon(wrapper)).toContain('v3-tone-1f3fd')
+
+    await wrapper.setProps({ skinTone: '1f3fb' })
+    expect(toneIcon(wrapper)).toContain('v3-tone-1f3fb')
+
+    wrapper.unmount()
+  })
+
+  it('emits update:skinTone when a tone is picked', async () => {
+    const wrapper = mountPicker({ skinTone: 'neutral' })
+
+    await wrapper.find('.v3-skin-tone-1f3ff').trigger('click')
+
+    expect(wrapper.emitted('update:skinTone')).toEqual([['1f3ff']])
+    expect(toneIcon(wrapper)).toContain('v3-tone-1f3ff')
+
+    wrapper.unmount()
+  })
+})

@@ -35,6 +35,8 @@ export interface EmojiPickerProps extends Partial<
   modelValue?: string
   onSelect?: (emoji: EmojiExt) => void
   'onUpdate:modelValue'?: (value: string) => void
+  /** Fires when a skin tone is picked (`v-model:skin-tone`). */
+  'onUpdate:skinTone'?: (value: string) => void
 
   /** @deprecated Use `set="native"`. */
   native?: boolean

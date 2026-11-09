@@ -1,3 +1,12 @@
+v2.1.0 (unreleased)
+
+- Add: `skin-tone` prop and `update:skinTone` event, so the tone can be set
+  from outside and kept in sync with `v-model:skin-tone`; the core takes a
+  matching `skinTone` option (#92)
+- Add: the picked skin tone is saved to storage
+  (`vue3-emoji-picker.skin-tone`, exported as `SKIN_TONE_STORAGE_KEY`) and
+  restored on the next mount (#92)
+
 v2.0.0 (unreleased)
 
 Breaking: props are standardized. Every 1.x prop keeps working with a

@@ -5,7 +5,7 @@ import type {
   PickerState,
   RecentMode,
 } from './types'
-import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL } from './constants'
+import { DEFAULT_EMOJI, SKIN_TONE_NEUTRAL, SKIN_TONES } from './constants'
 import { buildLookup, mergeEmojis } from './dataset'
 import {
   customRecord,
@@ -18,6 +18,15 @@ import { migrateLegacyRecents } from './legacy'
 import { getDefaultStorage } from './storage'
 import { filterEmojis } from './search'
 import { toSelection } from './selection'
+
+export const SKIN_TONE_STORAGE_KEY = 'vue3-emoji-picker.skin-tone'
+
+/** A known skin tone, or `undefined` for anything else. */
+function validTone(tone: unknown): string | undefined {
+  return typeof tone === 'string' && SKIN_TONES.includes(tone)
+    ? tone
+    : undefined
+}
 
 export function createDefaultOptions(): EmojiOptions {
   return {
@@ -69,9 +78,13 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     max: options.maxRecent,
   })
 
+  // An explicit `skinTone` option wins; otherwise restore the last pick.
   const state: PickerState = {
     search: '',
-    skinTone: SKIN_TONE_NEUTRAL,
+    skinTone:
+      validTone(options.skinTone) ??
+      validTone(storage.getItem(SKIN_TONE_STORAGE_KEY)) ??
+      SKIN_TONE_NEUTRAL,
     activeGroup: '',
     hovered: DEFAULT_EMOJI as Emoji,
     recent: recents.list(recentView()),
@@ -80,6 +93,11 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
 
   const emit = () => {
     for (const listener of listeners) listener(state)
+  }
+
+  const saveSkinTone = (tone: unknown) => {
+    state.skinTone = validTone(tone) ?? SKIN_TONE_NEUTRAL
+    storage.setItem(SKIN_TONE_STORAGE_KEY, state.skinTone)
   }
 
   // A custom `storage` means the consumer owns persistence; otherwise pick
@@ -104,6 +122,14 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     },
 
     setOptions(partial) {
+      // Only a changed `skinTone` option moves the tone, so re-sending the
+      // same options does not undo a pick made in the UI since.
+      if (
+        partial.skinTone !== undefined &&
+        partial.skinTone !== options.skinTone
+      ) {
+        saveSkinTone(partial.skinTone)
+      }
       options = { ...options, ...partial }
       state.options = options
       lookup = buildLookup(customRecord(options))
@@ -117,7 +143,7 @@ export function createPicker(initial: Partial<EmojiOptions> = {}): EmojiPicker {
     },
 
     setSkinTone(tone) {
-      state.skinTone = tone || SKIN_TONE_NEUTRAL
+      saveSkinTone(tone)
       emit()
     },
 
