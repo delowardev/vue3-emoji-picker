@@ -1,4 +1,4 @@
-# Vue3 Emoji Picker. [Live preview](https://codesandbox.io/p/github/delowardev/vue3-emoji-picker/main?file=%2FREADME.md)
+# Vue3 Emoji Picker. [Live preview](https://vue3-emoji-picker.delowar.workers.dev)
 
 [![Test Automation](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml/badge.svg)](https://github.com/delowardev/vue3-emoji-picker/actions/workflows/TestAutomation.yaml)
 [![npm version](https://badge.fury.io/js/vue3-emoji-picker.svg)](https://badge.fury.io/js/vue3-emoji-picker)
@@ -68,7 +68,9 @@ function onSelectEmoji(emoji) {
 
 ## Playground
 
-`npm run dev` starts an interactive playground with live prop controls, the
+Try it online at
+[vue3-emoji-picker.delowar.workers.dev](https://vue3-emoji-picker.delowar.workers.dev).
+Locally, `npm run dev` starts an interactive playground with live prop controls, the
 generated usage snippet and a vanilla-core demo. `npm run demo:build` emits a
 static build to `demo-dist/`.
 
