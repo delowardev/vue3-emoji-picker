@@ -183,6 +183,12 @@ export interface EmojiOptions {
   placement: string
   /** Popup offset in px for input/textarea types. */
   offset: number
+  /**
+   * Render the input/textarea popup somewhere else in the document, so a
+   * parent with `overflow` (a modal, a scroll box) cannot clip it or grow a
+   * scrollbar. `true` means `body`; a string is any CSS selector.
+   */
+  teleport: boolean | string
   /** Attributes bound to the input/textarea. */
   inputAttrs: Record<string, unknown>
   /** Focus search on mount (inline) or when the popup opens. */

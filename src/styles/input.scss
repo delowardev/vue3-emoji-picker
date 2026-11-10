@@ -47,18 +47,23 @@
           filter: var(--v3-group-image-filter);
         }
       }
-      .v3-emoji-picker {
-        // Popper positions the popup; a margin would offset it.
-        margin: 0;
-        opacity: 0;
-        visibility: hidden;
-        transition: 200ms;
-      }
-      &.v3-picker-is-open .v3-emoji-picker {
-        opacity: 1;
-        visibility: visible;
-        z-index: 999;
-      }
     }
   }
+}
+
+// The popup is styled on its own so it still works when teleported (#29).
+.v3-emoji-picker.v3-picker-popup {
+  // Popper positions the popup; a margin would offset it.
+  margin: 0;
+  z-index: 999;
+}
+
+.v3-picker-fade-enter-active,
+.v3-picker-fade-leave-active {
+  transition: opacity 200ms;
+}
+
+.v3-picker-fade-enter-from,
+.v3-picker-fade-leave-to {
+  opacity: 0;
 }

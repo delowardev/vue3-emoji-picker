@@ -64,6 +64,7 @@ const OPTION_PROPS = [
   'insertMode',
   'placement',
   'offset',
+  'teleport',
   'inputAttrs',
   'autoFocus',
 ] as const
@@ -104,6 +105,8 @@ export default defineComponent({
     insertMode: optional<InsertMode>(String),
     placement: optional<string>(String),
     offset: optional<number>(Number),
+    /** Render the popup in `body` (`true`) or another selector (#29). */
+    teleport: optional<boolean | string>([Boolean, String]),
     inputAttrs: optional<Record<string, unknown>>(Object),
     autoFocus: optional<boolean>(Boolean),
 
