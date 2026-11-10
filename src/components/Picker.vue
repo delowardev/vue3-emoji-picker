@@ -51,6 +51,7 @@ const OPTION_PROPS = [
   'navPosition',
   'previewPosition',
   'skinTonePosition',
+  'skinTone',
   'categoryHeaders',
   'categories',
   'customCategories',
@@ -85,6 +86,8 @@ export default defineComponent({
     navPosition: optional<'top' | 'none'>(String),
     previewPosition: optional<'bottom' | 'none'>(String),
     skinTonePosition: optional<'preview' | 'none'>(String),
+    /** Active skin tone; use `v-model:skin-tone` to keep it in sync. */
+    skinTone: optional<string>(String),
     categoryHeaders: optional<'sticky' | 'static' | 'none'>(String),
 
     categories: optional<string[]>(Array),
@@ -126,6 +129,7 @@ export default defineComponent({
     'update:modelValue': (_value: string) => true,
     /** @deprecated use v-model (`update:modelValue`) */
     'update:text': (_value: string) => true,
+    'update:skinTone': (_value: string) => true,
     select: (_emoji: EmojiExt) => true,
   },
   setup(props, { emit }) {
@@ -180,6 +184,14 @@ export default defineComponent({
     watch(value, (next) => {
       if (next !== input.value) input.value = next
     })
+
+    // Report tones picked in the footer, for `v-model:skin-tone` (issue #92).
+    watch(
+      () => store.state.skinTone,
+      (next) => {
+        if (next !== props.skinTone) emit('update:skinTone', next)
+      }
+    )
 
     provide('store', store)
 

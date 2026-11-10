@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   applySkinTone,
   createMemoryStorage,
   createPicker,
   getEmojiImageUrl,
+  SKIN_TONE_STORAGE_KEY,
   resolveEmojiImage,
   replaceShortcodes,
   searchEmojis,
@@ -11,6 +12,10 @@ import {
   unicodeToEmoji,
 } from '../core'
 import emojis from '../data/emojis.json'
+
+// createMemoryStorage() shares one map, so a tone picked in one test would
+// otherwise carry into the next.
+beforeEach(() => createMemoryStorage().removeItem(SKIN_TONE_STORAGE_KEY))
 
 const flat = (record) => Object.values(record).flat()
 
@@ -267,5 +272,64 @@ describe('image urls', () => {
     expect(resolveEmojiImage({ ...emoji, src: '/a.png' }, '1f600')).toBe(
       '/a.png'
     )
+  })
+})
+
+describe('skin tone persistence (issue #92)', () => {
+  /** Isolated storage; createMemoryStorage() shares one map across calls. */
+  const isolatedStorage = () => {
+    const map = new Map()
+    return {
+      getItem: (key) => (map.has(key) ? map.get(key) : null),
+      setItem: (key, value) => map.set(key, String(value)),
+      removeItem: (key) => map.delete(key),
+    }
+  }
+
+  it('starts on the skinTone option', () => {
+    const picker = createPicker({
+      storage: isolatedStorage(),
+      skinTone: '1f3fd',
+    })
+    expect(picker.getState().skinTone).toBe('1f3fd')
+  })
+
+  it('restores the last picked tone from storage', () => {
+    const storage = isolatedStorage()
+    createPicker({ storage }).setSkinTone('1f3ff')
+
+    expect(storage.getItem(SKIN_TONE_STORAGE_KEY)).toBe('1f3ff')
+    expect(createPicker({ storage }).getState().skinTone).toBe('1f3ff')
+  })
+
+  it('lets the skinTone option win over the stored tone', () => {
+    const storage = isolatedStorage()
+    storage.setItem(SKIN_TONE_STORAGE_KEY, '1f3ff')
+
+    const picker = createPicker({ storage, skinTone: '1f3fb' })
+    expect(picker.getState().skinTone).toBe('1f3fb')
+  })
+
+  it('ignores unknown tones', () => {
+    const storage = isolatedStorage()
+    storage.setItem(SKIN_TONE_STORAGE_KEY, 'not-a-tone')
+    expect(createPicker({ storage }).getState().skinTone).toBe('neutral')
+
+    const picker = createPicker({ storage, skinTone: 'bogus' })
+    expect(picker.getState().skinTone).toBe('neutral')
+  })
+
+  it('applies a changed option but not a re-sent one', () => {
+    const picker = createPicker({
+      storage: isolatedStorage(),
+      skinTone: '1f3fb',
+    })
+
+    picker.setSkinTone('1f3fe')
+    picker.setOptions({ skinTone: '1f3fb', perLine: 9 })
+    expect(picker.getState().skinTone).toBe('1f3fe')
+
+    picker.setOptions({ skinTone: '1f3fc' })
+    expect(picker.getState().skinTone).toBe('1f3fc')
   })
 })

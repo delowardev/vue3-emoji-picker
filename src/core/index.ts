@@ -9,7 +9,11 @@ export { isMac, hasIndexedDB } from './environment'
 export { shortcodeToEmoji, replaceShortcodes } from './shortcodes'
 export type { ShortcodeOptions } from './shortcodes'
 
-export { createPicker, createDefaultOptions } from './createPicker'
+export {
+  createPicker,
+  createDefaultOptions,
+  SKIN_TONE_STORAGE_KEY,
+} from './createPicker'
 export {
   createRecents,
   RECENT_STORAGE_KEY,

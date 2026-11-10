@@ -188,6 +188,13 @@ export interface EmojiOptions {
   /** Focus search on mount (inline) or when the popup opens. */
   autoFocus: boolean
 
+  /**
+   * Skin tone to use: `neutral` or a modifier such as `1f3fd`. When left
+   * out, the last tone picked is restored from `storage`. Changing it later
+   * moves the picker to that tone; picks made in the UI are always saved.
+   */
+  skinTone?: string
+
   /** Defaults to localStorage, falling back to in-memory. */
   storage?: StorageAdapter
 }
