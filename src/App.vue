@@ -119,6 +119,19 @@
             </label>
 
             <label class="field">
+              <span>Skin tone</span>
+              <select v-model="skinTone">
+                <option
+                  v-for="(tone, index) in SKIN_TONES"
+                  :key="tone"
+                  :value="tone"
+                >
+                  {{ TONE_NAMES[index] }}
+                </option>
+              </select>
+            </label>
+
+            <label class="field">
               <span
                 >Emoji size <output>{{ emojiSize }}px</output></span
               >
@@ -367,6 +380,7 @@
               v-bind="pickerProps"
               @select="onSelect"
               @update:model-value="onText"
+              @update:skin-tone="skinTone = $event"
             />
           </div>
 
@@ -527,6 +541,7 @@ import {
   createPicker,
   EMOJI_SETS,
   replaceShortcodes,
+  SKIN_TONE_STORAGE_KEY,
   SKIN_TONES,
   unicodeToEmoji,
 } from './core'
@@ -773,6 +788,28 @@ const autoFocus = ref(defaults.autoFocus)
 const customGroup = ref(defaults.customGroup)
 const flagsFirst = ref(defaults.flagsFirst)
 const pickerType = ref('')
+
+const TONE_NAMES = [
+  'Default',
+  'Light',
+  'Medium-light',
+  'Medium',
+  'Medium-dark',
+  'Dark',
+]
+
+/** Start on the tone the picker saved last time, so the select matches it. */
+function savedSkinTone(): string {
+  try {
+    const saved = localStorage.getItem(SKIN_TONE_STORAGE_KEY)
+    if (saved && SKIN_TONES.includes(saved)) return saved
+  } catch {
+    // Storage blocked: start on the default.
+  }
+  return 'neutral'
+}
+
+const skinTone = ref(savedSkinTone())
 const mode = ref<InsertMode>('caret')
 const placement = ref('bottom-end')
 const offset = ref(6)
@@ -889,6 +926,7 @@ const pickerProps = computed<Record<string, any>>(() => ({
   navPosition: hideGroupIcons.value ? 'none' : 'top',
   previewPosition: hideFooter.value ? 'none' : 'bottom',
   skinTonePosition: disableSkinTones.value ? 'none' : 'preview',
+  skinTone: skinTone.value,
   categoryHeaders: hideGroupNames.value
     ? 'none'
     : disableStickyGroupNames.value
@@ -945,6 +983,7 @@ const codeSnippet = computed(() => {
   if (props.previewPosition !== 'bottom') attrs.push('preview-position="none"')
   if (props.skinTonePosition !== 'preview')
     attrs.push('skin-tone-position="none"')
+  if (skinTone.value !== 'neutral') attrs.push(`skin-tone="${skinTone.value}"`)
   if (props.categoryHeaders !== 'sticky')
     attrs.push(`category-headers="${props.categoryHeaders}"`)
   if (autoFocus.value) attrs.push(':auto-focus="true"')
