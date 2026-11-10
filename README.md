@@ -179,18 +179,31 @@ sync, for example to save it with the user's settings:
 
 ### Input and textarea
 
-| Prop          | Type   | Default        | Description                                                                   |
-| :------------ | :----- | :------------- | :---------------------------------------------------------------------------- |
-| `type`        | String | `'inline'`     | `inline`, `input` or `textarea` (field with a popup picker)                   |
-| `v-model`     | String | `''`           | The field's text                                                              |
-| `insert-mode` | String | `'caret'`      | Where picked emoji go: `caret`, `append`, `prepend`                           |
-| `placement`   | String | `'bottom-end'` | Popup placement (any Popper placement, e.g. `top-start`)                      |
-| `offset`      | Number | `6`            | Popup offset in px                                                            |
-| `input-attrs` | Object | `{}`           | Attributes for the field, e.g. `{ placeholder: 'Say hi', class: 'my-input' }` |
+| Prop          | Type            | Default        | Description                                                                                                |
+| :------------ | :-------------- | :------------- | :--------------------------------------------------------------------------------------------------------- |
+| `type`        | String          | `'inline'`     | `inline`, `input` or `textarea` (field with a popup picker)                                                |
+| `v-model`     | String          | `''`           | The field's text                                                                                           |
+| `insert-mode` | String          | `'caret'`      | Where picked emoji go: `caret`, `append`, `prepend`                                                        |
+| `placement`   | String          | `'bottom-end'` | Popup placement (any Popper placement, e.g. `top-start`)                                                   |
+| `offset`      | Number          | `6`            | Popup offset in px                                                                                         |
+| `teleport`    | Boolean, String | `false`        | Render the popup in `body` (`true`) or another CSS selector, so a modal or `overflow` parent can't clip it |
+| `input-attrs` | Object          | `{}`           | Attributes for the field, e.g. `{ placeholder: 'Say hi', class: 'my-input' }`                              |
 
 ```vue
 <EmojiPicker type="textarea" v-model="message" :input-attrs="{ rows: 3 }" />
 ```
+
+Inside a modal or any box with `overflow: hidden/auto`, add `teleport` so the
+popup is rendered in `body` and can't be clipped:
+
+```vue
+<EmojiPicker type="input" v-model="message" teleport />
+```
+
+A teleported popup no longer inherits from the field's parents, so set CSS
+variables such as `--v3-picker-width` on `.v3-emoji-picker` (or `:root`)
+rather than on a wrapper. You can also pass a selector, e.g.
+`teleport="#modals"`.
 
 ## i18n
 

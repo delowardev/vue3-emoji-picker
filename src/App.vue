@@ -268,6 +268,13 @@
                 />
               </label>
 
+              <div class="toggles">
+                <label
+                  ><input v-model="teleport" type="checkbox" /> render popup in
+                  body (teleport)</label
+                >
+              </div>
+
               <label class="field">
                 <span>Input placeholder</span>
                 <input v-model="inputPlaceholder" type="text" />
@@ -813,6 +820,7 @@ const skinTone = ref(savedSkinTone())
 const mode = ref<InsertMode>('caret')
 const placement = ref('bottom-end')
 const offset = ref(6)
+const teleport = ref(false)
 const inputPlaceholder = ref('Type a message…')
 const disabledEmojisText = ref('')
 const disabledGroups = reactive<string[]>([])
@@ -900,6 +908,22 @@ const stageVars = computed(() => ({
   '--v3-picker-focus': accent.value,
 }))
 
+/**
+ * A teleported popup sits in `body`, outside the stage, so it can't inherit
+ * the stage's variables. Mirror them onto `body` while teleport is on.
+ */
+watch(
+  [teleport, stageVars],
+  ([on, vars]) => {
+    if (typeof document === 'undefined') return
+    for (const [name, value] of Object.entries(vars)) {
+      if (on) document.body.style.setProperty(name, value)
+      else document.body.style.removeProperty(name)
+    }
+  },
+  { immediate: true }
+)
+
 /** `categories` is only passed when the default order is changed. */
 const categories = computed(() => {
   // Custom categories show up by default; only reorder/filter when asked.
@@ -951,6 +975,7 @@ const pickerProps = computed<Record<string, any>>(() => ({
   type: pickerType.value || 'inline',
   insertMode: mode.value,
   offset: offset.value,
+  teleport: teleport.value,
   placement: placement.value,
   inputAttrs: { placeholder: inputPlaceholder.value },
   ...(pickerType.value ? { modelValue: text.value } : {}),
@@ -994,6 +1019,7 @@ const codeSnippet = computed(() => {
     if (placement.value !== 'bottom-end')
       attrs.push(`placement="${placement.value}"`)
     if (offset.value !== 6) attrs.push(`:offset="${offset.value}"`)
+    if (teleport.value) attrs.push('teleport')
     if (inputPlaceholder.value)
       attrs.push(`:input-attrs="{ placeholder: '${inputPlaceholder.value}' }"`)
   }
@@ -2259,5 +2285,17 @@ kbd {
   .layout {
     padding: 16px 12px;
   }
+}
+</style>
+
+<style>
+/* The playground's font, for the popup when it is teleported to body. */
+body {
+  font-family:
+    'Noto Sans',
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
 }
 </style>

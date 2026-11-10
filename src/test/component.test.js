@@ -244,3 +244,59 @@ describe('skin tone prop (issue #92)', () => {
     wrapper.unmount()
   })
 })
+
+describe('teleport prop (issue #29)', () => {
+  const popup = () => document.querySelector('.v3-picker-popup')
+  const isShown = (el) => el.style.display !== 'none'
+
+  it('keeps the closed popup out of the layout', async () => {
+    const wrapper = mountPicker({ type: 'input' }, true)
+    expect(isShown(popup())).toBe(false)
+
+    await wrapper.find('.v3-input-picker-icon').trigger('click')
+    expect(isShown(popup())).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('renders the popup next to the field by default', () => {
+    const wrapper = mountPicker({ type: 'input' }, true)
+    expect(popup().closest('.v3-input-picker-wrap')).not.toBeNull()
+    wrapper.unmount()
+  })
+
+  it('renders the popup in body and closes only on outside clicks', async () => {
+    const wrapper = mountPicker({ type: 'input', teleport: true }, true)
+    expect(popup().closest('.v3-input-emoji-picker')).toBeNull()
+    expect(popup().closest('.v3-input-picker-wrap')).toBeNull()
+
+    await wrapper.find('.v3-input-picker-icon').trigger('click')
+    popup().querySelector('.v3-search input').click()
+    await wrapper.vm.$nextTick()
+    expect(isShown(popup())).toBe(true)
+
+    document.body.click()
+    await wrapper.vm.$nextTick()
+    expect(isShown(popup())).toBe(false)
+
+    wrapper.unmount()
+    expect(popup()).toBeNull()
+  })
+
+  it('accepts a CSS selector and follows changes', async () => {
+    const target = document.createElement('div')
+    target.id = 'emoji-layer'
+    document.body.appendChild(target)
+
+    const wrapper = mountPicker(
+      { type: 'textarea', teleport: '#emoji-layer' },
+      true
+    )
+    expect(target.contains(popup())).toBe(true)
+
+    await wrapper.setProps({ teleport: false })
+    expect(popup().closest('.v3-input-picker-wrap')).not.toBeNull()
+
+    wrapper.unmount()
+    target.remove()
+  })
+})

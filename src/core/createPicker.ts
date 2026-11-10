@@ -51,6 +51,7 @@ export function createDefaultOptions(): EmojiOptions {
     insertMode: 'caret',
     placement: 'bottom-end',
     offset: 6,
+    teleport: false,
     inputAttrs: {},
     autoFocus: false,
   }

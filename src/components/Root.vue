@@ -37,17 +37,23 @@
           <img :src="face" alt="" />
         </button>
 
-        <div
-          ref="picker"
-          class="v3-emoji-picker"
-          :class="'v3-color-theme-' + colorTheme"
-          :style="cssVars"
-          @keydown.esc="close"
-        >
-          <PickerHeader />
-          <PickerBody @select="onSelect" />
-          <PickerFooter v-if="hasFooter" />
-        </div>
+        <!-- Optionally rendered elsewhere so overflow parents can't clip it (#29). -->
+        <Teleport :to="teleportTo || 'body'" :disabled="!teleportTo">
+          <Transition name="v3-picker-fade">
+            <div
+              v-show="open"
+              ref="picker"
+              class="v3-emoji-picker v3-picker-popup"
+              :class="'v3-color-theme-' + colorTheme"
+              :style="cssVars"
+              @keydown.esc="close"
+            >
+              <PickerHeader />
+              <PickerBody @select="onSelect" />
+              <PickerFooter v-if="hasFooter" />
+            </div>
+          </Transition>
+        </Teleport>
       </div>
     </div>
   </div>
@@ -128,6 +134,12 @@ export default defineComponent({
         state.options.skinTonePosition !== 'none'
     )
     const inputAttrs = computed(() => state.options.inputAttrs || {})
+    /** Where to render the popup; empty keeps it next to the field. */
+    const teleportTo = computed(() => {
+      const target = state.options.teleport
+      if (target === true) return 'body'
+      return typeof target === 'string' ? target : ''
+    })
     let popper: Instance | null = null
 
     // Treat `text` as a controlled prop (issue #65).
@@ -167,9 +179,11 @@ export default defineComponent({
     }
 
     function clickListener(event: MouseEvent) {
-      const isOutside = !(event.target as HTMLElement)?.closest(
-        '.v3-input-picker-wrap'
-      )
+      const target = event.target as HTMLElement | null
+      // A teleported popup is no longer inside the wrapper.
+      const isOutside =
+        !target?.closest('.v3-input-picker-wrap') &&
+        !picker.value?.contains(target)
       if (isOutside && open.value) {
         open.value = false
       }
@@ -196,6 +210,8 @@ export default defineComponent({
       // Show selections from the previous session in their new order.
       if (open.value) {
         refreshRecent()
+        // The popup is `display: none` while closed; measure it again.
+        nextTick(() => popper?.update())
         if (state.options.autoFocus) nextTick(() => focusSearch(picker.value))
       }
     }
@@ -223,14 +239,14 @@ export default defineComponent({
       // with the field's edges instead of the small icon at its right.
       if (elem.value && picker.value && isInputType.value) {
         popper = createPopper(elem.value, picker.value, popperOptions())
-        document.body.addEventListener('click', clickListener)
+        document.addEventListener('click', clickListener)
       }
     }
 
     function destroyPopper() {
       popper?.destroy()
       popper = null
-      document.body.removeEventListener('click', clickListener)
+      document.removeEventListener('click', clickListener)
     }
 
     // `offset` and `placement` can change after mount.
@@ -238,6 +254,12 @@ export default defineComponent({
       () => [state.options.offset, state.options.placement],
       () => popper?.setOptions(popperOptions())
     )
+
+    // Teleport moves the same node; re-measure from its new parent.
+    watch(teleportTo, async () => {
+      await nextTick()
+      popper?.update()
+    })
 
     // The input wrapper only exists for input/textarea picker types.
     watch(isInputType, async () => {
@@ -271,6 +293,7 @@ export default defineComponent({
      */
     return {
       face: smileys_people,
+      teleportTo,
       open,
       onSelect,
       input,

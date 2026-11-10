@@ -1,3 +1,11 @@
+Unreleased
+
+- Add: `teleport` prop for `type="input"` / `"textarea"`. `teleport` (or
+  `:teleport="true"`) renders the popup in `body`, a string renders it in any
+  CSS selector, so a modal or an `overflow` parent can no longer clip it (#29)
+- Fix: the closed popup is now `display: none` instead of only invisible, so
+  it no longer adds a scrollbar to its container (#29)
+
 v2.1.0 (2026-11-10)
 
 - Add: `skin-tone` prop and `update:skinTone` event, so the tone can be set
